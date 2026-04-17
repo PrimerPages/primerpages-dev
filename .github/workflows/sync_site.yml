@@ -1,0 +1,98 @@
+name: Sync site repo
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'site/**'
+  workflow_call:
+    secrets:
+      PR_TOKEN:
+        required: true
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: "Run the workflow without creating PRs"
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  DRY_RUN: ${{ inputs.dry-run || 'false' }}
+
+jobs:
+  sync-site:
+    runs-on: ubuntu-latest
+    env:
+      TARGET_REPO: "PrimerPages/primerpages.github.io"
+      TARGET_PATH: "primerpages.github.io"
+      TARGET_BRANCH: "main"
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Get commit message
+        id: commit-msg
+        run: |
+          COMMIT_MSG="$(git log -1 --pretty=format:%s)"
+          echo "commit-msg=${COMMIT_MSG//$'\n'/ }" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout target repo
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ env.TARGET_REPO }}
+          ref: ${{ env.TARGET_BRANCH }}
+          token: ${{ secrets.PR_TOKEN }}
+          path: ${{ env.TARGET_PATH }}
+
+      - name: Sync site directory
+        run: |
+          rsync -av --delete --exclude=".git/" site/ "$TARGET_PATH/"
+
+      - name: Create sync pull request
+        id: create-pr
+        if: ${{ env.DRY_RUN != 'true' }}
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.PR_TOKEN }}
+          path: ${{ env.TARGET_PATH }}
+          commit-message: "[sync] ${{ steps.commit-msg.outputs.commit-msg }}"
+          committer: Github Actions <actions@github.com>
+          author: Github Actions <actions@github.com>
+          branch: "sync-site"
+          delete-branch: true
+          base: ${{ env.TARGET_BRANCH }}
+          title: "[sync] ${{ steps.commit-msg.outputs.commit-msg }}"
+          body: |
+            Automated site sync from `PrimerPages/primerpages-dev`.
+
+            Source paths:
+            - `site/` -> `/`
+
+      - name: Summary
+        if: always()
+        run: |
+          if [[ "$DRY_RUN" == "true" ]]; then
+            PULL_REQUEST="not created (dry run)"
+          elif [[ -n "$PR_URL" ]]; then
+            PULL_REQUEST="[#$PR_NUMBER]($PR_URL)"
+          else
+            PULL_REQUEST="none (no file changes to sync)"
+          fi
+
+          cat <<EOF >> "$GITHUB_STEP_SUMMARY"
+          ## Sync Site Summary
+          - Target repository: \`${TARGET_REPO}\`
+          - Dry run: \`${DRY_RUN}\`
+          - Pull request: $PULL_REQUEST
+          EOF
+        env:
+          DRY_RUN: ${{ env.DRY_RUN }}
+          PR_URL: ${{ steps.create-pr.outputs.pull-request-url }}
+          PR_NUMBER: ${{ steps.create-pr.outputs.pull-request-number }}

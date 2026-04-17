@@ -1,0 +1,63 @@
+name: Release artifacts
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-gem:
+    uses: ./.github/workflows/gem.yml
+    with:
+      version: ${{ github.event.release.tag_name }}
+    secrets: inherit
+
+  tag-downstream-repos:
+    name: Tag downstream repositories
+    needs: [publish-gem]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - repo: PrimerPages/primerpages-gh-pages
+            repo_name: primerpages-gh-pages
+            branch: main
+          - repo: PrimerPages/primerpages-minimal
+            repo_name: primerpages-minimal
+            branch: main
+          - repo: PrimerPages/primerpages-recommended
+            repo_name: primerpages-recommended
+            branch: main
+          - repo: PrimerPages/primerpages-theme
+            repo_name: primerpages-theme
+            branch: main
+          - repo: PrimerPages/primerpages.github.io
+            repo_name: primerpages.github.io
+            branch: main
+
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ matrix.target.repo }}
+          ref: ${{ matrix.target.branch }}
+          token: ${{ secrets.PR_TOKEN }}
+          path: ${{ matrix.target.repo_name }}
+          fetch-depth: 0
+
+      - name: Create and push release tag
+        run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          TARGET_PATH="${{ matrix.target.repo_name }}"
+
+          cd "$TARGET_PATH"
+          git fetch --tags origin
+
+          if git rev-parse -q --verify "refs/tags/$TAG_NAME" >/dev/null; then
+            echo "Tag $TAG_NAME already exists in ${{ matrix.target.repo }}. Skipping."
+            exit 0
+          fi
+
+          git config user.name "Github Actions"
+          git config user.email "actions@github.com"
+          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+          git push origin "refs/tags/$TAG_NAME"

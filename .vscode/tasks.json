@@ -1,0 +1,140 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "gem: build",
+            "type": "shell",
+            "command": "gem build theme/jekyll-theme-profile.gemspec",
+            "options": {
+                "env": {
+                    "GEM_VERSION": "0.0.0"
+                }
+            }
+        },
+        {
+            "label": "gem: push",
+            "type": "shell",
+            "command": "gem push jekyll-theme-profile-*.gem"
+        },
+        {
+            "label": "bundle: update",
+            "type": "shell",
+            "command": "bundle update",
+            "problemMatcher": []
+        },
+        {
+            "label": "bundle: install",
+            "type": "shell",
+            "command": "bundle install",
+            "problemMatcher": []
+        },
+        {
+            "label": "build",
+            "type": "shell",
+            "command": ".github/build.sh",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "test: htmlproofer",
+            "type": "shell",
+            "command": ".github/test.sh",
+            "problemMatcher": [],
+            "group":"test",
+            "dependsOn": ["build"]
+        },
+        {
+            "label": "test: integration",
+            "type": "shell",
+            "command": "bats tests/*_test.bats",
+            "problemMatcher": [],
+            "group":"test",
+        },
+        {
+            "label": "test: all",
+            "type": "shell",
+            "dependsOn": [
+                "test: htmlproofer",
+                "test: integration",
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true,
+            }
+        },
+        {
+            "label": "serve",
+            "type": "shell",
+            "command": ".github/serve.sh",
+            "problemMatcher": [],
+        },
+        {
+            "label": "serve primerpages-gh-pages",
+            "type": "shell",
+            "command": "bash .github/local_serve.sh --source templates/primerpages-gh-pages",
+            "problemMatcher": [],
+        },
+        {
+            "label": "build primerpages-gh-pages",
+            "type": "shell",
+            "command": "bash .github/local_build.sh --source templates/primerpages-gh-pages",
+            "problemMatcher": [],
+        },
+        {
+            "label": "smoke test primerpages-gh-pages",
+            "type": "shell",
+            "command": "bash .github/local_smoke_test.sh --source primerpages-gh-pages",
+            "problemMatcher": [],
+            "group":"test",
+        },
+        {
+            "label": "serve primerpages-minimal",
+            "type": "shell",
+            "command": "bash .github/local_serve.sh --source templates/primerpages-minimal",
+            "problemMatcher": [],
+        },
+        {
+            "label": "build primerpages-minimal",
+            "type": "shell",
+            "command": "bash .github/local_build.sh --source templates/primerpages-minimal",
+            "problemMatcher": [],
+        },
+        {
+            "label": "smoke test primerpages-minimal",
+            "type": "shell",
+            "command": ".github/local_smoke_test.sh --source primerpages-minimal",
+            "problemMatcher": [],
+            "group":"test",
+        },
+        {
+            "label": "serve primerpages-recommended",
+            "type": "shell",
+            "command": ".github/local_serve.sh --source templates/primerpages-recommended",
+            "problemMatcher": [],
+        },
+        {
+            "label": "build primerpages-recommended",
+            "type": "shell",
+            "command": ".github/local_build.sh --source templates/primerpages-recommended",
+            "problemMatcher": [],
+        },
+        {
+            "label": "smoke test primerpages-recommended",
+            "type": "shell",
+            "command": ".github/local_smoke_test.sh --source primerpages-recommended",
+            "problemMatcher": [],
+            "group":"test",
+        },
+        {
+            "label": "release",
+            "type": "shell",
+            "command": ".github/release.sh theme/jekyll-theme-profile.gemspec",
+            "problemMatcher": []
+        },
+    ]
+}

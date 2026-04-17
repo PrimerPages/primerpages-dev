@@ -1,0 +1,16 @@
+---
+---
+{% assign jekyll_version=jekyll.version | split: "." | first %}
+{% if jekyll_version == '3' %}
+/* Jekyll version 3 detected */
+@import 'jekyll-theme-profile-compat';
+{% else %}
+/* Jekyll version 4+ detected */
+@use 'jekyll-theme-profile';
+{% endif %}
+
+:root{
+    --color-profile-text: var(--color-fg-default);
+    --color-profile-accent: var(--color-accent-fg);
+    --color-profile-bg: var(--color-canvas-default);
+}

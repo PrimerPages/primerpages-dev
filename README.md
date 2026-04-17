@@ -1,50 +1,43 @@
-# jekyll-theme-profile
+# primerpages-dev
 
-Welcome to your new Jekyll theme! In this directory, you'll find the files you need to be able to package up your theme into a gem. Put your layouts in `_layouts`, your includes in `_includes`, your sass files in `_sass` and any other assets in `assets`.
+Source-of-truth development repository for PrimerPages.
 
-To experiment with this code, add some sample content and run `bundle exec jekyll serve` – this directory is setup just like a Jekyll site!
+## Repository layout
 
-TODO: Delete this and the text above, and describe your gem
+- `theme/`: canonical source for the theme package and downstream theme repository.
+- `templates/`: canonical source content for downstream template repositories.
+- `site/`: docs and project site content.
 
-## Installation
+## Publishing model
 
-Add this line to your Jekyll site's `Gemfile`:
+- Development happens in this repository.
+- CI syncs content to downstream repositories:
+  - `theme/` -> The PrimerPages theme
+  - `templates` -> A set of PrimerPages repo templates
+  - `site/` -> The main site for PrimerPages
+- Downstream repos are treated as published outputs, not primary authoring locations.
 
-```ruby
-gem "jekyll-theme-profile"
-```
+## Contribution entry point
 
-And add this line to your Jekyll site's `_config.yml`:
+- Open issues and pull requests in `primerpages-dev`.
+- If your change affects downstream repositories (`primerpages.github.io`, `primerpages-theme`, `primerpages-gh-pages`, `primerpages-minimal`, `primerpages-recommended`), make the change here and let sync automation propagate it.
 
-```yaml
-theme: jekyll-theme-profile
-```
+## Testing fixtures
 
-And then execute:
+- Test-only config fixtures live under `tests/configs/`.
+- Published template configs are kept under `templates/` and separate from local/CI test fixture setup.
 
-    $ bundle
+## Notes
 
-Or install it yourself as:
-
-    $ gem install jekyll-theme-profile
-
-## Usage
-
-TODO: Write usage instructions here. Describe your available layouts, includes, sass and/or assets.
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/jekyll-theme-profile. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](https://www.contributor-covenant.org/) code of conduct.
-
-## Development
-
-To set up your environment to develop this theme, run `bundle install`.
-
-Your theme is setup just like a normal Jekyll site! To test your theme, run `bundle exec jekyll serve` and open your browser at `http://localhost:4000`. This starts a Jekyll server using your theme. Add pages, documents, data, etc. like normal to test your theme's contents. As you make modifications to your theme and to your content, your site will regenerate and you should see the changes in the browser after a refresh, just like normal.
-
-When your theme is released, only the files in `_layouts`, `_includes`, `_sass` and `assets` tracked with Git will be bundled.
-To add a custom directory to your theme-gem, please edit the regexp in `jekyll-theme-profile.gemspec` accordingly.
+- `templates/` is a normal folder in this monorepo (not a nested git repo/submodule).
+- Use `.github/serve.sh` for local multi-site development.
+- Use `bash .github/local_theme.sh --source <template>` to emit JSON for local theme wiring (`local_theme_source`, `local_theme_config`, `bundle_gemfile`).
+- Convenience wrappers:
+  - `bash .github/local_build.sh --source <template>`
+  - `bash .github/local_serve.sh --source <template>`
+  - `bash .github/local_smoke_test.sh --source <template>`
 
 ## License
 
-The theme is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+- Code: MIT
+- Documentation: CC BY-NC-ND 4.0

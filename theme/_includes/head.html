@@ -1,0 +1,40 @@
+{% assign favicon=site.favicon | default: site.logo | default: '/assets/img/favicon.ico' %}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- HTML Meta Tags -->
+  {% seo %}
+
+  <link href="{{ '/assets/css/theme.css' | relative_url }}" rel="stylesheet" type="text/css">
+  {% if site.css %}<link href="{{ site.css }}" rel="stylesheet" type="text/css">
+  {% else %}<link href="{{ '/assets/css/style.css' | relative_url }}" rel="stylesheet" type="text/css">
+  {% endif %}
+  <link rel="icon" type="image/x-icon" href="{{ favicon | relative_url}}">
+
+
+  {%- if site.analytics.provider == 'google' %}
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics.property }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', '{{ site.analytics.property }}');
+  </script>
+  {%- endif %}
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{{ '/assets/js/theme-toggle.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/anchor-links.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/topbar.js' | relative_url }}"></script>
+
+  {%- include custom-colors.html %}
+
+  {%- if page.css_style %}
+  <style>
+    {{ page.css_style }}
+  </style>
+  {%- endif %}
+</head>

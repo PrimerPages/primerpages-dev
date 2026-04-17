@@ -1,0 +1,16 @@
+---
+layout: page
+---
+{{ content }}
+<div class="d-flex flex-wrap gutter">
+<!-- This loops through the paginated posts -->
+{%- for post in paginator.posts %}
+  {%- if post.feature or post == site.posts[0] %}
+  {%- include post-feature-card.html %}
+  {%- else %}
+  {%- include post-card.html border="border-top" %}
+  {%- endif %}
+{% endfor %}
+</div>
+<!-- Pagination links -->
+ {% include paginator_nav.html %}

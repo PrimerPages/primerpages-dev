@@ -1,0 +1,46 @@
+{%- assign user = site.github.owner %}
+{%- assign name = site.title | default: user.name | default: user.login %}
+{%- assign user_img = site.user_image | default: user.avatar_url | default: "/assets/img/user-image.jpg" %}
+<script>
+    $(document).ready(function () {
+        $('#expansion-btn').click(function () {
+            $('.Extend').toggleClass('hide-sm');
+        });
+    });
+</script>
+<div class="Header position-sticky top-0 topbar">
+    <div class="flex-1">
+        <div class="d-flex">
+            <div class="Header-item">
+                <button id="expansion-btn" class="btn-octicon mr-2 d-sm-none"><span class="octicon octicon-three-bars-16"></span></button>
+                <a href="{{ site.baseurl }}/" class="Header-link h1 f4 d-flex flex-items-center">
+                    <span class="octicon octicon-mark-github-24"></span>
+                </a>
+            </div>
+            <a href="{{ site.baseurl }}/" class="Header-item Header-link Header-item--full">{{ name }}</a>
+            <div class="Header-item">
+            {% include toggle.html %}
+            </div>
+            {%- if site.repo_info and site.github %}
+            <div class="Header-item hide-sm">
+                {% include mini-repo-info-card.html class="Header-link" %}
+            </div>
+            {%- endif %}
+            {%- if site.profile_link %}
+            <div class="Header-item mr-0">
+                <a href="https://github.com/{{ user.login }}" class="Header-link d-flex flex-items-center">
+                    <img class="avatar img-cover circle" height="32" width="32" alt="{{ name }}"
+                        src="{{ user_img | relative_url }}">
+                </a>
+            </div>
+            {%- endif %}
+        </div>
+        {%- if site.nav %}
+        <div class="d-flex">
+            <div class="Extend Header-item flex-column flex-sm-row flex-items-center width-full hide-sm">
+                {%- include nav.html %}
+            </div>
+        </div>
+        {%- endif %}
+    </div>
+</div>

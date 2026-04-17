@@ -1,0 +1,33 @@
+---
+layout: page
+subtype: Category
+---
+{% if page.paginator %}
+  <!-- Pagination is active -->
+  {% assign paginator = page.paginator %}
+{% endif %}
+{% assign posts = paginator.posts | default: page.posts %}
+{% assign limit = paginator.per_page | default: -1 %}
+{% if limit < 0 %}
+{% assign limit = posts.size %}
+{% endif %}
+
+<div class="d-flex flex-wrap gutter border-top">
+  <!-- Show post excerpts for the current page -->
+  {% for post in posts limit: limit %}
+  {%- if post.feature or post == site.categories[page.category][0] %}
+  {%- include post-feature-card.html %}
+  {%- else %}
+  {%- include post-card.html border="border-top" %}
+  {%- endif %}
+  {% endfor %}
+</div>
+
+<!-- Show navigation next/previous page links if applicable -->
+ {% if paginator %}
+<!-- Pagination links -->
+ {% capture previous_page_path %}{{ site.category_path }}/{{ page.category }}/{{ paginator.previous_page_path }}{% endcapture %}
+ {% capture next_page_path %}{{ site.category_path }}/{{ page.category }}/{{ paginator.next_page_path }}{% endcapture %}
+ {% capture paginate_path %}{{ site.category_path }}/{{ page.category }}/page:num{% endcapture %}
+ {% include paginator_nav.html previous_page_path=previous_page_path next_page_path=next_page_path paginate_path=paginate_path %}
+{% endif %}

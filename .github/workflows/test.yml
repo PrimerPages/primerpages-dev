@@ -1,0 +1,190 @@
+# Workflow for building and deploying a Jekyll site to GitHub Pages
+name: Test jekyll theme
+
+on:
+  # Run on every pull request
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+  checks: write
+
+jobs:
+
+  workflow-test:
+    runs-on: ubuntu-latest
+
+    name: Run bats workflow tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Lint workflows with actionlint
+        uses: reviewdog/action-actionlint@v1
+        with:
+          reporter: github-check
+          filter_mode: nofilter
+          actionlint_flags: >-
+            .github/workflows/*.yml
+            site/.github/workflows/*.yml
+            templates/primerpages-gh-pages/.github/workflows/*.yml
+            templates/primerpages-minimal/.github/workflows/*.yml
+            templates/primerpages-recommended/.github/workflows/*.yml
+
+      - name: Setup Bats and bats libs
+        id: setup-bats
+        uses: bats-core/bats-action@4.0.0
+        with:
+          github-token: ${{ github.token }}
+      - name: Test bump script
+        shell: bash
+        env:
+          BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
+          TERM: xterm
+        run: bats tests/bump_test.bats
+      - name: Test release script
+        shell: bash
+        env:
+          BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
+          TERM: xterm
+        run: bats tests/release_test.bats
+
+  site-test:
+    runs-on: ubuntu-latest
+    name: Run site tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Build site
+        shell: bash
+        run: ./.github/build.sh
+
+      - name: Test site
+        shell: bash
+        run: ./.github/test.sh
+
+  site-smoke-test:
+    runs-on: ubuntu-latest
+    name: Smoke test site
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Resolve local theme for site
+        shell: bash
+        run: |
+          THEME_JSON="$(BUNDLE_GEMFILE=site/Gemfile bash .github/local_theme.sh --source site)"
+          {
+            echo "LOCAL_THEME_SOURCE=$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_theme_source")' <<< "$THEME_JSON")"
+            echo "LOCAL_THEME_CONFIG=$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_theme_config")' <<< "$THEME_JSON")"
+            echo "BUNDLE_GEMFILE=$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("bundle_gemfile")' <<< "$THEME_JSON")"
+          } >> "$GITHUB_ENV"
+
+      - name: Build site
+        shell: bash
+        run: |
+          bash .github/build.sh \
+            --source "${LOCAL_THEME_SOURCE}" \
+            --config "${LOCAL_THEME_CONFIG}" \
+            --destination "_site"
+
+      - name: Debug output
+        run: |
+          echo "LOCAL_THEME_SOURCE: ${LOCAL_THEME_SOURCE}"
+          echo "LOCAL_THEME_CONFIG: ${LOCAL_THEME_CONFIG}"
+          echo "BUNDLE_GEMFILE: ${BUNDLE_GEMFILE}"
+          tree _site
+          cat _site/index.html
+
+      - name: Htmlproofer
+        uses: athackst/htmlproofer-action@v2.0.0
+        with:
+          directory: "_site"
+
+  integration-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: [3.3.4, 3.4]
+    name: Run bats integration tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+
+      - name: Setup Bats and bats libs
+        id: setup-bats
+        uses: bats-core/bats-action@4.0.0
+        with:
+          github-token: ${{ github.token }}
+      - name: My test
+        shell: bash
+        env:
+          BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
+          TERM: xterm
+        run: bats tests/jekyll_test.bats
+
+  smoke-test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        template:
+          - primerpages-gh-pages
+          - primerpages-minimal
+          - primerpages-recommended
+    name: Smoke test templates (${{ matrix.template }})
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Resolve local theme
+        shell: bash
+        run: |
+          THEME_JSON="$(bash .github/local_theme.sh --source "templates/${{ matrix.template }}")"
+          {
+            echo "LOCAL_THEME_SOURCE=$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_theme_source")' <<< "$THEME_JSON")"
+            echo "LOCAL_THEME_CONFIG=$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_theme_config")' <<< "$THEME_JSON")"
+            echo "BUNDLE_GEMFILE=$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("bundle_gemfile")' <<< "$THEME_JSON")"
+          } >> "$GITHUB_ENV"
+
+      - name: Build template
+        shell: bash
+        run: |
+          bash .github/build.sh \
+            --source "${LOCAL_THEME_SOURCE}" \
+            --config "${LOCAL_THEME_CONFIG}" \
+            --destination "_site/${{ matrix.template }}"
+
+      - name: Htmlproofer
+        uses: athackst/htmlproofer-action@v2.0.0
+        with:
+          directory: "_site/${{ matrix.template }}"
+          host: https://www.primerpages.com
+          base_path: /${{ matrix.template }}/
+
+  success:
+    runs-on: ubuntu-latest
+    needs: [site-test, site-smoke-test, integration-test, workflow-test, smoke-test]
+    steps:
+      - run: echo "All steps completed successfully"

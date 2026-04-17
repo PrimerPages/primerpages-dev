@@ -1,0 +1,17 @@
+---
+layout: page
+---
+{% comment %} For post timeline collection {% endcomment %}
+{% assign limit = page.posts_limit | default: site.paginate %}
+{% assign collection = paginator.posts | default: site.posts %}
+{% comment %} For controls below timeline {% endcomment %}
+{% assign paginate_path = page.pagination.permalink | default: site.pagination.permalink | default: site.paginate_path %}
+{% assign paginate_first_page_path = paginate_path | relative_url | replace: 'page:num', '' %}
+{% assign first_page_path = page.first_page_path | default: paginator.first_page_path | default: paginate_first_page_path%}
+
+{{ content }}
+
+<!-- This loops through the paginated posts -->
+{% include post-timeline.html collection=collection limit=limit %}
+<!-- Pagination links -->
+{% include paginator_nav.html %}
