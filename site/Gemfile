@@ -15,6 +15,6 @@ group :jekyll_plugins do
 end
 
 group :development do
-  gem 'dotenv', '~> 2.7'
+  gem 'dotenv', '~> 3.2'
   gem 'html-proofer'
 end
