@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - 'site/**'
+      - "site/**"
   workflow_call:
     secrets:
       PR_TOKEN:
@@ -12,14 +12,13 @@ on:
   workflow_dispatch:
     inputs:
       dry-run:
-        description: "Run the workflow without creating PRs"
+        description: "Run the workflow without pushing commits"
         required: false
         default: true
         type: boolean
 
 permissions:
   contents: write
-  pull-requests: write
 
 env:
   DRY_RUN: ${{ inputs.dry-run || 'false' }}
@@ -55,44 +54,63 @@ jobs:
         run: |
           rsync -av --delete --exclude=".git/" site/ "$TARGET_PATH/"
 
-      - name: Create sync pull request
-        id: create-pr
+      - name: Commit and push sync changes
+        id: sync-push
         if: ${{ env.DRY_RUN != 'true' }}
-        uses: peter-evans/create-pull-request@v8
+        shell: bash
+        env:
+          COMMIT_MSG: ${{ steps.commit-msg.outputs.commit-msg }}
+        run: |
+          set -euo pipefail
+          cd "$TARGET_PATH"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            echo "commit_sha=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git add -A
+          git commit -m "[sync] ${COMMIT_MSG}" \
+            -m "Source: PrimerPages/primerpages-dev@${GITHUB_SHA}" \
+            -m "Source path: site/"
+          git push origin "HEAD:${TARGET_BRANCH}"
+
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for site.yml workflow status
+        id: commit-status
+        if: ${{ env.DRY_RUN != 'true' && steps.sync-push.outputs.pushed == 'true' }}
+        uses: ./.github/actions/wait-for-workflow-status
         with:
           token: ${{ secrets.PR_TOKEN }}
-          path: ${{ env.TARGET_PATH }}
-          commit-message: "[sync] ${{ steps.commit-msg.outputs.commit-msg }}"
-          committer: Github Actions <actions@github.com>
-          author: Github Actions <actions@github.com>
-          branch: "sync-site"
-          delete-branch: true
-          base: ${{ env.TARGET_BRANCH }}
-          title: "[sync] ${{ steps.commit-msg.outputs.commit-msg }}"
-          body: |
-            Automated site sync from `PrimerPages/primerpages-dev`.
-
-            Source paths:
-            - `site/` -> `/`
+          repo: ${{ env.TARGET_REPO }}
+          workflow: site.yml
+          commit_sha: ${{ steps.sync-push.outputs.commit_sha }}
 
       - name: Summary
         if: always()
         run: |
           if [[ "$DRY_RUN" == "true" ]]; then
-            PULL_REQUEST="not created (dry run)"
-          elif [[ -n "$PR_URL" ]]; then
-            PULL_REQUEST="[#$PR_NUMBER]($PR_URL)"
+            RESULT="not pushed (dry run)"
+          elif [[ "$SYNC_PUSHED" == "true" ]]; then
+            RESULT="[$SYNC_COMMIT_SHA](https://github.com/${TARGET_REPO}/commit/${SYNC_COMMIT_SHA})"
           else
-            PULL_REQUEST="none (no file changes to sync)"
+            RESULT="none (no file changes to sync)"
           fi
 
           cat <<EOF >> "$GITHUB_STEP_SUMMARY"
           ## Sync Site Summary
           - Target repository: \`${TARGET_REPO}\`
           - Dry run: \`${DRY_RUN}\`
-          - Pull request: $PULL_REQUEST
+          - Commit: $RESULT
+          - Commit status: \`${COMMIT_STATUS}\`
           EOF
         env:
           DRY_RUN: ${{ env.DRY_RUN }}
-          PR_URL: ${{ steps.create-pr.outputs.pull-request-url }}
-          PR_NUMBER: ${{ steps.create-pr.outputs.pull-request-number }}
+          SYNC_PUSHED: ${{ steps.sync-push.outputs.pushed }}
+          SYNC_COMMIT_SHA: ${{ steps.sync-push.outputs.commit_sha }}
+          COMMIT_STATUS: ${{ steps.commit-status.outputs.status || 'not checked' }}

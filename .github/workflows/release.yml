@@ -19,20 +19,20 @@ jobs:
       matrix:
         target:
           - repo: PrimerPages/primerpages-gh-pages
-            repo_name: primerpages-gh-pages
             branch: main
+            path: primerpages-gh-pages
           - repo: PrimerPages/primerpages-minimal
-            repo_name: primerpages-minimal
             branch: main
+            path: primerpages-minimal
           - repo: PrimerPages/primerpages-recommended
-            repo_name: primerpages-recommended
             branch: main
-          - repo: PrimerPages/primerpages-theme
-            repo_name: primerpages-theme
+            path: primerpages-recommended
+          - repo: PrimerPages/jekyll-theme-profile
             branch: main
+            path: jekyll-theme-profile
           - repo: PrimerPages/primerpages.github.io
-            repo_name: primerpages.github.io
             branch: main
+            path: primerpages.github.io
 
     steps:
       - name: Checkout target repo
@@ -41,13 +41,13 @@ jobs:
           repository: ${{ matrix.target.repo }}
           ref: ${{ matrix.target.branch }}
           token: ${{ secrets.PR_TOKEN }}
-          path: ${{ matrix.target.repo_name }}
+          path: ${{ matrix.target.path }}
           fetch-depth: 0
 
       - name: Create and push release tag
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"
-          TARGET_PATH="${{ matrix.target.repo_name }}"
+          TARGET_PATH="${{ matrix.target.path }}"
 
           cd "$TARGET_PATH"
           git fetch --tags origin

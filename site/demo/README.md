@@ -20,7 +20,7 @@ To create your own site using a remote theme:
 2. Add the following to your `_config.yml`:
 
    ```yaml
-   remote_theme: PrimerPages/jekyll-theme-profile@githubpages
+   remote_theme: PrimerPages/jekyll-theme-profile
    ```
 
 3. Create an `index.md` or `index.html` with your content.

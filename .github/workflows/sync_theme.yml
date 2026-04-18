@@ -12,14 +12,13 @@ on:
   workflow_dispatch:
     inputs:
       dry-run:
-        description: "Run the workflow without creating PRs"
+        description: "Run the workflow without pushing commits"
         required: false
         default: true
         type: boolean
 
 permissions:
   contents: write
-  pull-requests: write
 
 env:
   DRY_RUN: ${{ inputs.dry-run || 'false' }}
@@ -28,8 +27,8 @@ jobs:
   sync-theme:
     runs-on: ubuntu-latest
     env:
-      TARGET_REPO: "PrimerPages/primerpages-theme"
-      TARGET_PATH: "primerpages-theme"
+      TARGET_REPO: "PrimerPages/jekyll-theme-profile"
+      TARGET_PATH: "jekyll-theme-profile"
       TARGET_BRANCH: "main"
 
     steps:
@@ -55,44 +54,51 @@ jobs:
         run: |
           rsync -av --delete --exclude=".git/" theme/ "$TARGET_PATH/"
 
-      - name: Create sync pull request
-        id: create-pr
+      - name: Commit and push sync changes
+        id: sync-push
         if: ${{ env.DRY_RUN != 'true' }}
-        uses: peter-evans/create-pull-request@v8
-        with:
-          token: ${{ secrets.PR_TOKEN }}
-          path: ${{ env.TARGET_PATH }}
-          commit-message: "[sync] ${{ steps.commit-msg.outputs.commit-msg }}"
-          committer: Github Actions <actions@github.com>
-          author: Github Actions <actions@github.com>
-          branch: "sync-theme"
-          delete-branch: true
-          base: ${{ env.TARGET_BRANCH }}
-          title: "[sync] ${{ steps.commit-msg.outputs.commit-msg }}"
-          body: |
-            Automated theme sync from `PrimerPages/primerpages-dev`.
+        shell: bash
+        env:
+          COMMIT_MSG: ${{ steps.commit-msg.outputs.commit-msg }}
+        run: |
+          set -euo pipefail
+          cd "$TARGET_PATH"
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
-            Source paths:
-            - `theme/` -> `/`
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+            echo "commit_sha=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git add -A
+          git commit -m "[sync] ${COMMIT_MSG}" \
+            -m "Source: PrimerPages/primerpages-dev@${GITHUB_SHA}" \
+            -m "Source path: theme/"
+          git push origin "HEAD:${TARGET_BRANCH}"
+
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
+          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Summary
         if: always()
         run: |
           if [[ "$DRY_RUN" == "true" ]]; then
-            PULL_REQUEST="not created (dry run)"
-          elif [[ -n "$PR_URL" ]]; then
-            PULL_REQUEST="[#$PR_NUMBER]($PR_URL)"
+            RESULT="not pushed (dry run)"
+          elif [[ "$SYNC_PUSHED" == "true" ]]; then
+            RESULT="[$SYNC_COMMIT_SHA](https://github.com/${TARGET_REPO}/commit/${SYNC_COMMIT_SHA})"
           else
-            PULL_REQUEST="none (no file changes to sync)"
+            RESULT="none (no file changes to sync)"
           fi
 
           cat <<EOF >> "$GITHUB_STEP_SUMMARY"
           ## Sync Theme Summary
           - Target repository: \`${TARGET_REPO}\`
           - Dry run: \`${DRY_RUN}\`
-          - Pull request: $PULL_REQUEST
+          - Commit: $RESULT
           EOF
         env:
           DRY_RUN: ${{ env.DRY_RUN }}
-          PR_URL: ${{ steps.create-pr.outputs.pull-request-url }}
-          PR_NUMBER: ${{ steps.create-pr.outputs.pull-request-number }}
+          SYNC_PUSHED: ${{ steps.sync-push.outputs.pushed }}
+          SYNC_COMMIT_SHA: ${{ steps.sync-push.outputs.commit_sha }}
