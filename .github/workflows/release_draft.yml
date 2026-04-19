@@ -19,6 +19,12 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v6
 
+      - name: Resolve version metadata
+        id: version
+        uses: athackst/ci/actions/version-resolver@main
+        with:
+          gh-token: ${{ github.token }}
+
       - name: Run Release Drafter
         id: release-draft
         uses: release-drafter/release-drafter@v7
@@ -27,33 +33,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
 
-  bump-version:
-    runs-on: ubuntu-latest
-    needs: draft-release
-    if: ${{ needs.draft-release.outputs.version }}
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Checkout main branch
-        uses: actions/checkout@v6
-
-      - name: Bump theme version
-        run: |
-          version="${{ needs.draft-release.outputs.version }}"
-          file="theme/VERSION"
-          echo "Preparing release for version $version in $file"
-          .github/bump.sh --file "$file" "$version"
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-
-      - name: Create Draft Pull Request
-        uses: peter-evans/create-pull-request@v8
+      - name: Build changelog
+        id: changelog
+        uses: athackst/ci/actions/changelog@main
         with:
-          commit-message: "Bump version to ${{ needs.draft-release.outputs.tag_name }}"
-          branch: release/draft
-          title: "Bump to version ${{ needs.draft-release.outputs.tag_name }}"
-          body: |
-            This PR bumps the version to `${{ needs.draft-release.outputs.tag_name }}`.
-          token: ${{ secrets.PR_TOKEN }}
+          pr-info-path: ${{ steps.version.outputs.pr-info-path }}
+
+      - name: Create draft release
+        id: release_draft
+        uses: athackst/ci/actions/release-draft@main
+        with:
+          token: ${{ github.token }}
+          resolved-version: ${{ steps.version.outputs.resolved-version }}
+          changelog: ${{ steps.changelog.outputs.changelog }}
