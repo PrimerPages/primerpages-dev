@@ -7,7 +7,7 @@ Thank you for contributing to `primerpages-dev`. This repository is the source o
 All contribution work for the following repositories should be made in `primerpages-dev`:
 
 - `primerpages.github.io`
-- `primerpages-theme`
+- `jekyll-theme-profile`
 - `primerpages-gh-pages`
 - `primerpages-minimal`
 - `primerpages-recommended`
