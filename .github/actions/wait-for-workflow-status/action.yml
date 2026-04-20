@@ -1,0 +1,73 @@
+name: Wait for Workflow Status
+description: Waits for a workflow run for a specific commit and reports its final status.
+inputs:
+  token:
+    description: GitHub token used by gh CLI.
+    required: true
+  repo:
+    description: Target repository in owner/name format.
+    required: true
+  workflow:
+    description: Workflow file name (for example, site.yml).
+    required: true
+  commit_sha:
+    description: Commit SHA to match the workflow run.
+    required: true
+  timeout_seconds:
+    description: Maximum time to wait for the run to appear.
+    required: false
+    default: "300"
+  poll_interval_seconds:
+    description: Poll interval while waiting for the run to appear.
+    required: false
+    default: "5"
+outputs:
+  status:
+    description: Workflow conclusion/status, or not_found.
+    value: ${{ steps.wait.outputs.status }}
+runs:
+  using: composite
+  steps:
+    - id: wait
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        REPO: ${{ inputs.repo }}
+        WORKFLOW: ${{ inputs.workflow }}
+        COMMIT_SHA: ${{ inputs.commit_sha }}
+        TIMEOUT_SECONDS: ${{ inputs.timeout_seconds }}
+        POLL_INTERVAL_SECONDS: ${{ inputs.poll_interval_seconds }}
+      run: |
+        set -euo pipefail
+
+        MAX_ATTEMPTS=$(( (TIMEOUT_SECONDS + POLL_INTERVAL_SECONDS - 1) / POLL_INTERVAL_SECONDS ))
+        RUN_ID=""
+
+        for _ in $(seq 1 "$MAX_ATTEMPTS"); do
+          RUN_ID="$(gh run list --repo "$REPO" --workflow "$WORKFLOW" --commit "$COMMIT_SHA" --json databaseId --limit 1 --jq '.[0].databaseId // empty')"
+
+          if [[ -n "$RUN_ID" ]]; then
+            break
+          fi
+
+          sleep "$POLL_INTERVAL_SECONDS"
+        done
+
+        if [[ -z "$RUN_ID" ]]; then
+          echo "status=not_found" >> "$GITHUB_OUTPUT"
+          echo "No $WORKFLOW run found for commit $COMMIT_SHA in $REPO"
+          exit 1
+        fi
+
+        if ! gh run watch "$RUN_ID" --repo "$REPO" --interval 10; then
+          echo "$WORKFLOW run $RUN_ID finished with a non-success result"
+        fi
+
+        STATUS="$(gh run view "$RUN_ID" --repo "$REPO" --json conclusion,status --jq '.conclusion // .status')"
+        echo "status=$STATUS" >> "$GITHUB_OUTPUT"
+        echo "$WORKFLOW run $RUN_ID status: $STATUS"
+
+        if [[ "$STATUS" != "success" ]]; then
+          echo "::error::$WORKFLOW run $RUN_ID concluded with status: $STATUS"
+          exit 1
+        fi

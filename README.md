@@ -20,7 +20,7 @@ Source-of-truth development repository for PrimerPages.
 ## Contribution entry point
 
 - Open issues and pull requests in `primerpages-dev`.
-- If your change affects downstream repositories (`primerpages.github.io`, `primerpages-theme`, `primerpages-gh-pages`, `primerpages-minimal`, `primerpages-recommended`), make the change here and let sync automation propagate it.
+- If your change affects downstream repositories (`primerpages.github.io`, `jekyll-theme-profile`, `primerpages-gh-pages`, `primerpages-minimal`, `primerpages-recommended`), make the change here and let sync automation propagate it.
 
 ## Testing fixtures
 
