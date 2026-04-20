@@ -28,7 +28,6 @@ There should be whitespace between paragraphs. There should be whitespace betwee
 
 This is a standard paragraph designed for testing purposes. Sample text flows here to simulate real content. Widgets, gadgets, and tools align perfectly with lorem bits and placeholder pieces. Testing the rhythm of prose, we sprinkle in arbitrary nouns like keyboard, coffee mug, and paperclip. The goal is simple: evaluate formatting without getting too distracted by meaning.
 
-
 ## Header 2
 
 > This is a blockquote following a header. Sample text flows here to simulate real content. Widgets, gadgets, and tools align perfectly with lorem bits and placeholder pieces. Testing the rhythm of prose, we sprinkle in arbitrary nouns like keyboard, coffee mug, and paperclip. The goal is simple: evaluate formatting without getting too distracted by meaning.
@@ -49,11 +48,11 @@ This is a standard paragraph designed for testing purposes. Sample text flows he
 
 ###### Header 6
 
-| What       | Follows    |
-|------------|------------|
-| A table    | A header   |
-| A table    | A header   |
-| A table    | A header   |
+| What    | Follows  |
+| ------- | -------- |
+| A table | A header |
+| A table | A header |
+| A table | A header |
 
 ---
 
@@ -99,7 +98,6 @@ And a nested list:
   - Wrench
   - Pliers
 
-
 Definition lists can be used with HTML syntax. Definition terms are **bold and italic**.
 
 Name
@@ -118,28 +116,27 @@ Color
 
 Tables should have bold headings and alternating shaded rows.
 
-| Artist        | Album                | Year |
-|---------------|----------------------|------|
-| David Bowie   | Scary Monsters       | 1980 |
-| Prince        | Purple Rain          | 1982 |
-| Beastie Boys  | License to Ill       | 1986 |
-| Janet Jackson | Rhythm Nation 1814   | 1989 |
+| Artist        | Album              | Year |
+| ------------- | ------------------ | ---- |
+| David Bowie   | Scary Monsters     | 1980 |
+| Prince        | Purple Rain        | 1982 |
+| Beastie Boys  | License to Ill     | 1986 |
+| Janet Jackson | Rhythm Nation 1814 | 1989 |
 
 If a table is too wide, it should condense down and/or scroll horizontally.
 
-| Item         | Description      | Color     | Size    | Material  | Weight | Price  | Rating | Stock | Notes                        |
-|--------------|------------------|-----------|---------|-----------|--------|--------|--------|-------|-------------------------------|
-| Chair        | Office chair      | Black     | Medium  | Wood      | 12kg   | $120   | 4.5    | Yes   | Adjustable height             |
-| Table        | Dining table      | Brown     | Large   | Wood      | 30kg   | $450   | 4.7    | Yes   | Seats six                     |
-| Lamp         | Desk lamp         | White     | Small   | Metal     | 2kg    | $35    | 4.2    | No    | LED light included            |
-| Sofa         | Living room sofa  | Gray      | Large   | Fabric    | 45kg   | $780   | 4.8    | Yes   | Three seats                   |
-| Shelf        | Wall shelf        | Oak       | Medium  | Wood      | 8kg    | $60    | 4.6    | Yes   | Easy to install               |
-| Bed          | Queen bed frame   | Black     | Large   | Metal     | 40kg   | $550   | 4.9    | Yes   | Mattress not included         |
-| Mirror       | Wall mirror       | Silver    | Medium  | Glass     | 5kg    | $90    | 4.3    | Yes   | Comes with mounting kit       |
-| Rug          | Area rug          | Beige     | Large   | Wool      | 10kg   | $300   | 4.4    | No    | Hand-woven                    |
-| Cabinet      | Storage cabinet   | White     | Medium  | Wood      | 20kg   | $250   | 4.7    | Yes   | Multiple compartments         |
-| Fan          | Standing fan      | Gray      | Medium  | Plastic   | 4kg    | $80    | 4.1    | Yes   | Adjustable speed settings     |
-
+| Item    | Description      | Color  | Size   | Material | Weight | Price | Rating | Stock | Notes                     |
+| ------- | ---------------- | ------ | ------ | -------- | ------ | ----- | ------ | ----- | ------------------------- |
+| Chair   | Office chair     | Black  | Medium | Wood     | 12kg   | $120  | 4.5    | Yes   | Adjustable height         |
+| Table   | Dining table     | Brown  | Large  | Wood     | 30kg   | $450  | 4.7    | Yes   | Seats six                 |
+| Lamp    | Desk lamp        | White  | Small  | Metal    | 2kg    | $35   | 4.2    | No    | LED light included        |
+| Sofa    | Living room sofa | Gray   | Large  | Fabric   | 45kg   | $780  | 4.8    | Yes   | Three seats               |
+| Shelf   | Wall shelf       | Oak    | Medium | Wood     | 8kg    | $60   | 4.6    | Yes   | Easy to install           |
+| Bed     | Queen bed frame  | Black  | Large  | Metal    | 40kg   | $550  | 4.9    | Yes   | Mattress not included     |
+| Mirror  | Wall mirror      | Silver | Medium | Glass    | 5kg    | $90   | 4.3    | Yes   | Comes with mounting kit   |
+| Rug     | Area rug         | Beige  | Large  | Wool     | 10kg   | $300  | 4.4    | No    | Hand-woven                |
+| Cabinet | Storage cabinet  | White  | Medium | Wood     | 20kg   | $250  | 4.7    | Yes   | Multiple compartments     |
+| Fan     | Standing fan     | Gray   | Medium | Plastic  | 4kg    | $80   | 4.1    | Yes   | Adjustable speed settings |
 
 ---
 
@@ -148,7 +145,6 @@ Code snippets like `var foo = "bar";` can be shown inline.
 Also, `this should vertically align` <code>with this</code> <code>and this</code>.
 
 Code can also be shown in a block element.
-
 
 $ a \* b = c ^ b $
 
@@ -181,10 +177,10 @@ print(p1.age)
 
 Inline code inside table cells should still be distinguishable.
 
-| Language    | Code              |
-|-------------|-------------------|
-| JavasScript | `var foo = "bar";`|
-| Ruby        | `foo = "bar"`     |
+| Language    | Code               |
+| ----------- | ------------------ |
+| JavasScript | `var foo = "bar";` |
+| Ruby        | `foo = "bar"`      |
 
 ---
 

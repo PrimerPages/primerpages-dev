@@ -109,7 +109,6 @@ function some(code) { /*goes here*/ }
 let x = 21;
 {% endhighlight %}
 
-
 ### With line numbers
 
 {% highlight javascript linenos %}
