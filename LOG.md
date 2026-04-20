@@ -1,3 +1,13 @@
+## 04/19/2026
+
+### Unpin jekyll-github-metadata
+
+`jekyll-github-metadata` `2.16.1` fixes the `2.14.0` git rate-limit regression, so the pin is no longer needed.
+
+```ruby
+gem 'jekyll-github-metadata'
+```
+
 ## 11/25/2023
 
 ### Use github-pages gem for rates
