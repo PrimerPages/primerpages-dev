@@ -10,11 +10,12 @@ jobs:
   draft-release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Required for updating release notes
+      contents: write
+      pull-requests: read
     outputs:
-      tag_name: ${{ steps.release-draft.outputs.tag_name }}
-      version: ${{ steps.release-draft.outputs.resolved_version }}
-      changelog: ${{ steps.release-draft.outputs.body }}
+      tag_name: ${{ steps.release_draft.outputs.tag_name }}
+      version: ${{ steps.release_draft.outputs.resolved_version }}
+      changelog: ${{ steps.release_draft.outputs.body }}
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v6
@@ -24,14 +25,6 @@ jobs:
         uses: athackst/ci/actions/version-resolver@main
         with:
           gh-token: ${{ github.token }}
-
-      - name: Run Release Drafter
-        id: release-draft
-        uses: release-drafter/release-drafter@v7
-        with:
-          config-name: release-drafter.yml
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Build changelog
         id: changelog
