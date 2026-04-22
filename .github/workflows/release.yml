@@ -3,17 +3,119 @@ name: Release artifacts
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version to publish or test (for example, 1.13.0)"
+        required: true
+        type: string
+      dry-run:
+        description: "Build and validate without publishing or tagging"
+        required: false
+        default: true
+        type: boolean
+      tag-downstream:
+        description: "Tag downstream repositories after publishing"
+        required: false
+        default: false
+        type: boolean
 
 jobs:
+  build-gem:
+    name: Build gem
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1.245.0
+        with:
+          ruby-version: 3.3.4
+          bundler-cache: true
+          working-directory: theme
+
+      - name: Install release tooling
+        run: gem install rake --no-document
+
+      - name: Check release version matches
+        shell: bash
+        env:
+          RELEASE_VERSION: ${{ github.event.release.tag_name || inputs.version }}
+        run: |
+          VERSION="$(cat theme/VERSION)"
+          RELEASE_VERSION="${RELEASE_VERSION#v}"
+          if [ "$VERSION" != "$RELEASE_VERSION" ]; then
+            echo "Version from file: $VERSION"
+            echo "Version from release: $RELEASE_VERSION"
+            echo "Versions do not match!"
+            exit 1
+          fi
+
+      - name: Build gem dry run
+        working-directory: theme
+        run: rake build
+
+      - name: Upload built gem artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-gem
+          path: theme/pkg/*.gem
+          if-no-files-found: error
+          retention-days: 7
+
   publish-gem:
-    uses: ./.github/workflows/gem.yml
-    with:
-      version: ${{ github.event.release.tag_name }}
-    secrets: inherit
+    name: Publish gem
+    needs: [build-gem]
+    if: ${{ github.event_name == 'release' || !inputs.dry-run }}
+    runs-on: ubuntu-latest
+    environment: release-gem
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1.245.0
+        with:
+          ruby-version: 3.3.4
+          bundler-cache: true
+          working-directory: theme
+
+      - name: Install release tooling
+        run: gem install rake --no-document
+
+      - name: Download built gem artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: built-gem
+          path: theme/pkg
+
+      - name: Publish gem
+        uses: rubygems/release-gem@v1
+        with:
+          working-directory: theme
+
+      - name: Upload gem to GitHub release
+        if: ${{ github.event_name == 'release' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload "$RELEASE_TAG" theme/pkg/*.gem --repo "$GITHUB_REPOSITORY" --clobber
 
   tag-downstream-repos:
     name: Tag downstream repositories
-    needs: [publish-gem]
+    needs: [build-gem, publish-gem]
+    if: ${{ always() && needs.build-gem.result == 'success' && needs.publish-gem.result == 'success' && (github.event_name == 'release' || (inputs.tag-downstream && !inputs.dry-run)) }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -46,11 +148,13 @@ jobs:
 
       - name: Create and push release tag
         run: |
-          TAG_NAME="${{ github.event.release.tag_name }}"
+          TAG_NAME="${{ github.event.release.tag_name || inputs.version }}"
+          TARGET_BRANCH="${{ matrix.target.branch }}"
           TARGET_PATH="${{ matrix.target.path }}"
 
           cd "$TARGET_PATH"
-          git fetch --tags origin
+          git fetch --tags origin "$TARGET_BRANCH"
+          git checkout --detach "origin/$TARGET_BRANCH"
 
           if git rev-parse -q --verify "refs/tags/$TAG_NAME" >/dev/null; then
             echo "Tag $TAG_NAME already exists in ${{ matrix.target.repo }}. Skipping."
