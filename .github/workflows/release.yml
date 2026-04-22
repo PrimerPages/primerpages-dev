@@ -33,7 +33,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1.245.0
+        uses: ruby/setup-ruby@v1.305.0
 
       - name: Check release version matches
         shell: bash
@@ -79,7 +79,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1.245.0
+        uses: ruby/setup-ruby@v1.305.0
 
       - name: Download built gem artifact
         uses: actions/download-artifact@v8.0.1
