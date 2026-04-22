@@ -34,13 +34,6 @@ jobs:
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.245.0
-        with:
-          ruby-version: 3.3.4
-          bundler-cache: true
-          working-directory: theme
-
-      - name: Install release tooling
-        run: gem install rake --no-document
 
       - name: Check release version matches
         shell: bash
@@ -56,12 +49,14 @@ jobs:
             exit 1
           fi
 
-      - name: Build gem dry run
+      - name: Build gem
         working-directory: theme
-        run: rake build
+        run: |
+          mkdir -p pkg
+          gem build jekyll-theme-profile.gemspec --output "pkg/jekyll-theme-profile-$(cat VERSION).gem"
 
       - name: Upload built gem artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: built-gem
           path: theme/pkg/*.gem
@@ -71,7 +66,6 @@ jobs:
   publish-gem:
     name: Publish gem
     needs: [build-gem]
-    if: ${{ github.event_name == 'release' || !inputs.dry-run }}
     runs-on: ubuntu-latest
     environment: release-gem
     permissions:
@@ -86,24 +80,26 @@ jobs:
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.245.0
-        with:
-          ruby-version: 3.3.4
-          bundler-cache: true
-          working-directory: theme
-
-      - name: Install release tooling
-        run: gem install rake --no-document
 
       - name: Download built gem artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8.0.1
         with:
           name: built-gem
           path: theme/pkg
 
+      - name: Configure RubyGems credentials
+        if: ${{ github.event_name == 'release' || !inputs.dry-run }}
+        uses: rubygems/configure-rubygems-credentials@v1.0.0
+
+      - name: Validate gem artifact
+        if: ${{ inputs.dry-run }}
+        working-directory: theme
+        run: gem specification pkg/*.gem name
+
       - name: Publish gem
-        uses: rubygems/release-gem@v1
-        with:
-          working-directory: theme
+        if: ${{ github.event_name == 'release' || !inputs.dry-run }}
+        working-directory: theme
+        run: gem push pkg/*.gem
 
       - name: Upload gem to GitHub release
         if: ${{ github.event_name == 'release' }}
