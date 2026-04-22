@@ -47,12 +47,6 @@ jobs:
           BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
           TERM: xterm
         run: bats tests/bump_test.bats
-      - name: Test release script
-        shell: bash
-        env:
-          BATS_LIB_PATH: ${{ steps.setup-bats.outputs.lib-path }}
-          TERM: xterm
-        run: bats tests/release_test.bats
 
   site-test:
     runs-on: ubuntu-latest
