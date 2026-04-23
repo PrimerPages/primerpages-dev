@@ -142,28 +142,7 @@ jobs:
           path: ${{ matrix.target.path }}
           fetch-depth: 0
 
-      - name: Create and push release tag
-        run: |
-          TAG_NAME="${{ github.event.release.tag_name || inputs.version }}"
-          TARGET_BRANCH="${{ matrix.target.branch }}"
-          TARGET_PATH="${{ matrix.target.path }}"
-
-          cd "$TARGET_PATH"
-          git fetch --tags origin "$TARGET_BRANCH"
-          git checkout --detach "origin/$TARGET_BRANCH"
-
-          if git rev-parse -q --verify "refs/tags/$TAG_NAME" >/dev/null; then
-            echo "Tag $TAG_NAME already exists in ${{ matrix.target.repo }}. Skipping."
-            exit 0
-          fi
-
-          git config user.name "Github Actions"
-          git config user.email "actions@github.com"
-          git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
-          git push origin "refs/tags/$TAG_NAME"
-
-      - name: Create downstream theme release
-        if: ${{ matrix.target.repo == 'PrimerPages/jekyll-theme-profile' }}
+      - name: Create downstream release
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.PR_TOKEN }}
@@ -171,6 +150,7 @@ jobs:
           RELEASE_NAME: ${{ github.event.release.name }}
           RELEASE_BODY: ${{ github.event.release.body }}
           TARGET_REPO: ${{ matrix.target.repo }}
+          TARGET_BRANCH: ${{ matrix.target.branch }}
         run: |
           set -euo pipefail
 
@@ -191,11 +171,18 @@ jobs:
           else
             gh release create "$RELEASE_TAG" \
               --repo "$TARGET_REPO" \
+              --target "$TARGET_BRANCH" \
               --title "$RELEASE_TITLE" \
-              --notes-file "$NOTES_FILE" \
-              --verify-tag
+              --notes-file "$NOTES_FILE"
           fi
 
+      - name: Upload gem asset to downstream theme release
+        if: ${{ matrix.target.repo == 'PrimerPages/jekyll-theme-profile' }}
+        env:
+          GH_TOKEN: ${{ secrets.PR_TOKEN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.version }}
+          TARGET_REPO: ${{ matrix.target.repo }}
+        run: |
           gh release upload "$RELEASE_TAG" built-gem/*.gem \
             --repo "$TARGET_REPO" \
             --clobber
