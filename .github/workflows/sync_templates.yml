@@ -5,8 +5,7 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
-    paths:
-      - 'templates/**'
+
   workflow_call:
     secrets:
       PR_TOKEN:
@@ -53,6 +52,10 @@ jobs:
         run: |
           COMMIT_MSG="$(git log -1 --pretty=format:%s)"
           echo "commit-msg=${COMMIT_MSG//$'\n'/ }" >> "$GITHUB_OUTPUT"
+
+      - name: Create dispatch id
+        id: dispatch
+        run: echo "dispatch-id=${{ matrix.target.template_name }}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout target repo for ${{ matrix.target.template_name }}
         uses: actions/checkout@v6
@@ -102,6 +105,7 @@ jobs:
           GH_TOKEN: ${{ secrets.PR_TOKEN }}
           TARGET_REPO: ${{ matrix.target.repo }}
           TEMPLATE_NAME: ${{ matrix.target.template_name }}
+          DISPATCH_ID: ${{ steps.dispatch.outputs.dispatch-id }}
         run: |
           set -euo pipefail
           gh api "repos/${TARGET_REPO}/dispatches" \
@@ -110,6 +114,7 @@ jobs:
             -f "client_payload[source_repo]=PrimerPages/primerpages-dev" \
             -f "client_payload[source_sha]=${GITHUB_SHA}" \
             -f "client_payload[source_path]=templates/${TEMPLATE_NAME}/" \
+            -f "client_payload[dispatch_id]=${DISPATCH_ID}" \
             -f "client_payload[sync_commit_sha]=${{ steps.sync-push.outputs.commit_sha }}"
 
       - name: Wait for site.yml workflow status
@@ -121,6 +126,7 @@ jobs:
           repo: ${{ matrix.target.repo }}
           workflow: site.yml
           commit_sha: ${{ steps.sync-push.outputs.commit_sha }}
+          dispatch_id: ${{ steps.dispatch.outputs.dispatch-id }}
 
       - name: Summary
         if: always()

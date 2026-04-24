@@ -1,3 +1,10 @@
+run-name: >-
+  ${{
+    github.event_name == 'repository_dispatch' &&
+    format('Dispatch rebuild {0}', github.event.client_payload.dispatch_id) ||
+    github.workflow
+  }}
+
 name: Build and Deploy Site
 
 on:
