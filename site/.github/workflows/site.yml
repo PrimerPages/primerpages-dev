@@ -5,6 +5,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  repository_dispatch:
+    types: [theme-release, force-rebuild]
 
 permissions:
   contents: read
@@ -12,7 +14,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.event.repository.name }}
   cancel-in-progress: false
 
 jobs:
@@ -42,7 +44,10 @@ jobs:
         uses: actions/upload-pages-artifact@v5
 
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'repository_dispatch'
     needs: build
     runs-on: ubuntu-latest
     environment:

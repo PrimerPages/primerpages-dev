@@ -101,7 +101,7 @@ jobs:
         working-directory: theme
         run: gem push pkg/*.gem
 
-  tag-downstream-repos:
+  update-downstream-repos:
     name: Tag downstream repositories
     needs: [build-gem, publish-gem]
     if: ${{ always() && needs.build-gem.result == 'success' && needs.publish-gem.result == 'success' && (github.event_name == 'release' || (inputs.tag-downstream && !inputs.dry-run)) }}
@@ -186,3 +186,25 @@ jobs:
           gh release upload "$RELEASE_TAG" built-gem/*.gem \
             --repo "$TARGET_REPO" \
             --clobber
+
+      - name: Dispatch rebuild event
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.PR_TOKEN }}
+          TARGET_REPO: ${{matrix.target.repo }}
+          RELEASE_TAG: ${{ github.event.release.tag_name || inputs.version }}
+          DRY_RUN: ${{ inputs.dry-run }}
+        run: |
+          set -euo pipefail
+
+          if [[ "${DRY_RUN}" == "true" && "${GITHUB_EVENT_NAME}" != "release" ]]; then
+            echo "Dry run enabled; skipping repository_dispatch for ${TARGET_REPO}."
+            exit 0
+          fi
+
+          gh api "repos/${TARGET_REPO}/dispatches" \
+            --method POST \
+            -f "event_type=theme-release" \
+            -f "client_payload[source_repo]=PrimerPages/primerpages-dev" \
+            -f "client_payload[release_tag]=${RELEASE_TAG}" \
+            -f "client_payload[source_sha]=${GITHUB_SHA}"
