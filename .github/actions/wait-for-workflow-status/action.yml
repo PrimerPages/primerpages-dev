@@ -1,5 +1,5 @@
 name: Wait for Workflow Status
-description: Waits for a workflow run for a specific commit and reports its final status.
+description: Waits for a workflow run for a specific commit or dispatch id and reports its final status.
 inputs:
   token:
     description: GitHub token used by gh CLI.
@@ -12,7 +12,12 @@ inputs:
     required: true
   commit_sha:
     description: Commit SHA to match the workflow run.
-    required: true
+    required: false
+    default: ""
+  dispatch_id:
+    description: Dispatch id to match a repository_dispatch-triggered workflow run.
+    required: false
+    default: ""
   timeout_seconds:
     description: Maximum time to wait for the run to appear.
     required: false
@@ -35,6 +40,7 @@ runs:
         REPO: ${{ inputs.repo }}
         WORKFLOW: ${{ inputs.workflow }}
         COMMIT_SHA: ${{ inputs.commit_sha }}
+        DISPATCH_ID: ${{ inputs.dispatch_id }}
         TIMEOUT_SECONDS: ${{ inputs.timeout_seconds }}
         POLL_INTERVAL_SECONDS: ${{ inputs.poll_interval_seconds }}
       run: |
@@ -42,9 +48,20 @@ runs:
 
         MAX_ATTEMPTS=$(( (TIMEOUT_SECONDS + POLL_INTERVAL_SECONDS - 1) / POLL_INTERVAL_SECONDS ))
         RUN_ID=""
+        DISPATCH_TITLE="Dispatch rebuild ${DISPATCH_ID}"
+
+        if [[ -z "$COMMIT_SHA" && -z "$DISPATCH_ID" ]]; then
+          echo "status=not_found" >> "$GITHUB_OUTPUT"
+          echo "Either commit_sha or dispatch_id must be provided."
+          exit 1
+        fi
 
         for _ in $(seq 1 "$MAX_ATTEMPTS"); do
-          RUN_ID="$(gh run list --repo "$REPO" --workflow "$WORKFLOW" --commit "$COMMIT_SHA" --json databaseId --limit 1 --jq '.[0].databaseId // empty')"
+          if [[ -n "$COMMIT_SHA" ]]; then
+            RUN_ID="$(gh run list --repo "$REPO" --workflow "$WORKFLOW" --commit "$COMMIT_SHA" --json databaseId --limit 1 --jq '.[0].databaseId // empty')"
+          else
+            RUN_ID="$(gh api "repos/${REPO}/actions/workflows/${WORKFLOW}/runs?event=repository_dispatch&per_page=30" | jq -r --arg title "$DISPATCH_TITLE" '.workflow_runs[] | select(.display_title == $title) | .id' | head -n1)"
+          fi
 
           if [[ -n "$RUN_ID" ]]; then
             break
@@ -55,7 +72,11 @@ runs:
 
         if [[ -z "$RUN_ID" ]]; then
           echo "status=not_found" >> "$GITHUB_OUTPUT"
-          echo "No $WORKFLOW run found for commit $COMMIT_SHA in $REPO"
+          if [[ -n "$COMMIT_SHA" ]]; then
+            echo "No $WORKFLOW run found for commit $COMMIT_SHA in $REPO"
+          else
+            echo "No $WORKFLOW run found for dispatch id $DISPATCH_ID in $REPO"
+          fi
           exit 1
         fi
 
