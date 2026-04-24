@@ -111,7 +111,9 @@ repositories:
 related_by: "tags or categories"
 
 # ########### Plugin settings ###############
-# plugins:
+plugins:
+  - jekyll-paginate
+  # Uncomment the following lines to enable additional plugins. Make sure to include them in your Gem
 #   - jekyll-github-metadata
 #   - jekyll-octicons
 #   - jekyll-relative-links
@@ -133,6 +135,6 @@ paginate_path: "/blog/page:num"
 # category_layout: category_layout.html
 ######################
 # jekyll-relative-links settings
-relative_links:
-  enabled:     true
-  collections: true
+# relative_links:
+#   enabled:     true
+#   collections: true
