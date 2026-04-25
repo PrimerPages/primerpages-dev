@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 SOURCE="templates/primerpages-gh-pages"
 CONFIG=""
+GEMFILE=""
 DESTINATION="_site"
 EXTRA_BUILD_ARGS=()
 
@@ -16,6 +17,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --config)
       CONFIG="$2"
+      shift 2
+      ;;
+    --gemfile)
+      GEMFILE="$2"
       shift 2
       ;;
     --destination)
@@ -34,7 +39,12 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-THEME_ARGS=(--source "${SOURCE}")
+if [[ -z "${GEMFILE}" ]]; then
+  echo "--gemfile is required." >&2
+  exit 1
+fi
+
+THEME_ARGS=(--source "${SOURCE}" --gemfile "${GEMFILE}")
 if [[ -n "${CONFIG}" ]]; then
   THEME_ARGS+=(--config "${CONFIG}")
 fi
