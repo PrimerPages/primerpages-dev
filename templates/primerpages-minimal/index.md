@@ -8,9 +8,6 @@ links:
   - name: Example Profile page
     url: /profile
     octicon: person
-  - name: Example Repositories page
-    url: /repositories
-    octicon: repo
   - name: Example landing page
     url: /landing
     octicon: rocket
