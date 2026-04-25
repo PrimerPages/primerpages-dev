@@ -40,10 +40,6 @@ jobs:
           COMMIT_MSG="$(git log -1 --pretty=format:%s)"
           echo "commit-msg=${COMMIT_MSG//$'\n'/ }" >> "$GITHUB_OUTPUT"
 
-      - name: Create dispatch id
-        id: dispatch
-        run: echo "dispatch-id=site-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_OUTPUT"
-
       - name: Checkout target repo
         uses: actions/checkout@v6
         with:
@@ -83,33 +79,15 @@ jobs:
           echo "pushed=true" >> "$GITHUB_OUTPUT"
           echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
-      - name: Dispatch downstream rebuild
-        if: ${{ env.DRY_RUN != 'true' && steps.sync-push.outputs.pushed != 'true'}}
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.PR_TOKEN }}
-          TARGET_REPO: ${{ env.TARGET_REPO }}
-          DISPATCH_ID: ${{ steps.dispatch.outputs.dispatch-id }}
-        run: |
-          set -euo pipefail
-          gh api "repos/${TARGET_REPO}/dispatches" \
-            --method POST \
-            -f "event_type=force-rebuild" \
-            -f "client_payload[source_repo]=PrimerPages/primerpages-dev" \
-            -f "client_payload[source_sha]=${GITHUB_SHA}" \
-            -f "client_payload[dispatch_id]=${DISPATCH_ID}" \
-            -f "client_payload[sync_commit_sha]=${{ steps.sync-push.outputs.commit_sha }}"
-
       - name: Wait for site.yml workflow status
         id: commit-status
-        if: ${{ env.DRY_RUN != 'true' }}
+        if: ${{ env.DRY_RUN != 'true' && steps.sync-push.outputs.pushed == 'true' }}
         uses: ./.github/actions/wait-for-workflow-status
         with:
           token: ${{ secrets.PR_TOKEN }}
           repo: ${{ env.TARGET_REPO }}
           workflow: site.yml
           commit_sha: ${{ steps.sync-push.outputs.commit_sha }}
-          dispatch_id: ${{ steps.dispatch.outputs.dispatch-id }}
 
       - name: Summary
         if: always()
