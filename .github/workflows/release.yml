@@ -109,6 +109,8 @@ jobs:
     steps:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.305.0
+        with:
+          ruby-version: "3.3.4"
 
       - name: Wait for RubyGems to serve the new version
         shell: bash
