@@ -79,7 +79,7 @@ jobs:
       - name: Resolve local theme for site
         shell: bash
         run: |
-          THEME_JSON="$(BUNDLE_GEMFILE=site/Gemfile bash .github/local_theme.sh --source site)"
+          THEME_JSON="$(bash .github/local_theme.sh --source site --gemfile site/Gemfile)"
           {
             echo "LOCAL_THEME_SOURCE=$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_theme_source")' <<< "$THEME_JSON")"
             echo "LOCAL_THEME_CONFIG=$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_theme_config")' <<< "$THEME_JSON")"
@@ -155,7 +155,7 @@ jobs:
       - name: Resolve local theme
         shell: bash
         run: |
-          THEME_JSON="$(bash .github/local_theme.sh --source "templates/${{ matrix.template }}")"
+          THEME_JSON="$(bash .github/local_theme.sh --source "templates/${{ matrix.template }}" --gemfile "templates/${{ matrix.template }}/Gemfile")"
           {
             echo "LOCAL_THEME_SOURCE=$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_theme_source")' <<< "$THEME_JSON")"
             echo "LOCAL_THEME_CONFIG=$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_theme_config")' <<< "$THEME_JSON")"

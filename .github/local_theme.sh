@@ -4,9 +4,10 @@ set -euo pipefail
 usage() {
   cat <<'EOF'
 Usage:
-  .github/local_theme.sh [options]
+  .github/local_theme.sh --gemfile <path> [options]
 
 Options:
+  --gemfile <path>  Gemfile to use for the temporary local-theme bundle (required)
   --source <path>  Template source directory (default: templates/primerpages-gh-pages)
   --config <path>  Config file path (default: <source>/_config.yml)
   -h, --help       Show this help
@@ -21,9 +22,14 @@ EOF
 
 SOURCE="templates/primerpages-gh-pages"
 CONFIG=""
+GEMFILE=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --gemfile)
+      GEMFILE="$2"
+      shift 2
+      ;;
     --source)
       SOURCE="$2"
       shift 2
@@ -47,12 +53,6 @@ done
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 THEME_DIR="${REPO_ROOT}/theme"
-CURRENT_GEMFILE="${BUNDLE_GEMFILE:-${REPO_ROOT}/Gemfile}"
-
-if [[ ! -f "${CURRENT_GEMFILE}" ]]; then
-  echo "Gemfile not found: ${CURRENT_GEMFILE}" >&2
-  exit 1
-fi
 
 if [[ ! -d "${THEME_DIR}" ]]; then
   echo "Local theme directory not found: ${THEME_DIR}" >&2
@@ -67,6 +67,22 @@ fi
 
 if [[ ! -d "${SOURCE_DIR}" ]]; then
   echo "Template source not found: ${SOURCE_DIR}" >&2
+  exit 1
+fi
+
+if [[ -z "${GEMFILE}" ]]; then
+  echo "--gemfile is required." >&2
+  exit 1
+fi
+
+if [[ "${GEMFILE}" = /* ]]; then
+  CURRENT_GEMFILE="${GEMFILE}"
+else
+  CURRENT_GEMFILE="${REPO_ROOT}/${GEMFILE}"
+fi
+
+if [[ ! -f "${CURRENT_GEMFILE}" ]]; then
+  echo "Gemfile not found: ${CURRENT_GEMFILE}" >&2
   exit 1
 fi
 
