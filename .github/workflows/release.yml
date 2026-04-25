@@ -101,9 +101,44 @@ jobs:
         working-directory: theme
         run: gem push pkg/*.gem
 
+  wait-for-gem:
+    name: Wait for gem availability
+    needs: [publish-gem]
+    if: ${{ github.event_name == 'release' || !inputs.dry-run }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1.305.0
+
+      - name: Wait for RubyGems to serve the new version
+        shell: bash
+        env:
+          RELEASE_VERSION: ${{ github.event.release.tag_name || inputs.version }}
+        run: |
+          set -euo pipefail
+
+          VERSION="${RELEASE_VERSION#v}"
+          ATTEMPTS=24
+          SLEEP_SECONDS=10
+
+          for attempt in $(seq 1 "$ATTEMPTS"); do
+            rm -f "jekyll-theme-profile-${VERSION}.gem"
+
+            if gem fetch jekyll-theme-profile --version "$VERSION" --clear-sources --source https://rubygems.org >/dev/null 2>&1; then
+              echo "Gem jekyll-theme-profile ${VERSION} is available from RubyGems."
+              exit 0
+            fi
+
+            echo "Attempt ${attempt}/${ATTEMPTS}: gem jekyll-theme-profile ${VERSION} is not available yet."
+            sleep "$SLEEP_SECONDS"
+          done
+
+          echo "Timed out waiting for jekyll-theme-profile ${VERSION} to become available on RubyGems."
+          exit 1
+
   update-downstream-repos:
     name: Tag downstream repositories
-    needs: [build-gem, publish-gem]
+    needs: [build-gem, publish-gem, wait-for-gem]
     if: ${{ always() && needs.build-gem.result == 'success' && needs.publish-gem.result == 'success' && (github.event_name == 'release' || (inputs.tag-downstream && !inputs.dry-run)) }}
     runs-on: ubuntu-latest
     strategy:
