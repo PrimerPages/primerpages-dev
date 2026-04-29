@@ -37,6 +37,6 @@ style: stacked
 
 ## Example usage
 
-See examples of an stacked as a [home](/demo/stacked), [page](/demo/stacked-page) and [post](/demo/stacked-post)
+See examples of stacked as a [home](/demo/stacked), [page](/demo/stacked/page), and [post](/demo/stacked/post).
 
 ![](../../media/stacked-laptop.png)

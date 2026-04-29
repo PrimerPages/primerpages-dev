@@ -20,11 +20,11 @@ layout: repositories
 
 The Repositories layout accepts several parameters in the front matter:
 
-| Parameter      | Default      | Description |
-|--------------|------------|-------------|
-| `layout`     | Required    | Must be set to `repositories` |
-| `title`      | `Repositories` | The title displayed on the page |
-| `content`    | Optional    | Additional text or descriptions displayed before the repositories |
+| Parameter | Default        | Description                                                       |
+| --------- | -------------- | ----------------------------------------------------------------- |
+| `layout`  | Required       | Must be set to `repositories`                                     |
+| `title`   | `Repositories` | The title displayed on the page                                   |
+| `content` | Optional       | Additional text or descriptions displayed before the repositories |
 
 ## Functionality
 

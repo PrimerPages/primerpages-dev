@@ -21,27 +21,27 @@ Jekyll’s pagination feature must be enabled in your `_config.yml`. For example
 
 ```yaml
 paginate: 5
-paginate_path: "/blog/page:num"
+paginate_path: "/blog/page/:num"
 ```
 
 This config will split your post list into chunks of five items per page.
 
-The Paginate Layout must be specified in the index of the start of this path.  For the example above, it should be in `/blog/index.html`.
+The paginate layout must be used in the index page at the start of this path. For the example above, that would be `/blog/index.html`.
 
 > [!NOTE]
-> The path should be *absolute* and start with a `/`, otherwise the index links  will not work correctly.
+> The path should be *absolute* and start with a `/`, otherwise the index links will not work correctly.
 
 ## Parameters
 
 The Paginate Timeline layout supports the following:
 
-| Parameter                  | Default                                  | Description                                                                                                      |
-|----------------------------|------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| `layout`                   | Required                                 | Must be set to `paginate_timeline`                                                                               |
-| `title`                    | None                                     | The heading to display on the timeline page                                                                      |
-| `content`                  | None                                     | You can write page content below the front matter. It will appear above the timeline.                            |
-| `pagination.permalink`     | `site.pagination.permalink` or `site.paginate_path` | Path structure for pagination pages (e.g., `page:num`)                                                           |
-| `posts_limit`              | `site.paginate`                          | Number of posts to display per page, if desired. Can also be overridden in `_config.yml`.                         |
+| Parameter              | Default                                             | Description                                                                               |
+| ---------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `layout`               | Required                                            | Must be set to `paginate_timeline`                                                        |
+| `title`                | None                                                | The heading to display on the timeline page                                               |
+| `content`              | None                                                | You can write page content below the front matter. It will appear above the timeline.     |
+| `pagination.permalink` | `site.pagination.permalink` or `site.paginate_path` | Path structure for pagination pages (for example, `/blog/page/:num`)                      |
+| `posts_limit`          | `site.paginate`                                     | Number of posts to display per page, if desired. Can also be overridden in `_config.yml`. |
 
 ## Functionality
 
@@ -67,12 +67,12 @@ Welcome to my blog! Below is a list of the latest posts. Use the pagination butt
 
 ```yaml
 paginate: 5
-paginate_path: "blog/page:num"
+paginate_path: "/blog/page/:num"
 ```
 
 With this configuration:
 1. Each page shows 5 posts.
-2. Pagination paths follow the pattern `/blog/page1`, `/blog/page2`, etc.
+2. Pagination paths follow the pattern `/blog/page/2`, `/blog/page/3`, and so on.
 
 [Live demo](/demo/timeline){:.btn}
 

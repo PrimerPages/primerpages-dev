@@ -37,6 +37,6 @@ style: sidebar
 
 ## Example usage
 
-See examples of an sidebar as a [home](/demo/sidebar), [page](/demo/sidebar-page) and [post](/demo/sidebar-post)
+See examples of a sidebar as a [home](/demo/sidebar), [page](/demo/sidebar/page), and [post](/demo/sidebar/post).
 
 ![](../../media/sidebar-laptop.png)

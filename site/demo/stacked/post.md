@@ -1,14 +1,14 @@
 ---
-title: "This is a sidebar post style"
-style: sidebar
+title: "This is a stacked post style"
+style: stacked
 layout: post
-tags: [style, sidebar]
-image: "https://github.blog/wp-content/uploads/2023/08/1200x630-AI-Unfurl-DARK-Inverto.png"
-description: This is an example of a post with the sidebar style.
+author: George P. Burdell
+tags: [style]
+image: https://github.blog/wp-content/uploads/2023/10/hero-light.jpg
+description: This is an example of a post with the stacked style.
 category: style
 toc: true
 ---
-
 # Welcome to the Test Post
 
 This is a sample post intended to test various styles provided by the theme. It includes headings, paragraphs, lists, code snippets, and more. Everything here is meant to look ordinary while helping you ensure your styles are working as expected.

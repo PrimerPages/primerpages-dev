@@ -37,7 +37,7 @@ style: topbar
 
 ## Example usage
 
-See examples of an topbar as a [home](/demo/topbar), [page](/demo/topbar-page) and [post](/demo/topbar-post)
+See examples of a topbar as a [home](/demo/topbar), [page](/demo/topbar/page), and [post](/demo/topbar/post).
 
 
 ![](../../media/topbar-tablet.png)

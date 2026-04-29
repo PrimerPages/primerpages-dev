@@ -1,8 +1,7 @@
 ---
-layout: profile
+layout: linktree
 style: topbar
-title: Profile page (topbar style)
-posts_limit: 3
+title: Linktree (topbar style)
 links: 
     - name: Example page
       url: /demo/topbar/page
@@ -17,10 +16,3 @@ links:
       url: /demo/topbar/repositories
       octicon: repo
 ---
-
-This theme is based on GitHub's primer style. It supports both light and dark modes, and four style options:
-
-- [appbar](appbar.md)
-- [sidebar](sidebar.md)
-- [stacked](stacked.md)
-- [topbar](topbar.md)

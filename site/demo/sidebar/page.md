@@ -1,7 +1,7 @@
 ---
 layout: page
-style: topbar
-title: Page (Topbar Style)
+style: sidebar
+title: Page (Sidebar Style)
 ---
 
 Text can be **bold**, *italic*, or ~~strikethrough~~. [Links](https://github.com) should be blue with no underlines (unless hovered over).
@@ -17,7 +17,6 @@ There should be whitespace between paragraphs. There should be whitespace betwee
 # Header 1
 
 This is a standard paragraph designed for testing purposes. Sample text flows here to simulate real content. Widgets, gadgets, and tools align perfectly with lorem bits and placeholder pieces. Testing the rhythm of prose, we sprinkle in arbitrary nouns like keyboard, coffee mug, and paperclip. The goal is simple: evaluate formatting without getting too distracted by meaning.
-
 
 ## Header 2
 
