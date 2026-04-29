@@ -20,29 +20,31 @@ layout: linktree
 
 The Linktree layout accepts several parameters in the front matter:
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `layout` | Required | Must be set to `linktree` |
-| `links` | `[]` | An array of link objects to display |
-| `background_image` | None | URL of a background image for the page |
-| `title` | None | Title to display at the top of the page |
-| `css_style` | None | Custom CSS to apply to the page |
+| Parameter          | Default  | Description                                       |
+| ------------------ | -------- | ------------------------------------------------- |
+| `layout`           | Required | Must be set to `linktree`                         |
+| `links`            | `[]`     | An array of link objects to display               |
+| `background.image` | None     | Background image URL for the page                 |
+| `title`            | None     | Title to display at the top of the page           |
+| `css_style`        | None     | Custom CSS to apply to the page                   |
+| `socials`          | None     | Optional social link placement: `top` or `bottom` |
 
 Each link object in the `links` array can have the following properties:
 
-| Property | Description |
-|----------|-------------|
-| `name` | The text to display for the link |
-| `url` | The URL the link should point to |
-| `thumbnail` | URL of an image to use as the link's icon (optional) |
-| `octicon` | Name of an Octicon to use as the link's icon (optional) |
+| Property    | Description                                             |
+| ----------- | ------------------------------------------------------- |
+| `name`      | The text to display for the link                        |
+| `url`       | The URL the link should point to                        |
+| `thumbnail` | URL of an image to use as the link's icon (optional)    |
+| `octicon`   | Name of an Octicon to use as the link's icon (optional) |
 
 ## Functionality
 
 1. The layout creates a responsive grid of link cards.
 2. Each link is displayed as a card with an optional thumbnail or icon.
 3. The layout includes a theme toggle button for light/dark mode.
-4. If specified, it displays a title and applies custom CSS.
+4. It supports optional social links above or below the cards.
+5. It applies page-level custom CSS through `css_style`.
 
 ## Usage
 
@@ -80,17 +82,19 @@ links:
 
 ## Customization
 
-1. **Background Image**: Add a `background_image` parameter to set a custom background.
+1. **Background Image**: Add a `background.image` value to set a custom background.
 2. **Custom CSS**: Use the `css_style` parameter to add custom CSS directly in the front matter.
 3. **Link Icons**: Use either `thumbnail` for custom images or `octicon` for GitHub's Octicons.
 4. **Layout Variations**: The layout supports different styles like topbar, appbar, sidebar, and stacked. Use the appropriate URL to see these variations.
+5. **Social Placement**: Set `socials: top` or `socials: bottom` to show your configured social links above or below the link list.
 
 The following example demonstrates how to customize the Linktree layout with a background image and custom CSS:
 
 ```yaml
 ---
 layout: linktree
-background_image: https://www.allisonthackston.com/assets/img/cover-1920.jpg
+background:
+  image: https://www.allisonthackston.com/assets/img/cover-1920.jpg
 title: Linktree
 css_style: |
     .Link-btn {
@@ -112,28 +116,28 @@ css_style: |
     }
 links:
   - name: Example page with topbar
-    url: /page/topbar
+    url: /demo/topbar/page
     thumbnail: /media/topbar-icon.png
   - name: Example page with appbar
-    url: /page/appbar
+    url: /demo/appbar/page
     thumbnail: /media/appbar-icon.png
   - name: Example page with sidebar
-    url: /page/sidebar
+    url: /demo/sidebar/page
     thumbnail: /media/sidebar-icon.png
-  - name: Example page with header stacked
-    url: /page/stacked
+  - name: Example page with stacked header
+    url: /demo/stacked/page
     thumbnail: /media/stacked-icon.png
   - name: Example custom background
-    url: /background
+    url: /demo/custom-background
     thumbnail: /media/icon-bg.png
   - name: Example Linktree page
-    url: /linktree
+    url: /demo/linktree
     thumbnail: /media/links.png
   - name: Example Profile page
-    url: /profile
+    url: /demo/profile
     thumbnail: /media/user-image.jpg
   - name: Example Repositories page
-    url: /repositories
+    url: /demo/repositories
     thumbnail: /media/repositories.png
 ---
 ```
@@ -145,6 +149,7 @@ links:
 - Ensure all image URLs are correct and accessible.
 - The `octicon` property requires the Octicons library to be included in your theme.
 - Custom CSS can override the theme's default styles, so use it carefully.
+- Background images follow the same `background.image` configuration pattern used elsewhere in the theme.
 - The layout is responsive and should work well on various screen sizes.
 
 ## Dependencies
