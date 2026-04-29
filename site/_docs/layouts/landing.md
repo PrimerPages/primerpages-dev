@@ -20,19 +20,19 @@ layout: landing
 
 The Landing layout accepts several parameters in the front matter:
 
-| Parameter       | Default                      | Description |
-|---------------|----------------------------|-------------|
-| `layout`      | Required                     | Must be set to `landing` |
-| `style`       | `none`                        | Layout style customization (optional) |
-| `repo_info`   | `site.repo_info`             | Displays repository information if enabled |
-| `nav`         | `site.nav`                    | Displays site navigation if enabled |
-| `social_media` | `site.social_media`         | Displays social media links if provided |
+| Parameter      | Default             | Description                                                    |
+| -------------- | ------------------- | -------------------------------------------------------------- |
+| `layout`       | Required            | Must be set to `landing`                                       |
+| `style`        | `none`              | Layout style customization (optional)                          |
+| `repo_info`    | `site.repo_info`    | Shows repository information when enabled                      |
+| `nav`          | `site.nav`          | Navigation items to render on the page                         |
+| `social_media` | `site.social_media` | Social media configuration used to render social profile links |
 
 ## Functionality
 
 1. Displays a masthead for branding and introduction.
 2. Optionally includes a repository information card.
-3. Shows navigation links if configured.
+3. Shows navigation links when navigation items are available.
 4. Includes a section for social media links.
 5. Provides a customizable structure for content placement.
 
@@ -45,8 +45,19 @@ This example shows a basic Landing page setup:
 layout: landing
 style: none
 repo_info: true
-nav: true
-social_media: true
+---
+```
+
+To override the site navigation for just this page, pass a custom list of links:
+
+```yaml
+---
+layout: landing
+nav:
+  - name: Docs
+    url: /docs/
+  - name: Blog
+    url: /blog/
 ---
 ```
 
@@ -54,7 +65,9 @@ social_media: true
 
 ## Notes
 
-- Ensure `repo_info`, `nav`, and `social_media` are configured in `_config.yml` if needed.
+- If `nav` is not defined at the page or site level, the landing page simply renders without navigation.
+- Set `nav` to a list of links when you want to override `site.nav` for a single page.
+- Ensure `repo_info` and `social_media` are configured in `_config.yml` if needed.
 - Custom styles can be applied by modifying the theme’s CSS.
 - The layout is responsive and should work well on all screen sizes.
 
