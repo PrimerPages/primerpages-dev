@@ -55,7 +55,7 @@ echo "Using config: ${LOCAL_THEME_CONFIG}"
 echo "Using Gemfile: ${BUNDLE_GEMFILE_VALUE}"
 
 exec env BUNDLE_GEMFILE="${BUNDLE_GEMFILE_VALUE}" \
-  bash -lc 'bundle install && bundle exec jekyll serve --source "$1" --config "$2" "${@:3}"' \
+  bash -lc 'bundle config set --local path "/tmp/${SOURCE}/vendor/bundle" && bundle install && bundle exec jekyll serve --source "$1" --config "$2" "${@:3}"' \
   -- \
   "${LOCAL_THEME_SOURCE}" \
   "${LOCAL_THEME_CONFIG}" \
