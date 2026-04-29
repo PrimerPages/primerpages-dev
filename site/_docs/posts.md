@@ -4,7 +4,7 @@ order: 3
 category: Getting started
 ---
 
-To add new posts, simply add a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.
+To add new posts, create a file in the `_posts` directory that follows the convention `YYYY-MM-DD-name-of-post.ext` and includes the necessary front matter.
 
 Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
 
@@ -12,10 +12,9 @@ Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most ou
 [jekyll-gh]: https://github.com/jekyll/jekyll
 [jekyll-talk]: https://talk.jekyllrb.com/
 
-
 ## Front matter
 
-All blog posts must begin with front matter which is typically used to set a layout or other meta data.  For a simple example, this can just be empty:
+All blog posts must begin with front matter, which is typically used to set a layout and other metadata:
 
 ```markdown
 ---
@@ -34,18 +33,17 @@ Here's a list of variables for this theme
 
 | Variable | Description |
 |---|---|
-| `layout` | Specifies the layout file to use.  Use the layout file name without the file extension. <br/><br/> Go to [docs](../_docs/index.html) to learn about options |
+| `layout` | Specifies the layout file to use. Use the layout file name without the file extension. <br/><br/> See [the docs index](index.html) for available options. |
 | `permalink` | If you need or processed blog post URLs to be something other than the site-wide default (`/year/month/day/title.html`), then you can set this variable and it will be used as the final URL |
 | `published` | Set to false if you don't want a specific post to show up when the site is generated |
-| `date` | A date here overrides the date from the name of the post.  This can be used to ensure correct sorting of posts.  A date is specified in the format `YYYY-MM-DD HH:MM:SS +/-TTTT`: hours, minutes,seconds, and timezone offset are optional |
+| `date` | A date here overrides the date from the filename. This can be used to ensure correct sorting of posts. A date is specified in the format `YYYY-MM-DD HH:MM:SS +/-TTTT`; hours, minutes, seconds, and timezone offset are optional |
 | `category` or `categories` | Instead of placing posts inside of folders, you can specify one or more categories that the post belongs to.  When the site is generated the post will act as though it had been set with these categories normally.  Categories (plural key) can be specified as a YAML list or a space-separated string |
 | `tags` | Similar to categories, one or multiple tags can be added to a post.  Also like categories, tags can be specified as a YAML list or a space-separated string |
-| `description` | A longer description used for hte description meta tag |
+| `description` | A longer description used for the description meta tag |
 | `image` | URL to an image associated with the post for SEO |
 | `author` | Post-specific author information |
 | `locale` | Post-specific locale information |
-| `excerpt_separator` | You can access a snippet of a posts' content by using `excerpt` variable on a post.  By default this is the first paragraph of content in the post, but can be customized by using `excerpt_separator`. <br/><br/>Example `excerpt_separator: <!--more-->` |
-
+| `excerpt_separator` | You can access a snippet of a post's content by using the `excerpt` variable on a post. By default, this is the first paragraph of content, but it can be customized with `excerpt_separator`. <br/><br/>Example `excerpt_separator: <!--more-->` |
 
 ## Including images and resources
 

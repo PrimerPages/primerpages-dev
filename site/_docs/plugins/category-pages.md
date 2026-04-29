@@ -11,16 +11,15 @@ order: 33
 
 1. Add the following to your `Gemfile`
 
-```
+```ruby
 group :jekyll_plugins do
-  gem "jekyll-paginate"
   gem "jekyll-category-pages"
 end
 ```
 
-and install it
+Then install it:
 
-```
+```sh
 bundle install
 ```
 
@@ -32,7 +31,7 @@ category_path: category
 category_layout: category_layout.html
 ```
 
-3. (optional) Add a tag index page `category/index.html` with the following content
+3. (Optional) Add a category index page at `category/index.html` with the following content
 
 ```text
 ---
@@ -43,7 +42,7 @@ layout: category_index
 
 4. Add a category to your post
 
-To assign a category to a post, include it in the front matter
+To assign a category to a post, include it in the front matter:
 
 ```text
 ---
