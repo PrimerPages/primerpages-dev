@@ -34,8 +34,32 @@ defaults:
       layout: "docs"
       image: /assets/img/default.png # The default image used for social and posts.
       permalink: /docs/:path
-      edit_url: "https://github.com/{user}/{repo}/edit/{branch}" # replace with your user, repo, and branch for edit links
+      show_edit_url: true
       toc: true
+```
+
+By default, the theme builds the edit link from `site.repository` and points to the current document path on the `main` branch.
+
+If you need a different repository, branch, or base path, you can override it:
+
+```yaml
+defaults:
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      edit_url: "https://github.com/{user}/{repo}/edit/{branch}"
+```
+
+You can hide the edit link entirely:
+
+```yaml
+defaults:
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      show_edit_url: false
 ```
 
 ## Features
@@ -43,14 +67,20 @@ defaults:
 - Automatically generates a table of contents (`toc: true`)
 - Uses a default image for social sharing
 - Sorts documentation pages by the `order` front matter
-- Adds a "Edit this page" link if `edit_url` is set
+- Adds an "Edit this page" link by default when the theme can build one from `site.repository`
+- Lets you disable the edit link with `show_edit_url: false`
+- Lets you override the generated GitHub edit link base with `edit_url` when needed
 
 ## Demo
 
-[Live demo](../index.html){:.btn}
+[Live demo](/demo/custom-background-docs){:.btn}
+
+[Docs section](../index.html){:.btn}
 
 ## Notes
 
 - Ensure your documentation files are placed in the `_docs` folder
 - Use the `order` front matter to control the sorting of your documentation pages
 - The `toc` option automatically generates a table of contents for each page
+- `show_edit_url` can be set globally or per page
+- `edit_url` is optional and only needed when the generated GitHub edit link is not the right target
