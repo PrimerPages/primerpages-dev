@@ -4,16 +4,16 @@ category: includes
 order: 42
 ---
 
-The `post-gallery.html` include file creates a magazine-style layout for displaying collections of posts. It's designed to showcase posts in a visually appealing manner, with the first post of each section displayed prominently and subsequent posts in a more compact format.
+The `post-gallery.html` include file creates a magazine-style layout for displaying groups of posts. It's designed to showcase posts in a visually appealing manner, with the first post of each section displayed prominently and subsequent posts in a more compact format.
 
 ## Parameters
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `collection` | Required | The collection of posts to display |
-| `collection_permalink` | `:name` | The permalink structure for individual collection pages |
-| `replace_value` | `:name` | The value to replace in the `collection_permalink` with the section slug |
-| `per_section` | 3 | Number of posts to display per section |
+| Parameter           | Default                                          | Description                                                           |
+| ------------------- | ------------------------------------------------ | --------------------------------------------------------------------- |
+| `sections`          | Required                                         | Grouped post sections to display                                      |
+| `section_permalink` | `page.pagination.permalink`                      | The permalink structure for individual sections                       |
+| `replace_value`     | None                                             | The value to replace in the `section_permalink` with the section slug |
+| `per_section`       | `page.per_section` or `page.pagination.per_page` | Number of posts to display per section                                |
 
 ## Usage
 
@@ -22,13 +22,15 @@ To use this include in your Jekyll site, you can call it from a layout or anothe
 {% raw %}
 ```liquid
 {% include post-gallery.html
-    collection=site.categories
-    collection_permalink='/category/:name/'
+    sections=site.categories
+    section_permalink='/category/:name/'
     replace_value=':name'
     per_section=4
 %}
 ```
 {% endraw %}
+
+This include is component-oriented: `sections` should be passed explicitly, while `section_permalink` and `per_section` can optionally fall back to page-level pagination values.
 
 ### Layout
 
@@ -51,22 +53,16 @@ To see `post-gallery.html` in action within the `category_index` layout, visit o
 
 ## Functionality
 
-1. **Section Display**: For each section in the collection:
-   - Displays a heading with the section name.
-   - Shows a "View all" link if there are more posts than the `per_section` limit.
-
-2. **Post Layout**:
-   - The first post in each section is displayed using `post-tease-image-card.html`.
-   - Subsequent posts use `post-tease-text-card.html`.
-   - Alternates the layout direction between sections for visual variety.
-
-3. **Responsive Design**:
-   - Uses Primer classes for responsive layout.
-   - Adjusts layout based on the number of posts in the section.
+1. For each section in the collection, the include renders a heading and an optional "View all" link.
+2. The first post in each section is displayed using `post-tease-image-card.html`.
+3. Subsequent posts use `post-tease-text-card.html`.
+4. The layout alternates direction between sections for visual variety.
+5. If `sections` is missing, the include renders nothing.
 
 ## Dependencies
 
 This include depends on:
+
 - `post-tease-image-card.html`
 - `post-tease-text-card.html`
 - Primer CSS classes
@@ -74,10 +70,10 @@ This include depends on:
 
 ## Customization
 
-You can customize the appearance by modifying the HTML structure and CSS classes within the include file. The layout uses Bootstrap grid classes, which can be adjusted to fit different design requirements.
+You can customize the appearance by modifying the HTML structure and CSS classes within the include file.
 
 ## Notes
 
 - Ensure that the `post-tease-image-card.html` and `post-tease-text-card.html` includes are properly set up in your Jekyll site.
 - The `{% raw %}{% cycle '', 'flex-row-reverse' %}{% endraw %}` tag alternates the layout direction for visual interest.
-- The "View all" link uses the `collection_permalink` and `replace_value` to generate the correct URL for each section.
+- The "View all" link uses the `section_permalink` and `replace_value` to generate the correct URL for each section.

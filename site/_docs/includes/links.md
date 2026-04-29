@@ -12,21 +12,21 @@ To use this include in your Jekyll theme, add the following line to your templat
 
 {% raw %}
 ```liquid
-{% include links.html %}
+{% include links.html links=page.featured_links %}
 ```
 {% endraw %}
 
 ## Parameters
 
-This include doesn't accept direct parameters. Instead, it relies on page or site-wide variables:
+This include expects an explicit `include.links` value:
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `page.links` | `site.links` | The collection of links to display |
+| Variable        | Default  | Description                        |
+| --------------- | -------- | ---------------------------------- |
+| `include.links` | Required | The collection of links to display |
 
 ## Functionality
 
-1. The include looks for a `links` variable, first on the current page, then falling back to the site configuration.
+1. The include renders the provided `include.links` collection.
 2. It creates a container for the link cards.
 3. It iterates through each link in the collection and includes a `link-card.html` for each one.
 
@@ -46,5 +46,5 @@ To customize the appearance of the links collection:
 
 ## Notes
 
-- Ensure that you have defined a `links` collection either in your page front matter or in your site's configuration.
+- If `include.links` is not provided, the include renders nothing.
 - The layout uses flexbox for responsive design, allowing the links to adapt to different screen sizes.
