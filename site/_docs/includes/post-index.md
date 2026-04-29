@@ -4,17 +4,16 @@ category: includes
 order: 42
 ---
 
-## Purpose
-The `post-index.html` include file creates a straightforward, list-style layout for displaying collections of posts. It's designed to present posts in a uniform, easy-to-scan format, ideal for archives, category listings, or any situation where a clean, consistent display is desired.
+The `post-index.html` include file creates a straightforward, list-style layout for displaying groups of posts. It's designed to present posts in a uniform, easy-to-scan format, ideal for archives, category listings, or any situation where a clean, consistent display is desired.
 
 ## Parameters
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `collection` | Required | The collection of posts to display |
-| `collection_permalink` | `:name` | The permalink structure for individual collection pages |
-| `replace_value` | `:name` | The value to replace in the `collection_permalink` with the section slug |
-| `per_section` | 6 | Number of posts to display per section |
+| Parameter              | Default                                          | Description                                                              |
+| ---------------------- | ------------------------------------------------ | ------------------------------------------------------------------------ |
+| `sections`             | Required                                         | Grouped post sections to display                                         |
+| `section_permalink`    | `page.pagination.permalink`                      | The permalink structure for individual sections                         |
+| `replace_value`        | None                                             | The value to replace in the `section_permalink` with the section slug   |
+| `per_section`          | `page.per_section` or `page.pagination.per_page` | Number of posts to display per section                                   |
 
 ## Usage
 
@@ -23,13 +22,15 @@ To use this include in your Jekyll site, you can call it from a layout or anothe
 {% raw %}
 ```liquid
 {% include post-index.html
-    collection=site.categories
-    collection_permalink='/category/:name/'
+    sections=site.categories
+    section_permalink='/category/:name/'
     replace_value=':name'
     per_section=8
 %}
 ```
 {% endraw %}
+
+This include is component-oriented: `sections` should be passed explicitly, while `section_permalink` and `per_section` can optionally fall back to page-level pagination values.
 
 ### Layout
 
@@ -52,30 +53,24 @@ To see `post-index.html` in action within the `tag_index` layout, visit our demo
 
 ## Functionality
 
-1. **Section Display**: For each section in the collection:
-   - Displays a heading with the section name.
-   - Shows a "View all" link if there are more posts than the `per_section` limit.
-
-2. **Post Layout**:
-   - All posts within a section are displayed using `post-card.html`.
-   - Posts are arranged in a flex-wrap layout, allowing for responsive design.
-
-3. **Responsive Design**:
-   - Uses Bootstrap classes for responsive layout.
-   - The "View all" link is hidden on smaller screens and displayed on larger screens.
+1. For each section in the collection, the include renders a heading and an optional "View all" link.
+2. All posts within a section are displayed using `post-card.html`.
+3. Posts are arranged in a flex-wrap layout for responsive display.
+4. The "View all" link is hidden on smaller screens and displayed on larger screens.
+5. If `sections` is missing, the include renders nothing.
 
 ## Dependencies
 
 This include depends on:
 - `post-card.html`
-- PRimer CSS classes
+- Primer CSS classes
 - Octicons for the "View all" arrow
 
 ## Customization
 
-You can customize the appearance by modifying the HTML structure and CSS classes within the include file. The layout uses Primer css flex and grid classes, which can be adjusted to fit different design requirements.
+You can customize the appearance by modifying the HTML structure and CSS classes within the include file.
 
 ## Notes
 
 - Ensure that the `post-card.html` include is properly set up in your Jekyll site.
-- The "View all" link uses the `collection_permalink` and `replace_value` to generate the correct URL for each section.
+- The "View all" link uses the `section_permalink` and `replace_value` to generate the correct URL for each section.

@@ -12,7 +12,7 @@ To use this include in your Jekyll theme, add the following line to your templat
 
 {% raw %}
 ```liquid
-{% include post-timeline.html %}
+{% include post-timeline.html posts=site.posts %}
 ```
 {% endraw %}
 
@@ -20,21 +20,21 @@ To use this include in your Jekyll theme, add the following line to your templat
 
 You can customize the behavior of this include by passing the following parameters:
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `collection` | `site.posts` | The collection of posts to display |
-| `index` | None | The URL for the "View all" link |
-| `limit` | `site.pagination` or `-1` | Number of posts to display |
+| Parameter    | Default                                      | Description                        |
+| ------------ | -------------------------------------------- | ---------------------------------- |
+| `posts`      | Required                                     | The posts to display               |
+| `index`      | `page.first_page_path`                       | The URL for the "More" link        |
+| `limit`      | `page.posts_limit`, `site.paginate`, or `-1` | Number of posts to display         |
 
 Example with parameters:
 
 {% raw %}
 ```liquid
-{% include post-timeline.html collection=site.articles limit=5 index="/articles/" %}
+{% include post-timeline.html posts=site.articles limit=5 index="/articles/" %}
 ```
 {% endraw %}
 
-If the limit is set to a number below 0, all posts will show.
+If the limit is set to a number below 0, all posts will be shown.
 
 ### Demo Page
 
@@ -44,11 +44,11 @@ To see `post-timeline.html` in action within the `paginate_timeline` layout, vis
 
 ## Functionality
 
-1. The include sets up initial variables based on the provided parameters or default values.
+1. The include sets up initial variables based on the provided parameters or fallback values.
 2. It sorts the collection by date in reverse order (newest first).
 3. It creates a container for the timeline posts.
-4. It iterates through the specified collection (limited by `limit` if set) and includes a `post-timeline-card.html` for each post.
-5. If there are more posts in the collection than the displayed limit, it adds a "View all" link at the bottom.
+4. It iterates through the provided posts (limited by `limit` if set) and includes a `post-timeline-card.html` for each post.
+5. If there are more posts than the displayed limit, it adds a "More" link at the bottom.
 
 ## Dependencies
 
@@ -67,8 +67,7 @@ To customize the appearance of the timeline:
 
 ## Notes
 
-- The `collection` parameter defaults to `site.posts` if not specified.
-- The `limit` parameter is optional. If not set, all posts in the collection will be displayed.
-- The `index` parameter is required for the "View all" link to function properly.
-- The `relative_url` filter is used for the "View all" link, which is a Jekyll filter for generating correct URLs in different site configurations.
+- The `posts` parameter must be passed explicitly.
+- The `index` parameter is optional. If omitted, the include falls back to `page.first_page_path`.
+- The `relative_url` filter is used for the link, which helps generate correct URLs in different site configurations.
 - The layout uses responsive design classes (`container-xl`, `p-responsive-blog`, etc.) for optimal display on various screen sizes.

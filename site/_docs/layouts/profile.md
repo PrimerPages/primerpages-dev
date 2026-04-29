@@ -20,28 +20,28 @@ layout: profile
 
 The Profile layout accepts several parameters in the front matter:
 
-| Parameter         | Default                      | Description |
-|------------------|----------------------------|-------------|
-| `layout`        | Required                     | Must be set to `profile` |
-| `style`         | `default`                    | Layout style (`default`, `sidebar`, `stacked`) |
-| `user_image`    | `site.user_image` or `site.github.owner.avatar_url` | Custom user profile image |
-| `links`         | `site.links`                 | An array of social/profile links |
-| `collection`    | `site.posts`                 | Collection of posts to display in the blog section |
-| `posts_limit`   | `site.paginate`              | Number of posts to display |
+| Parameter     | Default                                             | Description                          |
+| ------------- | --------------------------------------------------- | ------------------------------------ |
+| `layout`      | Required                                            | Must be set to `profile`             |
+| `style`       | `default`                                           | Layout style                         |
+| `user_image`  | `site.user_image` or `site.github.owner.avatar_url` | Custom user profile image            |
+| `links`       | `site.links`                                        | An array of social/profile links     |
+| `posts`       | `site.posts`                                        | Posts to display in the blog section |
+| `posts_limit` | `site.paginate`                                     | Number of posts to display           |
 
 Each link object in the `links` array can have the following properties:
 
-| Property  | Description |
-|----------|-------------|
-| `name`   | The text to display for the link |
-| `url`    | The URL the link should point to |
+| Property | Description                           |
+| -------- | ------------------------------------- |
+| `name`   | The text to display for the link      |
+| `url`    | The URL the link should point to      |
 | `icon`   | A custom icon for the link (optional) |
 
 ## Functionality
 
 1. Displays a profile section with an image and name.
 2. Includes social/profile links if provided.
-3. Shows a timeline of blog posts from the specified collection.
+3. Shows a timeline of blog posts from the specified posts list.
 4. Optionally displays repositories if `site.repositories` is enabled.
 5. Supports different layout styles (`default`, `sidebar`, `stacked`).
 
@@ -52,7 +52,6 @@ This example shows a basic Profile page with user information and links:
 ```yaml
 ---
 layout: profile
-user_image: /assets/img/custom-user.jpg
 style: sidebar
 links:
   - name: GitHub
@@ -61,7 +60,7 @@ links:
   - name: Twitter
     url: https://twitter.com/username
     icon: twitter
-collection: site.posts
+posts: site.posts
 posts_limit: 5
 ---
 ```

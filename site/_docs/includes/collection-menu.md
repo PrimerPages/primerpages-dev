@@ -12,24 +12,26 @@ To use this include in your Jekyll theme, add the following line to your templat
 
 {% raw %}
 ```liquid
-{% include collection-menu.html collection=site.docs name="Documentation" index=site.docs_index id="docs-menu" %}
+{% assign docs_index = site.docs | where_exp: "item", "item.url == '/docs/index.html'" | first %}
+{% include collection-menu.html collection=site.docs name="Documentation" index=docs_index id="docs-menu" %}
 ```
 {% endraw %}
 
 ## Parameters
 
-| Parameter       | Default       | Description |
-|-----------------|---------------|-------------|
-| `collection`    | `site.docs`   | The Jekyll collection to display in the menu. |
-| `name`          | None          | Display name for the collection in the menu header. |
-| `index`         | None          | Index page object for the collection, used as the main link in the menu header. |
-| `id`            | `collection-menu` | HTML `id` attribute for the `<details>` element; useful for multiple instances. |
+| Parameter    | Default                         | Description                                                                     |
+| ------------ | ------------------------------- | ------------------------------------------------------------------------------- |
+| `collection` | Required                        | The Jekyll collection to display in the menu.                                   |
+| `name`       | `index.title` or `"Collection"` | Display name for the collection in the menu header.                             |
+| `index`      | None                            | Optional collection index document, used as the main link in the menu header.    |
+| `id`         | `collection-menu`               | HTML `id` attribute for the `<details>` element; useful for multiple instances. |
 
 ## Example
 
 {% raw %}
 ```liquid
-{% include collection-menu.html collection=site.tutorials name="Tutorials" index=site.tutorials_index id="tutorials-menu" %}
+{% assign tutorials_index = site.tutorials | where_exp: "item", "item.url == '/tutorials/index.html'" | first %}
+{% include collection-menu.html collection=site.tutorials name="Tutorials" index=tutorials_index id="tutorials-menu" %}
 ```
 {% endraw %}
 
@@ -48,6 +50,7 @@ To use this include in your Jekyll theme, add the following line to your templat
 
 4. **Optional Index Link:**
    - If `index` is provided, the collection name in the header becomes a link to the index page.
+   - If `name` is not provided, the include falls back to `index.title` or `"Collection"`.
 
 ## Dependencies
 
@@ -70,6 +73,8 @@ This include relies on:
 
 ## Notes
 
+- The `collection` parameter should be passed explicitly when using this include.
+- Pass `index` as a document object, not a string path.
 - The `id` parameter allows multiple instances of this menu to coexist on a page without conflicts.
 - The `aria-haspopup` and `aria-current` attributes enhance accessibility for the dropdown menu and navigation links.
 - Ensure your site includes **Primer CSS** and **jQuery** for proper styling and behavior.
