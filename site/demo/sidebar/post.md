@@ -1,10 +1,11 @@
 ---
-title: "This is a stacked post style"
-style: stacked
+title: "This is a sidebar post style"
+style: sidebar
 layout: post
+author: George P. Burdell
 tags: [style]
-image: "https://github.blog/wp-content/uploads/2023/05/1200.630-Community-wLogo-e1698634509856.png"
-description: This is an example of a post with the stacked style.
+image: https://github.blog/wp-content/uploads/2023/10/hero-light.jpg
+description: This is an example of a post with the sidebar style.
 category: style
 toc: true
 ---

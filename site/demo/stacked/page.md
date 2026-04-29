@@ -1,7 +1,7 @@
 ---
 layout: page
-style: sidebar
-title: Page (Sidebar Style)
+style: stacked
+title: Page (stacked style)
 ---
 
 Text can be **bold**, *italic*, or ~~strikethrough~~. [Links](https://github.com) should be blue with no underlines (unless hovered over).

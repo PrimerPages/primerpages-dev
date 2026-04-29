@@ -23,16 +23,16 @@ css_style: |
     }
 links:
   - name: Example page with topbar
-    url: /demo/topbar-page
+    url: /demo/topbar/page
     thumbnail: /assets/img/topbar-icon.png
   - name: Example page with appbar
-    url: /demo/appbar-page
+    url: /demo/appbar/page
     thumbnail: /assets/img/appbar-icon.png
   - name: Example page with sidebar
-    url: /demo/sidebar-page
+    url: /demo/sidebar/page
     thumbnail: /assets/img/sidebar-icon.png
   - name: Example page with header stacked
-    url: /demo/stacked-page
+    url: /demo/stacked/page
     thumbnail: /assets/img/stacked-icon.png
   - name: Example custom background
     url: /demo/custom-background

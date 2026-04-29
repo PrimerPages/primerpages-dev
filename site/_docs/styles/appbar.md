@@ -37,6 +37,6 @@ style: appbar
 
 ## Example usage
 
-See examples of an appbar as a [home](/demo/appbar), [page](/demo/appbar-page) and [post](/demo/appbar-post)
+See examples of an appbar as a [home](/demo/appbar), [page](/demo/appbar/page), and [post](/demo/appbar/post).
 
 ![Appbar tablet](../../media/appbar-tablet.png)
