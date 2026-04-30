@@ -31,11 +31,11 @@ Source-of-truth development repository for PrimerPages.
 
 - `templates/` is a normal folder in this monorepo (not a nested git repo/submodule).
 - Use `.github/serve.sh` for local multi-site development.
-- Use `bash .github/local_theme.sh --source <template> --gemfile <template>/Gemfile` to emit JSON for local theme wiring (`local_theme_source`, `local_theme_config`, `bundle_gemfile`).
+- Use `bash .github/local_theme.sh --config <config> --gemfile <template>/Gemfile` to emit JSON for local theme wiring (`local_theme_source`, `local_theme_config`, `local_gemfile`).
 - Convenience wrappers:
-  - `bash .github/local_build.sh --source <template> --gemfile <template>/Gemfile`
-  - `bash .github/local_serve.sh --source <template> --gemfile <template>/Gemfile`
-  - `bash .github/local_smoke_test.sh --source <template> --gemfile templates/<template>/Gemfile`
+  - `bash .github/local_build.sh --source <template>`
+  - `bash .github/local_serve.sh --source <template>`
+  - `bash .github/template_smoke_test.sh --source <template>`
 
 ## License
 

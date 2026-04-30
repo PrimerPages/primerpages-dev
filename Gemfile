@@ -5,18 +5,10 @@ gem 'jekyll-theme-profile', path: 'theme'
 
 gem 'jekyll', '4.4.1'
 
-group :jekyll_plugins do
-  gem 'jekyll-category-pages'
-  gem 'jekyll-github-metadata'
-  gem 'jekyll-octicons'
-  gem 'jekyll-paginate'
-  gem 'jekyll-relative-links'
-  gem 'jekyll-sitemap'
-  gem 'jekyll-tagging'
-  gem 'jekyll-toc'
-end
-
 group :development do
   gem 'dotenv', '~> 2.7'
+  gem 'guard'
+  gem 'guard-livereload'
+  gem 'guard-shell'
   gem 'html-proofer'
 end

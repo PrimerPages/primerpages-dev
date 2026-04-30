@@ -1,42 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
-SOURCE="site/"
-CONFIG="site/_config.yml"
-DESTINATION=""
-EXTRA_ARGS=()
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --source)
-      SOURCE="$2"
-      shift 2
-      ;;
-    --config)
-      CONFIG="$2"
-      shift 2
-      ;;
-    --destination)
-      DESTINATION="$2"
-      shift 2
-      ;;
-    --)
-      shift
-      EXTRA_ARGS+=("$@")
-      break
-      ;;
-    *)
-      EXTRA_ARGS+=("$1")
-      shift
-      ;;
-  esac
-done
-
-BUILD_ARGS=(--source "${SOURCE}" --config "${CONFIG}")
-if [[ -n "${DESTINATION}" ]]; then
-  BUILD_ARGS+=(--destination "${DESTINATION}")
+if [[ -f "${REPO_ROOT}/.env" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "${REPO_ROOT}/.env"
+  set +a
 fi
-BUILD_ARGS+=("${EXTRA_ARGS[@]}")
 
-bundle install
-bundle exec jekyll build "${BUILD_ARGS[@]}"
+${SCRIPT_DIR}/local_build.sh --source site --destination _site
+${SCRIPT_DIR}/local_build.sh --source templates/primerpages-minimal --baseurl "/primerpages-minimal" --destination _site/primerpages-minimal
+${SCRIPT_DIR}/local_build.sh --source templates/primerpages-recommended --baseurl "/primerpages-recommended" --destination _site/primerpages-recommended
+${SCRIPT_DIR}/local_build.sh --source templates/primerpages-gh-pages --baseurl "/primerpages-gh-pages" --destination _site/primerpages-gh-pages

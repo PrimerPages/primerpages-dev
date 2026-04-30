@@ -1,6 +1,16 @@
 #!/bin/bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+if [[ -f "${REPO_ROOT}/.env" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "${REPO_ROOT}/.env"
+  set +a
+fi
+
 usage() {
   cat <<'EOF'
 Usage:
@@ -8,19 +18,16 @@ Usage:
 
 Options:
   --gemfile <path>  Gemfile to use for the temporary local-theme bundle (required)
-  --source <path>  Template source directory (default: templates/primerpages-gh-pages)
   --config <path>  Config file path (default: <source>/_config.yml)
   -h, --help       Show this help
 
 Output:
   Prints a JSON object with:
-    local_theme_source
     local_theme_config
-    bundle_gemfile
+    local_gemfile
 EOF
 }
 
-SOURCE="templates/primerpages-gh-pages"
 CONFIG=""
 GEMFILE=""
 
@@ -28,10 +35,6 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --gemfile)
       GEMFILE="$2"
-      shift 2
-      ;;
-    --source)
-      SOURCE="$2"
       shift 2
       ;;
     --config)
@@ -50,23 +53,10 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 THEME_DIR="${REPO_ROOT}/theme"
 
 if [[ ! -d "${THEME_DIR}" ]]; then
   echo "Local theme directory not found: ${THEME_DIR}" >&2
-  exit 1
-fi
-
-if [[ "${SOURCE}" = /* ]]; then
-  SOURCE_DIR="${SOURCE}"
-else
-  SOURCE_DIR="${REPO_ROOT}/${SOURCE}"
-fi
-
-if [[ ! -d "${SOURCE_DIR}" ]]; then
-  echo "Template source not found: ${SOURCE_DIR}" >&2
   exit 1
 fi
 
@@ -76,25 +66,27 @@ if [[ -z "${GEMFILE}" ]]; then
 fi
 
 if [[ "${GEMFILE}" = /* ]]; then
-  CURRENT_GEMFILE="${GEMFILE}"
+  GEMFILE_PATH="${GEMFILE}"
 else
-  CURRENT_GEMFILE="${REPO_ROOT}/${GEMFILE}"
+  GEMFILE_PATH="${REPO_ROOT}/${GEMFILE}"
 fi
 
-if [[ ! -f "${CURRENT_GEMFILE}" ]]; then
-  echo "Gemfile not found: ${CURRENT_GEMFILE}" >&2
+if [[ ! -f "${GEMFILE_PATH}" ]]; then
+  echo "Gemfile not found: ${GEMFILE_PATH}" >&2
   exit 1
 fi
 
-if [[ -n "${CONFIG}" ]]; then
-  if [[ "${CONFIG}" = /* ]]; then
-    CONFIG_PATH="${CONFIG}"
-  else
-    CONFIG_PATH="${REPO_ROOT}/${CONFIG}"
-  fi
-else
-  CONFIG_PATH="${SOURCE_DIR}/_config.yml"
+if [[ -z "${CONFIG}" ]]; then
+  echo "--config is required." >&2
+  exit 1
 fi
+
+if [[ "${CONFIG}" = /* ]]; then
+  CONFIG_PATH="${CONFIG}"
+else
+  CONFIG_PATH="${REPO_ROOT}/${CONFIG}"
+fi
+
 
 if [[ ! -f "${CONFIG_PATH}" ]]; then
   echo "Config file not found: ${CONFIG_PATH}" >&2
@@ -104,7 +96,7 @@ fi
 TMP_GEMFILE="$(mktemp /tmp/Gemfile.local-theme.XXXXXX)"
 TMP_CONFIG="$(mktemp /tmp/_config.local-theme.XXXXXX.yml)"
 
-cp "${CURRENT_GEMFILE}" "${TMP_GEMFILE}"
+cp "${GEMFILE_PATH}" "${TMP_GEMFILE}"
 cp "${CONFIG_PATH}" "${TMP_CONFIG}"
 
 THEME_LINE="gem 'jekyll-theme-profile', path: '${THEME_DIR}'"
@@ -137,7 +129,6 @@ if grep -Eq "^[[:space:]]*remote_theme:[[:space:]]*" "${TMP_CONFIG}"; then
   sed -E -i "s|^[[:space:]]*remote_theme:[[:space:]]*.*$|theme: jekyll-theme-profile|" "${TMP_CONFIG}"
 fi
 
-printf '{"local_theme_source":"%s","local_theme_config":"%s","bundle_gemfile":"%s"}\n' \
-  "${SOURCE_DIR}" \
+printf '{"local_theme_config":"%s","local_gemfile":"%s"}\n' \
   "${TMP_CONFIG}" \
   "${TMP_GEMFILE}"

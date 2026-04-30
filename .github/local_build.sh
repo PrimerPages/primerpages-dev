@@ -2,11 +2,19 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-SOURCE="templates/primerpages-gh-pages"
+if [[ -f "${REPO_ROOT}/.env" ]]; then
+  set -a
+  # shellcheck disable=SC1091
+  source "${REPO_ROOT}/.env"
+  set +a
+fi
+
+SOURCE=""
 CONFIG=""
 GEMFILE=""
-DESTINATION="_site"
+DESTINATION=""
 EXTRA_BUILD_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -39,29 +47,44 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "${GEMFILE}" ]]; then
-  echo "--gemfile is required." >&2
+if [[ ! -d "${SOURCE}" ]]; then
+  echo "Source directory not found: ${SOURCE}" >&2
   exit 1
 fi
 
-THEME_ARGS=(--source "${SOURCE}" --gemfile "${GEMFILE}")
-if [[ -n "${CONFIG}" ]]; then
-  THEME_ARGS+=(--config "${CONFIG}")
+if [[ -z "${GEMFILE}" ]]; then
+  GEMFILE="${SOURCE}/Gemfile"
 fi
+
+if [[ -z "${CONFIG}" ]]; then
+  CONFIG="${SOURCE}/_config.yml"
+fi
+
+if [[ -z "${DESTINATION}" ]]; then
+  DESTINATION="${SOURCE}/_site"
+fi
+
+THEME_ARGS=(--gemfile "${GEMFILE}" --config "${CONFIG}")
 
 THEME_JSON="$(bash "${SCRIPT_DIR}/local_theme.sh" "${THEME_ARGS[@]}")"
 
-LOCAL_THEME_SOURCE="$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_theme_source")' <<< "${THEME_JSON}")"
 LOCAL_THEME_CONFIG="$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_theme_config")' <<< "${THEME_JSON}")"
-BUNDLE_GEMFILE_VALUE="$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("bundle_gemfile")' <<< "${THEME_JSON}")"
+LOCAL_GEMFILE="$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_gemfile")' <<< "${THEME_JSON}")"
 
-echo "Using source: ${LOCAL_THEME_SOURCE}"
+echo "Using source: ${SOURCE}"
 echo "Using config: ${LOCAL_THEME_CONFIG}"
-echo "Using Gemfile: ${BUNDLE_GEMFILE_VALUE}"
+echo "Using Gemfile: ${LOCAL_GEMFILE}"
 
-exec env BUNDLE_GEMFILE="${BUNDLE_GEMFILE_VALUE}" \
-  bash "${SCRIPT_DIR}/build.sh" \
-  --source "${LOCAL_THEME_SOURCE}" \
+SOURCE_ABS="$(cd "$SOURCE" && pwd)"
+
+export BUNDLE_GEMFILE="${LOCAL_GEMFILE}"
+export BUNDLE_APP_CONFIG="${SOURCE_ABS}/.bundle"
+export BUNDLE_PATH="${SOURCE_ABS}/vendor/bundle"
+
+bundle install
+
+bundle exec jekyll build \
+  --source "${SOURCE}" \
   --config "${LOCAL_THEME_CONFIG}" \
   --destination "${DESTINATION}" \
   "${EXTRA_BUILD_ARGS[@]}"
