@@ -3,9 +3,9 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-SOURCE="primerpages-gh-pages"
+SOURCE=""
 CONFIG=""
-DESTINATION="_site"
+DESTINATION=""
 GEMFILE=""
 
 while [[ $# -gt 0 ]]; do
@@ -34,16 +34,25 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "${GEMFILE}" ]]; then
-  echo "--gemfile is required." >&2
+if [[ ! -d "${SOURCE}" ]]; then
+  echo "Source directory not found: ${SOURCE}" >&2
   exit 1
 fi
 
-BUILD_ARGS=(--source "templates/${SOURCE}" --gemfile "${GEMFILE}")
-if [[ -n "${CONFIG}" ]]; then
-  BUILD_ARGS+=(--config "${CONFIG}")
+if [[ -z "${GEMFILE}" ]]; then
+  GEMFILE="${SOURCE}/Gemfile"
 fi
-BUILD_ARGS+=(--destination "${DESTINATION}")
+
+if [[ -z "${CONFIG}" ]]; then
+  CONFIG="${SOURCE}/_config.yml"
+fi
+
+if [[ -z "${DESTINATION}" ]]; then
+  DESTINATION="${SOURCE}/_site"
+fi
+
+BUILD_ARGS=(--source "templates/${SOURCE}" --gemfile "${GEMFILE}" --config "${CONFIG}" --destination "${DESTINATION}")
+
 
 bash "${SCRIPT_DIR}/local_build.sh" "${BUILD_ARGS[@]}"
 bash "${SCRIPT_DIR}/test.sh" --source "${DESTINATION}" --repo "${SOURCE}" --hosturl "https://github.com/PrimerPages" --baseurl "/${SOURCE}"
