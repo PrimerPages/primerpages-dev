@@ -116,6 +116,7 @@ related_by: "tags or categories"
 
 # ########### Plugin settings ###############
 plugins:
+  - jekyll-gfm-admonitions
   - jekyll-github-metadata
   - jekyll-octicons
   - jekyll-relative-links

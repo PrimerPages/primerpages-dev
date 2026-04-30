@@ -5,6 +5,7 @@ gem 'jekyll-theme-profile'
 
 group :jekyll_plugins do
   gem 'jekyll-category-pages'
+  gem "jekyll-gfm-admonitions"
   gem 'jekyll-github-metadata'
   gem 'jekyll-octicons'
   gem 'jekyll-paginate'
