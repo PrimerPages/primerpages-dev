@@ -10,8 +10,8 @@ order: 32
 
 1. Add the following line to your `Gemfile`
 
-```
-gem 'jekyll-tagging`
+```ruby
+gem "jekyll-tagging"
 ```
 
 2. Add the following settings to your `_config.yml` file
@@ -21,7 +21,7 @@ tag_page_layout: tags
 tag_page_dir: tags
 ```
 
-3. (optional) Add a tag index page `tags/index.html` with the following content
+3. (Optional) Add a tag index page at `tags/index.html` with the following content
 
 ```text
 ---
@@ -32,7 +32,7 @@ layout: tag_index
 
 4. Add tags to your posts
 
-To assign tags to a post, include them in the front matter
+To assign tags to a post, include them in the front matter:
 
 ```text
 ---
@@ -49,4 +49,4 @@ tags: [jekyll, tutorial, plugins]
 
 - [Jekyll tags](https://jekyllrb.com/docs/posts/#tags)
 - [jekyll-tagging repository](https://github.com/pattex/jekyll-tagging)
-- [Posts documentation](../posts.md#tags)
+- [Posts documentation](../posts.md#tags-and-categories)

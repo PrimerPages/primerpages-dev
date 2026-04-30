@@ -5,7 +5,7 @@ category: Getting started
 image: "https://raw.githubusercontent.com/PrimerPages/jekyll-theme-profile/main/screenshot.png"
 ---
 
-This theme is based on GitHub's primer style. It supports both light and dark modes, and four style options: [appbar](styles/appbar.md), [sidebar](styles/sidebar.md), [stacked](styles/stacked.md), and [topbar](styles/topbar.md),.
+This theme is based on GitHub's Primer style. It supports both light and dark modes, and four style options: [appbar](styles/appbar.md), [sidebar](styles/sidebar.md), [stacked](styles/stacked.md), and [topbar](styles/topbar.md).
 
 ![jekyll-theme-profile](https://raw.githubusercontent.com/PrimerPages/jekyll-theme-profile/main/screenshot.png)
 
@@ -36,10 +36,10 @@ And add this line to your Jekyll site's `_config.yml`:
 ```yaml
 theme: jekyll-theme-profile
 style: topbar # One of "stacked", "sidebar", "topbar", "appbar"
-repository: PrimerPages/jekyll-theme-profile # for repository info to be included
+repository: your-user/your-repo # optional, enables repository cards and docs edit links
 repo_info: true # Show the information for the source of this project
 user_metadata: true # Show the metadata associated with the user
-profile_link: true # Show a link to the github profile for the user
+profile_link: true # Show a link to the user's GitHub profile
 ```
 
 Or you can start with one of the [template configs](https://github.com/PrimerPages/primerpages-dev/tree/main/templates){: data-proofer-ignore='' } and copy/customize the profile that best matches your setup.

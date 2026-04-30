@@ -4,7 +4,7 @@ order: 2
 category: Getting started
 ---
 
-This theme can be set up using the `_config.yml` file, most settings can be overwritten in pages.
+This theme can be configured through `_config.yml`, and most settings can also be overridden per page.
 
 ## Theme settings
 
@@ -24,11 +24,11 @@ Select the default style for your theme by adding `style` to your config file:
 style: sidebar # One of "stacked", "sidebar", "topbar", "appbar"
 ```
 
-You can also set the style of a particular page by adding `style` to your frontmatter.
+You can also set the style of a particular page by adding `style` to its front matter.
 
 ```yaml
 ---
-style: sidebar # One of "stacked", "sidebar", "topbar", "appbar
+style: sidebar # One of "stacked", "sidebar", "topbar", "appbar"
 ---
 ```
 
@@ -47,11 +47,12 @@ style: sidebar # One of "stacked", "sidebar", "topbar", "appbar
 ##### [Appbar](/demo/appbar)
 
 ![Appbar image](../media/appbar-preview.png)
-Choosing the right style helps define the user experience and visual flow
+
+Choosing the right style helps define the user experience and visual flow.
 
 #### Setting user avatar
 
-By default, the theme will use your github avatar.  You can, however, set a custom avatar for your site
+By default, the theme uses your GitHub avatar. You can also set a custom avatar for your site.
 
 ```yaml
 user_image: /assets/img/user-image.jpg
@@ -59,7 +60,7 @@ user_image: /assets/img/user-image.jpg
 
 #### Customizing light and dark themes
 
-This setting specifies the style for the light and dark modes of your site.  These styles are taken from [primer css](https://primer.style/css/storybook/?path=/docs/support-theming--docs).
+This setting controls the light and dark color themes for your site. These theme names come from [Primer CSS](https://primer.style/css/storybook/?path=/docs/support-theming--docs).
 
 ```yaml
 # The themes to use for dark and light
@@ -92,7 +93,7 @@ background:
 
 #### Set custom header colors
 
-You can change the header color by adding the following to your `_config.yml` file or page frontmatter.
+You can change the header color by adding the following to your `_config.yml` file or page front matter.
 
 ```yaml
 header:
@@ -113,14 +114,16 @@ header:
 
 #### Additional theme features
 
-These additional features add information to your site from your github user.
+These additional features pull information into your site from your GitHub account.
 
 ```yaml
+repository: your-user/your-repo # used by the theme's GitHub-aware features
 repo_info: true # Show the information for the source of this project
 user_metadata: true # Show the metadata associated with the user
-profile_link: true # Show a link to the github profile for the user
+profile_link: true # Show a link to the user's GitHub profile
 ```
 
+- `repository` is a theme/GitHub metadata setting, not a core Jekyll setting
 - `repo_info` will show the repository information in the header section
 - `user_metadata` will show metadata associated with your user under your masthead
 - `profile_link` will show a link to your profile
@@ -135,7 +138,7 @@ You can set the social media image for your site with the setting
 image: /screenshot.jpg
 ```
 
-This works on both yaml frontmatter for a page and in the `_config.yml` file.  Page settings will override site settings.
+This works both in YAML front matter for a page and in `_config.yml`. Page settings override site settings.
 
 Set the default for posts through the default settings in the `_config.yml` file.
 
@@ -153,7 +156,7 @@ defaults:
 
 ### Adding your socials
 
-Utilize the `social_media` section to add links to your various social media profiles.  For each platform simply provide your username or user ID to have the corresponding icon and link appear on your profile.
+Use the `social_media` section to add links to your social media profiles. For each platform, provide your username or user ID to show the matching icon and link on your profile.
 
 ![Social Media](../media/social-media.png){: .border}
 
@@ -183,7 +186,7 @@ social_media:
   x: your_username
 ```
 
-You can also set the icon color.  If you don't set an icon color, the original icon colors will be used.
+You can also set the icon color. If you do not set one, the original icon colors are used.
 
 ```yaml
 icon_color: "#959da5"
@@ -233,7 +236,7 @@ links:
 
 ## Repositories (optional)
 
-The `repositories` section allows you to display your GitHub repositories on your page.  You can sort them by stars or latest pushes, set a limit to the number of repositories displayed, and exclude archived, forked, or specific repositories from the list
+The `repositories` section lets you display GitHub repositories on your page. You can sort them by stars or recent pushes, limit how many are shown, and exclude archived, forked, or specific repositories from the list.
 
 These show in the [profile](layouts/profile.md) and [repositories](layouts/repositories.md) layouts.
 
@@ -250,7 +253,7 @@ repositories:
 ```
 
 - `sort_by` What to sort repositories by, either latest pushed or number of stars
-- `limit` max number of repositories to show
+- `limit` Maximum number of repositories to show
 - `exclude` Repositories to exclude from your site
 
 ## Post settings

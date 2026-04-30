@@ -6,11 +6,11 @@ category: Advanced
 
 ## Site style
 
-You can override any style with styles defined in `/assets/css/style.css` or `/assets/css/style.scss` files.  This is to support config based styling which needs jekyll variables.
+You can override theme styles in `/assets/css/style.css` or `/assets/css/style.scss`. Using Sass is especially helpful when you want to reference Jekyll variables.
 
 ## Page style
 
-You can add css to any page through the `css_style` variable in front matter.
+You can add CSS to any page through the `css_style` variable in front matter.
 
 ```yaml
 ---

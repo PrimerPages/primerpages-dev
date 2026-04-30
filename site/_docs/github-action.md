@@ -1,11 +1,11 @@
 ---
-title: "Using with a GitHub action"
+title: "Using with GitHub Actions"
 order: 100
 category: Advanced
 image: "https://raw.githubusercontent.com/PrimerPages/jekyll-theme-profile/main/screenshot.png"
 ---
 
-You can also use this with GitHub actions. Below is a typical workflow file
+You can also deploy this site with GitHub Actions. Below is a typical workflow file.
 
 ```yaml
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
@@ -18,7 +18,7 @@ on:
 
   # Run on every pull request
   pull_request:
-    types: [opened, reopened, synchronize ]
+    types: [opened, reopened, synchronize]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -41,7 +41,7 @@ on:
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read # needed to read your repository
-  pages: write # needed to enable and deploy github pages
+  pages: write # needed to enable and deploy GitHub Pages
   id-token: write
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
@@ -65,7 +65,7 @@ jobs:
         id: pages
         uses: actions/configure-pages@v3
         with:
-          enablement: true # Enable github pages if it's not
+          enablement: true # Enable GitHub Pages if it is not already enabled
       - name: Build
         run: bundle exec jekyll build
         env:

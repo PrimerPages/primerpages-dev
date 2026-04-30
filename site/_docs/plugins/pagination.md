@@ -6,7 +6,7 @@ order: 31
 
 # Pagination
 
-`jekyll-paginate` is a Jekyll plugin that adds pagination functionality to your site, allowing posts to be split across multiple pages instead of displaying all posts on a single page.
+`jekyll-paginate` is a Jekyll plugin that adds pagination functionality to your site, allowing posts to be split across multiple pages instead of displaying everything on a single page.
 
 ## Usage
 
@@ -29,10 +29,10 @@ order: 31
    ```yaml
    # jekyll-paginate settings
    paginate: 5  # Number of posts per page
-   paginate_path: "/blog/page:num"  # URL structure for paginated pages
+   paginate_path: "/blog/page/:num"  # URL structure for paginated pages
    ```
 
-3. (optional) Add a index page `blog/index.html`
+3. (Optional) Add an index page at `blog/index.html`
 
     ```text
     ---
@@ -40,6 +40,8 @@ order: 31
     layout: paginate
     ---
     ```
+
+    Use `layout: paginate_timeline` if you want the timeline-style listing instead of the card grid layout.
 
 ## Demo
 

@@ -5,11 +5,11 @@ order: 50
 published: false
 ---
 
-Layouts in Jekyll define the structure and appearance of pages, allowing for consistent design across your site while accommodating different content types. Below, you'll find examples of each layout, along with configuration details and usage instructions.
+Layouts in Jekyll define the structure and appearance of pages, making it easier to keep a consistent design across your site while supporting different kinds of content. Below are examples of each layout, along with configuration details and usage notes.
 
 ## Docs
 
-This layout is ideal for documentation, and follows the document style on [github docs](https://docs.github.com)
+This layout is ideal for documentation and follows the visual structure used on [GitHub Docs](https://docs.github.com).
 
 [Live demo](index.html){:.btn}
 
@@ -42,7 +42,7 @@ layout: docs
 
 ## Landing
 
-This layout includes site.nav data, your repo card
+This layout includes your `site.nav` links and repository card.
 
 [Live demo](../index.md){:.btn}
 
@@ -52,7 +52,7 @@ This layout includes site.nav data, your repo card
 
 repo_info: true # Show the information for the source of this project
 user_metadata: true # Show the metadata associated with the user
-profile_link: true # Show a link to the github profile for the user
+profile_link: true # Show a link to the user's GitHub profile
 
 ####################
 # Navigation links
@@ -67,7 +67,6 @@ nav:
     url: /stacked.html
 ```
 
-
 **markdown front matter**
 
 ```yaml
@@ -78,7 +77,7 @@ layout: landing
 
 ## Linktree
 
-This layout provides a linktree-like view for your webpage.
+This layout provides a Linktree-style view for your page.
 
 [Live demo](../linktree.md){:.btn}
 
@@ -89,16 +88,16 @@ This layout provides a linktree-like view for your webpage.
 # List of links for link cards
 links:
   - name: Example page with topbar
-    url: /page/topbar
+    url: /demo/topbar/page
     thumbnail: /media/topbar-icon.png
   - name: Example page with appbar
-    url: /page/appbar
+    url: /demo/appbar/page
     thumbnail: /media/appbar-icon.png
   - name: Example page with sidebar
-    url: /page/sidebar
+    url: /demo/sidebar/page
     thumbnail: /media/sidebar-icon.png
-  - name: Example page with header stacked
-    url: /page/stacked
+  - name: Example page with stacked header
+    url: /demo/stacked/page
     thumbnail: /media/stacked-icon.png
   - name: Example custom background
     url: /background
@@ -122,16 +121,16 @@ layout: linktree
 title: Linktree
 links:
   - name: Example page with topbar
-    url: /page/topbar
+    url: /demo/topbar/page
     thumbnail: /media/topbar-icon.png
   - name: Example page with appbar
-    url: /page/appbar
+    url: /demo/appbar/page
     thumbnail: /media/appbar-icon.png
   - name: Example page with sidebar
-    url: /page/sidebar
+    url: /demo/sidebar/page
     thumbnail: /media/sidebar-icon.png
-  - name: Example page with header stacked
-    url: /page/stacked
+  - name: Example page with stacked header
+    url: /demo/stacked/page
     thumbnail: /media/stacked-icon.png
   - name: Example custom background
     url: /background
@@ -149,7 +148,7 @@ links:
 
 ## Profile
 
-A profile page similar to the one on github
+A profile page similar to the one on GitHub.
 
 [Live demo](../profile.md){:.btn}
 
@@ -160,7 +159,7 @@ A profile page similar to the one on github
 user_image: /media/user-image.jpg
 repo_info: true # Show the information for the source of this project
 user_metadata: true # Show the metadata associated with the user
-profile_link: true # Show a link to the github profile for the user
+profile_link: true # Show a link to the user's GitHub profile
 ```
 
 **markdown page**
@@ -203,6 +202,24 @@ title: My Repositories
 ---
 ```
 
+## Page
+
+The basic layout for standalone markdown content pages.
+
+[More details](layouts/page.md){:.btn}
+
+## Post
+
+The full blog post layout with hero media, metadata, sharing links, optional table of contents, tags, and related posts.
+
+[More details](layouts/post.md){:.btn}
+
+## Paginate
+
+A paginated blog index that renders posts as cards.
+
+[More details](layouts/paginate.md){:.btn}
+
 ## Tags
 
 An index view of all of your tags
@@ -229,6 +246,12 @@ layout: tag_index
 ---
 ```
 
+## Tag Index
+
+This layout renders a grouped index of tags and their posts.
+
+[More details](layouts/tag_index.md){:.btn}
+
 # Categories
 
 An index view of all of your categories
@@ -252,3 +275,9 @@ layout: category_index
 ---
 
 ```
+
+## Category Index
+
+This layout renders a grouped index of categories and their posts.
+
+[More details](layouts/category_index.md){:.btn}
