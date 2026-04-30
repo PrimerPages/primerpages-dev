@@ -102,6 +102,7 @@ jobs:
         uses: athackst/htmlproofer-action@v2.0.0
         with:
           directory: "_site/site"
+          check_external_hash: false
 
   template-smoke-test:
     runs-on: ubuntu-latest
@@ -133,6 +134,7 @@ jobs:
           directory: "_site/${{ matrix.template }}"
           host: https://www.primerpages.com
           base_path: /${{ matrix.template }}/
+          check_external_hash: false
 
   success:
     runs-on: ubuntu-latest

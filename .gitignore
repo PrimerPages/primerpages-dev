@@ -12,4 +12,3 @@ vendor/
 spec/
 .ruby-lsp
 .jekyll-metadata
-plugins/
