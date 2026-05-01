@@ -1,0 +1,11 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: 6fa227b
+_src_path: gh:athackst/ci
+bump_script_path: .github/bump.sh
+do_releases: true
+release_template: '## What''s changed
+
+
+    $CHANGES
+    '
+site_generator: none
