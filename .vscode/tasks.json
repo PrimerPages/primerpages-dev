@@ -82,7 +82,7 @@
         {
             "label": "build site",
             "type": "shell",
-            "command": "bash .github/local_build.sh --source site",
+            "command": "/usr/bin/time -f \"::STATS:: elapsed=%E cpu=%P max_rss=%MKB\" ./.github/local_build.sh --source site",
             "problemMatcher": [],
         },
         {
@@ -94,7 +94,7 @@
         {
             "label": "build primerpages-gh-pages",
             "type": "shell",
-            "command": "bash .github/local_build.sh --source templates/primerpages-gh-pages",
+            "command": "/usr/bin/time -f \"::STATS:: elapsed=%E cpu=%P max_rss=%MKB\" ./.github/local_build.sh --source templates/primerpages-gh-pages",
             "problemMatcher": [],
         },
         {
@@ -113,7 +113,7 @@
         {
             "label": "build primerpages-minimal",
             "type": "shell",
-            "command": "bash .github/local_build.sh --source templates/primerpages-minimal",
+            "command": "/usr/bin/time -f \"::STATS:: elapsed=%E cpu=%P max_rss=%MKB\" ./.github/local_build.sh --source templates/primerpages-minimal",
             "problemMatcher": [],
         },
         {
@@ -132,7 +132,7 @@
         {
             "label": "build primerpages-recommended",
             "type": "shell",
-            "command": ".github/local_build.sh --source templates/primerpages-recommended",
+            "command": "/usr/bin/time -f \"::STATS:: elapsed=%E cpu=%P max_rss=%MKB\" ./.github/local_build.sh --source templates/primerpages-recommended",
             "problemMatcher": [],
         },
         {
