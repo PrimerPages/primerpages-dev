@@ -3,12 +3,32 @@ set -euo pipefail
 
 # === Defaults ===
 DRY_RUN=false
-NEW_VERSION=""
+VERSION="${VERSION:-}"
 
 # === Parse arguments ===
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --version)
+      if [[ $# -lt 2 ]]; then
+        echo "Missing value for --version"
+        exit 1
+      fi
+      VERSION="$2"
+      shift 2
+      ;;
     --file)
+      if [[ $# -lt 2 ]]; then
+        echo "Missing value for --file"
+        exit 1
+      fi
+      VERSION_FILE="$2"
+      shift 2
+      ;;
+    --version-file)
+      if [[ $# -lt 2 ]]; then
+        echo "Missing value for --version-file"
+        exit 1
+      fi
       VERSION_FILE="$2"
       shift 2
       ;;
@@ -21,8 +41,8 @@ while [[ $# -gt 0 ]]; do
       exit 1
       ;;
     *)
-      if [[ -z "$NEW_VERSION" ]]; then
-        NEW_VERSION="$1"
+      if [[ -z "$VERSION" ]]; then
+        VERSION="$1"
         shift
       else
         echo "Unexpected argument: $1"
@@ -32,16 +52,16 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-VERSION_FILE="${VERSION_FILE:-VERSION}"
+VERSION_FILE="${VERSION_FILE:-theme/VERSION}"
 
 # === Validate input ===
-if [[ -z "$NEW_VERSION" ]]; then
-  echo "Usage: $0 <version> [--version-file FILE] [--dry-run]"
+if [[ -z "$VERSION" ]]; then
+  echo "Usage: $0 [--version VERSION] [--version-file FILE] [--dry-run]"
   exit 1
 fi
 
-if ! [[ "$NEW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-  echo "Invalid version format: $NEW_VERSION"
+if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "Invalid version format: $VERSION"
   echo "Expected format: x.y.z (e.g., 1.2.3)"
   exit 1
 fi
@@ -53,15 +73,15 @@ fi
 
 # === Main ===
 
-echo "Bumping version to $NEW_VERSION in $VERSION_FILE"
+echo "Bumping version to $VERSION in $VERSION_FILE"
 
 if [[ "$DRY_RUN" == "true" ]]; then
-  echo "[DRY RUN] Would update version to $NEW_VERSION in $VERSION_FILE"
+  echo "[DRY RUN] Would update version to $VERSION in $VERSION_FILE"
   exit 0
 fi
 
 # === Update version in file ===
-sed -i.bak -E "s/[0-9]+\.[0-9]+\.[0-9]+/$NEW_VERSION/" "$VERSION_FILE"
+sed -i.bak -E "s/[0-9]+\.[0-9]+\.[0-9]+/$VERSION/" "$VERSION_FILE"
 rm -f "$VERSION_FILE.bak"
 
-echo "Updated to version $NEW_VERSION"
+echo "Updated to version $VERSION"
