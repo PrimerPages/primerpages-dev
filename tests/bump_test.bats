@@ -23,31 +23,35 @@ teardown() {
 }
 
 @test "bump.sh updates quoted version" {
-  echo 'VERSION = "1.2.3"' > VERSION
+  mkdir -p theme
+  echo 'VERSION = "1.2.3"' > theme/VERSION
   run ./bump.sh 2.0.0
   assert_success
-  run grep VERSION VERSION
+  run grep VERSION theme/VERSION
   assert_output 'VERSION = "2.0.0"'
 }
 
 @test "bump.sh updates unquoted version" {
-  echo 'VERSION = 1.2.3' > VERSION
+  mkdir -p theme
+  echo 'VERSION = 1.2.3' > theme/VERSION
   run ./bump.sh 2.0.0
   assert_success
-  run grep VERSION VERSION
+  run grep VERSION theme/VERSION
   assert_output 'VERSION = 2.0.0'
 }
 
 @test "bump.sh updates bare version line" {
-  echo '1.2.3' > VERSION
+  mkdir -p theme
+  echo '1.2.3' > theme/VERSION
   run ./bump.sh 2.0.0
   assert_success
-  run cat VERSION
+  run cat theme/VERSION
   assert_output '2.0.0'
 }
 
 @test "bump.sh rejects invalid version" {
-  echo 'VERSION = "1.2.3"' > VERSION
+  mkdir -p theme
+  echo 'VERSION = "1.2.3"' > theme/VERSION
   run ./bump.sh "v2.0"
   assert_failure
   assert_output --partial "Invalid version format"
@@ -82,4 +86,22 @@ teardown() {
   run ./bump.sh 1.2.3 --file missing.txt
   assert_failure
   assert_output --partial "Version file not found"
+}
+
+@test "bump.sh uses VERSION env var when --version is omitted" {
+  mkdir -p theme
+  echo 'VERSION = "1.2.3"' > theme/VERSION
+  VERSION=2.0.0 run ./bump.sh
+  assert_success
+  run grep VERSION theme/VERSION
+  assert_output 'VERSION = "2.0.0"'
+}
+
+@test "bump.sh prefers --version over VERSION env var" {
+  mkdir -p theme
+  echo 'VERSION = "1.2.3"' > theme/VERSION
+  VERSION=2.0.0 run ./bump.sh --version 3.0.0
+  assert_success
+  run grep VERSION theme/VERSION
+  assert_output 'VERSION = "3.0.0"'
 }
