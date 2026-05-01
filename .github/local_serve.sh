@@ -79,4 +79,4 @@ bundle exec jekyll serve \
   --config "${LOCAL_THEME_CONFIG}" \
   --incremental \
   --livereload \
-  "${EXTRA_BUILD_ARGS[@]}"
+  "${EXTRA_ARGS[@]}"
