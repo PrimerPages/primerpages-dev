@@ -3,7 +3,6 @@ theme: jekyll-theme-profile
 title: Primer Pages
 description: Theme built with jekyll-theme-profile
 image: /assets/img/social-preview.png
-repository: PrimerPages/primerpages.github.io
 
 permalink: pretty
 
@@ -49,6 +48,7 @@ light_theme: light # One of light, light_colorblind, light_high_contrast, light_
 repo_info: true # Show the information for the source of this project
 user_metadata: true # Show the metadata associated with the user
 profile_link: true # Show a link to the github profile for the user
+edit_url: "https://github.com/PrimerPages/primerpages-dev/edit/main/site/"
 
 ##########################
 # # Social media settings
@@ -101,6 +101,7 @@ links:
 
 ###################
 # Repositories to show on home page
+repository: PrimerPages/primerpages.github.io
 repositories:
   sort_by: stars #pushed or stars
   limit: 24
