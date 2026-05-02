@@ -1,0 +1,19 @@
+{%- assign current_version = "" -%}
+{%- if site.versioned_docs -%}
+{%- assign baseurl_parts = site.baseurl | default: "" | split: "/" -%}
+{%- assign current_version = baseurl_parts[1] | default: "" -%}
+{%- endif -%}
+{%- if current_version != "" and site.show_version_warning != false -%}
+<div class="d-none mb-4" data-version-warning aria-live="polite"
+    data-doc-version="{{ current_version }}"
+    data-default-doc-alias="{{ page.default_doc_alias | default: site.default_doc_alias | default: 'latest' }}"
+    data-version-warning-message="{{ site.version_warning_message | default: 'You are viewing a non-default version of these docs.' | escape }}">
+    <div class="border rounded-2 color-bg-subtle p-3 d-flex flex-items-start">
+        <span class="octicon octicon-alert-16 mr-2 mt-1 color-fg-attention"></span>
+        <div class="f6 color-fg-default">
+            <strong class="d-block mb-1">{{ site.version_warning_title | default: "Non-default version" }}</strong>
+            <span data-version-warning-text>{{ site.version_warning_message | default: "You are viewing a non-default version of these docs." }}</span>
+        </div>
+    </div>
+</div>
+{%- endif -%}

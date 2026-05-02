@@ -1,8 +1,20 @@
 {%- assign style = page.style | default: layout.style | default: site.style | default: "appbar" %}
 {%- assign light_theme = site.light_theme | default: "light" %}
 {%- assign dark_theme = site.dark_theme | default: "dark" %}
+{%- assign current_version = "" %}
+{%- if site.versioned_docs %}
+{%- assign baseurl_parts = site.baseurl | default: "" | split: "/" %}
+{%- assign current_version = baseurl_parts[1] | default: "" %}
+{%- endif %}
+{%- assign default_doc_alias = page.default_doc_alias | default: site.default_doc_alias | default: "latest" %}
+{%- assign versions_json_config = site.versions_json | default: "/versions.json" %}
+{%- if site.versioned_docs %}
+{%- assign versions_json = versions_json_config %}
+{%- else %}
+{%- assign versions_json = versions_json_config | relative_url %}
+{%- endif %}
 <!doctype html>
-<html lang="en" data-color-mode="auto" data-light-theme="{{ light_theme }}" data-dark-theme="{{ dark_theme }}">
+<html lang="en" data-color-mode="auto" data-light-theme="{{ light_theme }}" data-dark-theme="{{ dark_theme }}" data-baseurl="{{ site.baseurl }}" data-versioned-docs="{{ site.versioned_docs | default: false }}" data-doc-version="{{ current_version }}" data-default-doc-alias="{{ default_doc_alias }}" data-versions-json="{{ versions_json }}">
 
 {%- include head.html %}
 

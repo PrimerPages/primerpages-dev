@@ -98,6 +98,14 @@ Set edit url
         </div>
     </div>
     <div class="container-xl flex-1  p-responsive pb-6">
+        {%- assign current_version = "" %}
+        {%- if site.versioned_docs %}
+        {%- assign baseurl_parts = site.baseurl | default: "" | split: "/" %}
+        {%- assign current_version = baseurl_parts[1] | default: "" %}
+        {%- endif %}
+        {%- if current_version != "" %}
+        {% include version-warning.html %}
+        {%- endif %}
         <div class="py-4 d-flex">
             <div class="d-xl-none">
                 {% include collection-menu.html collection=docs name=collection_name index=collection_page %}

@@ -17,7 +17,17 @@
                     <span class="octicon octicon-mark-github-24"></span>
                 </a>
             </div>
-            <a href="{{ site.baseurl }}/" class="Header-item Header-link Header-item--full">{{ name }}</a>
+            <div class="Header-item Header-link Header-item--full">
+            <a href="{{ site.baseurl }}/">{{ name }}</a>
+            {%- assign current_version = "" %}
+            {%- if site.versioned_docs %}
+            {%- assign baseurl_parts = site.baseurl | default: "" | split: "/" %}
+            {%- assign current_version = baseurl_parts[1] | default: "" %}
+            {%- endif %}
+            {%- if current_version != "" %}
+            {% include version-selector.html details_class="details-reset details-overlay Header-item ml-2" summary_class="Header-link" %}
+            {%- endif %}
+            </div>
             <div class="Header-item">
             {% include toggle.html %}
             </div>

@@ -14,6 +14,16 @@
                 <span class="octicon octicon-mark-github-24"></span>
                 <span class="h4 text-semibold mx-3">{{ name }}</span>
             </a>
+            <span class="d-none d-sm-block flex-content-center">
+            {%- assign current_version = "" %}
+            {%- if site.versioned_docs %}
+            {%- assign baseurl_parts = site.baseurl | default: "" | split: "/" %}
+            {%- assign current_version = baseurl_parts[1] | default: "" %}
+            {%- endif %}
+            {%- if current_version != "" %}
+            {% include version-selector.html details_class="details-reset details-overlay ml-2" summary_class="AppHeader-link" %}
+            {%- endif %}
+            </span>
         </div>
         <div class="AppHeader-item d-flex flex-items-center">
             {% include toggle.html %}

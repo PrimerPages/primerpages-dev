@@ -36,6 +36,16 @@
                 <div class="px-5 py-2">
                     {%- include masthead.html size="128px" %}
                 </div>
+                <div class="d-flex flex-justify-center">
+                {%- assign current_version = "" %}
+                {%- if site.versioned_docs %}
+                {%- assign baseurl_parts = site.baseurl | default: "" | split: "/" %}
+                {%- assign current_version = baseurl_parts[1] | default: "" %}
+                {%- endif %}
+                {%- if current_version != "" %}
+                {% include version-selector.html details_class="details-reset details-overlay Header-item ml-2" summary_class="Header-link" %}
+                {%- endif %}
+                </div>
                 {%- if site.repo_info and site.repository %}
                 <div class="py-2">
                     {% include mini-repo-info-card.html class="Header-link no-underline" %}

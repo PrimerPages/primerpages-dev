@@ -1,0 +1,34 @@
+{%- assign current_version = "" -%}
+{%- if site.versioned_docs -%}
+{%- assign baseurl_parts = site.baseurl | default: "" | split: "/" -%}
+{%- assign current_version = baseurl_parts[1] | default: "" -%}
+{%- endif -%}
+{%- if current_version != "" -%}
+{%- assign details_class = include.details_class | default: "details-reset details-overlay" -%}
+{%- assign summary_class = include.summary_class | default: "Header-link" -%}
+{%- assign selector_label = site.version_selector_label | default: "Version" -%}
+<details class="{{ details_class }}" data-version-selector
+    data-doc-version="{{ current_version }}"
+    data-default-doc-alias="{{ page.default_doc_alias | default: site.default_doc_alias | default: 'latest' }}"
+    data-version-unavailable-label="{{ site.version_unavailable_label | default: 'Version info unavailable' }}">
+    <summary class="{{ summary_class }} d-flex flex-items-center text-nowrap" aria-haspopup="true">
+        <span class="f6 text-semibold">{{ selector_label }}</span>
+        <span class="f6 ml-1" data-version-current-label>{{ current_version }}</span>
+        <span class="octicon octicon-chevron-down-16 ml-1"></span>
+    </summary>
+    <details-menu class="SelectMenu" role="menu">
+        <div class="SelectMenu-modal">
+            <div class="SelectMenu-header">
+                <div tabindex="-1" class="SelectMenu-title">{{ selector_label }}</div>
+            </div>
+            <div class="SelectMenu-list" data-version-options>
+                <div class="SelectMenu-item color-fg-muted" data-version-loading>Loading versions...</div>
+            </div>
+            <div class="SelectMenu-footer">
+                <div class="ActionList-sectionDivider mt-0 mb-1"></div>
+                <div class="color-fg-muted f6" data-version-status></div>
+            </div>
+        </div>
+    </details-menu>
+</details>
+{%- endif -%}

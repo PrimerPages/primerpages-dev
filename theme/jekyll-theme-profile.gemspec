@@ -18,7 +18,8 @@ Gem::Specification.new do |spec|
                           '_sass/**/*',
                           '_config.yml',
                           'LICENSE',
-                          'README.md'
+                          'README.md',
+                          'VERSIONED_DOCS.md'
                         ])
 
   spec.required_ruby_version = '>=2.7.0'
