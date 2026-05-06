@@ -50,11 +50,13 @@
   </details>
 </li>
 {% elsif item_url != "" %}
-<a href="{{ item_url | relative_url }}" class="ActionListItem-label no-underline">
-  <li class="menu-item ActionList-item border-0" {% if page.url == item_url %}aria-current="page" {% endif %}>
-    {{ nav_item.title }}
-  </li>
-</a>
+<li class="list-style-none">
+  <a href="{{ item_url | relative_url }}" class="ActionListItem-label no-underline">
+    <div class="menu-item ActionList-item border-0" {% if page.url == item_url %}aria-current="page"{% endif %}>
+      {{ nav_item.title }}
+    </div>
+  </a>
+</li>
 {% else %}
 <li class="menu-item ActionList-item border-0 color-fg-default">
   {{ nav_item.title }}

@@ -32,6 +32,9 @@ links:
   - name: Custom header
     url: /demo/custom-header
     octicon: browser
+  - name: Awesome nav docs demo
+    url: /demo/awesome-nav
+    octicon: list-unordered
 ---
 
 # Welcome to jekyll-theme-profile theme!
