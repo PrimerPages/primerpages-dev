@@ -24,29 +24,37 @@ teardown() {
 
 @test "bump.sh updates quoted version" {
   mkdir -p theme
-  echo 'VERSION = "1.2.3"' > theme/VERSION
+  cat <<'EOF' > theme/jekyll-theme-profile.gemspec
+Gem::Specification.new do |spec|
+  spec.version       = '1.2.3'
+end
+EOF
   run ./bump.sh 2.0.0
   assert_success
-  run grep VERSION theme/VERSION
-  assert_output 'VERSION = "2.0.0"'
+  run grep "spec.version" theme/jekyll-theme-profile.gemspec
+  assert_output "  spec.version       = '2.0.0'"
 }
 
 @test "bump.sh updates unquoted version" {
   mkdir -p theme
-  echo 'VERSION = 1.2.3' > theme/VERSION
+  echo "  spec.version       = '1.2.3'" > theme/jekyll-theme-profile.gemspec
   run ./bump.sh 2.0.0
   assert_success
-  run grep VERSION theme/VERSION
-  assert_output 'VERSION = 2.0.0'
+  run grep "spec.version" theme/jekyll-theme-profile.gemspec
+  assert_output "  spec.version       = '2.0.0'"
 }
 
 @test "bump.sh updates bare version line" {
   mkdir -p theme
-  echo '1.2.3' > theme/VERSION
+  cat <<'EOF' > theme/jekyll-theme-profile.gemspec
+Gem::Specification.new do |spec|
+  spec.version       = "1.2.3"
+end
+EOF
   run ./bump.sh 2.0.0
   assert_success
-  run cat theme/VERSION
-  assert_output '2.0.0'
+  run grep "spec.version" theme/jekyll-theme-profile.gemspec
+  assert_output '  spec.version       = "2.0.0"'
 }
 
 @test "bump.sh rejects invalid version" {
@@ -58,28 +66,28 @@ teardown() {
 }
 
 @test "bump.sh uses --version-file flag" {
-  echo 'VERSION = "1.2.3"' > custom.txt
+  echo 'spec.version = "1.2.3"' > custom.txt
   run ./bump.sh 3.0.0 --file custom.txt
   assert_success
-  run grep VERSION custom.txt
-  assert_output 'VERSION = "3.0.0"'
+  run grep version custom.txt
+  assert_output 'spec.version = "3.0.0"'
 }
 
 @test "bump.sh uses VERSION_FILE env var" {
-  echo 'VERSION = "4.5.6"' > env_version.txt
+  echo 'spec.version = "4.5.6"' > env_version.txt
   VERSION_FILE=env_version.txt run ./bump.sh 5.0.0
   assert_success
-  run grep VERSION env_version.txt
-  assert_output 'VERSION = "5.0.0"'
+  run grep version env_version.txt
+  assert_output 'spec.version = "5.0.0"'
 }
 
 @test "bump.sh prefers --version-file over env var" {
-  echo 'VERSION = "6.6.6"' > ignored.txt
-  echo 'VERSION = "7.7.7"' > preferred.txt
+  echo 'spec.version = "6.6.6"' > ignored.txt
+  echo 'spec.version = "7.7.7"' > preferred.txt
   VERSION_FILE=ignored.txt run ./bump.sh 8.8.8 --file preferred.txt
   assert_success
-  run grep VERSION preferred.txt
-  assert_output 'VERSION = "8.8.8"'
+  run grep version preferred.txt
+  assert_output 'spec.version = "8.8.8"'
 }
 
 @test "bump.sh fails if version file is missing" {
@@ -90,18 +98,18 @@ teardown() {
 
 @test "bump.sh uses VERSION env var when --version is omitted" {
   mkdir -p theme
-  echo 'VERSION = "1.2.3"' > theme/VERSION
+  echo "  spec.version       = '1.2.3'" > theme/jekyll-theme-profile.gemspec
   VERSION=2.0.0 run ./bump.sh
   assert_success
-  run grep VERSION theme/VERSION
-  assert_output 'VERSION = "2.0.0"'
+  run grep "spec.version" theme/jekyll-theme-profile.gemspec
+  assert_output "  spec.version       = '2.0.0'"
 }
 
 @test "bump.sh prefers --version over VERSION env var" {
   mkdir -p theme
-  echo 'VERSION = "1.2.3"' > theme/VERSION
+  echo "  spec.version       = '1.2.3'" > theme/jekyll-theme-profile.gemspec
   VERSION=2.0.0 run ./bump.sh --version 3.0.0
   assert_success
-  run grep VERSION theme/VERSION
-  assert_output 'VERSION = "3.0.0"'
+  run grep "spec.version" theme/jekyll-theme-profile.gemspec
+  assert_output "  spec.version       = '3.0.0'"
 }
