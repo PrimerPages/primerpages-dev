@@ -14,7 +14,7 @@ fi
 usage() {
   cat <<'EOF'
 Usage:
-  .github/local_theme.sh --gemfile <path> [options]
+  local_theme.sh --gemfile <path> [options]
 
 Options:
   --gemfile <path>  Gemfile to use for the temporary local-theme bundle (required)

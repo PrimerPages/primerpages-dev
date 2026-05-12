@@ -29,7 +29,7 @@ code .
 
 And then [develop with vscode and docker](https://www.allisonthackston.com/articles/docker-development.html#how-to-set-up-vs-code-with-docker)
 
-To test locally, run the project scripts in `.github/` for build, serve, and test flows, and verify the generated output and docs updates where relevant.
+To test locally, run the project scripts in `bin/` for build, serve, and test flows, and verify the generated output and docs updates where relevant.
 
 ## Contributing Guidelines
 

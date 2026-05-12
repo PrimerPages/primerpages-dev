@@ -90,7 +90,7 @@ jobs:
       - name: Build site
         shell: bash
         run: |
-          bash .github/local_build.sh \
+          bash bin/local_build.sh \
             --source "site" \
             --destination "_site/site"
 
@@ -125,7 +125,7 @@ jobs:
       - name: Build template
         shell: bash
         run: |
-          bash .github/local_build.sh \
+          bash bin/local_build.sh \
             --source "templates/${{ matrix.template }}" \
             --destination "_site/${{ matrix.template }}"
 
@@ -166,7 +166,7 @@ jobs:
             --verbose \
             --config templates/primerpages-docs/semiliterate.yml
 
-          bash .github/local_build.sh \
+          bash bin/local_build.sh \
               --source "templates/primerpages-docs/site" \
               --destination "_site/primerpages-docs"
 
