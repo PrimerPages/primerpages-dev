@@ -52,7 +52,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-VERSION_FILE="${VERSION_FILE:-theme/VERSION}"
+VERSION_FILE="${VERSION_FILE:-theme/jekyll-theme-profile.gemspec}"
 
 # === Validate input ===
 if [[ -z "$VERSION" ]]; then
@@ -81,7 +81,7 @@ if [[ "$DRY_RUN" == "true" ]]; then
 fi
 
 # === Update version in file ===
-sed -i.bak -E "s/[0-9]+\.[0-9]+\.[0-9]+/$VERSION/" "$VERSION_FILE"
+sed -i.bak -E "s/(spec\.version\s*=\s*['\"])[^'\"]+(['\"])/\1$VERSION\2/" "$VERSION_FILE"
 rm -f "$VERSION_FILE.bak"
 
 echo "Updated to version $VERSION"

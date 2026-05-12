@@ -35,31 +35,24 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.305.0
 
-      - name: Check release version matches
+      - name: Set theme gemspec version
         shell: bash
         env:
           RELEASE_VERSION: ${{ github.event.release.tag_name || inputs.version }}
         run: |
-          VERSION="$(cat theme/VERSION)"
-          RELEASE_VERSION="${RELEASE_VERSION#v}"
-          if [ "$VERSION" != "$RELEASE_VERSION" ]; then
-            echo "Version from file: $VERSION"
-            echo "Version from release: $RELEASE_VERSION"
-            echo "Versions do not match!"
-            exit 1
-          fi
+          bash bin/bump.sh --version "${RELEASE_VERSION#v}"
 
       - name: Build gem
         working-directory: theme
         run: |
           mkdir -p pkg
-          gem build jekyll-theme-profile.gemspec --output "pkg/jekyll-theme-profile-$(cat VERSION).gem"
+          gem build jekyll-theme-profile.gemspec
 
       - name: Upload built gem artifact
         uses: actions/upload-artifact@v7.0.1
         with:
           name: built-gem
-          path: theme/pkg/*.gem
+          path: theme/jekyll-theme-profile-*.gem
           if-no-files-found: error
           retention-days: 7
 
