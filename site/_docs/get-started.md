@@ -42,7 +42,7 @@ user_metadata: true # Show the metadata associated with the user
 profile_link: true # Show a link to the user's GitHub profile
 ```
 
-Or you can start with one of the [template configs](https://github.com/PrimerPages/primerpages-dev/tree/main/templates){: data-proofer-ignore='' } and copy/customize the profile that best matches your setup.
+Or you can start with one of the [template configs](https://github.com/PrimerPages/primerpages-dev/tree/main/templates){: data-proofer-ignore='' } and copy/customize the profile that best matches your setup, including the docs-first `primerpages-docs` template for mixed Markdown and extracted source documentation.
 
 ## Building
 
