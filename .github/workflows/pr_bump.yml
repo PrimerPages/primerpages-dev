@@ -17,6 +17,6 @@ jobs:
       pull-requests: write
     uses: athackst/ci/.github/workflows/bump.yml@main
     with:
-      bump-script: .github/bump.sh
+      bump-script: bin/bump.sh
     secrets:
       token: ${{ secrets.CI_BOT_TOKEN }}

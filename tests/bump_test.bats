@@ -5,7 +5,7 @@ load 'bats_helper.sh'
 
 setup() {
   # Absolute path to the bump script
-  BUMP_SCRIPT="$(realpath .github/bump.sh)"
+  BUMP_SCRIPT="$(realpath bin/bump.sh)"
 
   # Temp directory for the test repo
   tmpdir="$BATS_TMPDIR/fake_repo"
