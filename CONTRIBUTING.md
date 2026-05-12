@@ -11,6 +11,7 @@ All contribution work for the following repositories should be made in `primerpa
 - `primerpages-gh-pages`
 - `primerpages-minimal`
 - `primerpages-recommended`
+- `primerpages-docs`
 
 Changes are synced out from `primerpages-dev` via automation. Please do not open direct content or theme change pull requests against those downstream repositories.
 

@@ -155,6 +155,9 @@ jobs:
           - repo: PrimerPages/primerpages-recommended
             branch: main
             path: primerpages-recommended
+          - repo: PrimerPages/primerpages-docs
+            branch: main
+            path: primerpages-docs
           - repo: PrimerPages/jekyll-theme-profile
             branch: main
             path: jekyll-theme-profile

@@ -40,6 +40,9 @@ jobs:
           - template_name: "primerpages-recommended"
             repo: PrimerPages/primerpages-recommended
             branch: main
+          - template_name: "primerpages-docs"
+            repo: PrimerPages/primerpages-docs
+            branch: main
     continue-on-error: true
 
     steps:

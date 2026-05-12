@@ -32,6 +32,7 @@ jobs:
           actionlint_flags: >-
             .github/workflows/*.yml
             site/.github/workflows/*.yml
+            templates/primerpages-docs/.github/workflows/*.yml
             templates/primerpages-gh-pages/.github/workflows/*.yml
             templates/primerpages-minimal/.github/workflows/*.yml
             templates/primerpages-recommended/.github/workflows/*.yml
@@ -133,11 +134,57 @@ jobs:
         with:
           directory: "_site/${{ matrix.template }}"
           host: https://www.primerpages.com
-          base_path: /${{ matrix.template }}/
+          base_path: ${{ matrix.template }}/
+          check_external_hash: false
+
+  docs-smoke-test:
+    runs-on: ubuntu-latest
+    name: Smoke test site
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+
+      - name: Install semiliterate
+        shell: bash
+        run: python -m pip install semiliterate
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Build site
+        shell: bash
+        run: |
+          semiliterate build \
+            --source templates/primerpages-docs \
+            --out templates/primerpages-docs/site \
+            --include-mode copy \
+            --verbose \
+            --config templates/primerpages-docs/semiliterate.yml
+
+          bash .github/local_build.sh \
+              --source "templates/primerpages-docs/site" \
+              --destination "_site/primerpages-docs"
+
+      - name: Debug output
+        run: |
+          tree _site/primerpages-docs
+          cat _site/primerpages-docs/index.html
+
+      - name: Htmlproofer
+        uses: athackst/htmlproofer-action@v2.0.0
+        with:
+          directory: "_site/primerpages-docs"
+          host: https://www.primerpages.com
+          base_path: primerpages-docs/
           check_external_hash: false
 
   success:
     runs-on: ubuntu-latest
-    needs: [workflow-test, integration-test, site-smoke-test, template-smoke-test]
+    needs: [workflow-test, integration-test, site-smoke-test, template-smoke-test, docs-smoke-test]
     steps:
       - run: echo "All steps completed successfully"
