@@ -29,6 +29,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         target:
           - template_name: "primerpages-gh-pages"
@@ -43,7 +44,6 @@ jobs:
           - template_name: "primerpages-docs"
             repo: PrimerPages/primerpages-docs
             branch: main
-    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v6

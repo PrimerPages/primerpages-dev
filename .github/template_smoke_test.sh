@@ -51,7 +51,7 @@ if [[ -z "${DESTINATION}" ]]; then
   DESTINATION="${SOURCE}/_site"
 fi
 
-BUILD_ARGS=(--source "templates/${SOURCE}" --gemfile "${GEMFILE}" --config "${CONFIG}" --destination "${DESTINATION}")
+BUILD_ARGS=(--source "${SOURCE}" --gemfile "${GEMFILE}" --config "${CONFIG}" --destination "${DESTINATION}")
 
 
 bash "${SCRIPT_DIR}/local_build.sh" "${BUILD_ARGS[@]}"
