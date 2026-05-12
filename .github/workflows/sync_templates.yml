@@ -25,7 +25,7 @@ env:
   DRY_RUN: ${{ inputs.dry-run || 'false' }}
 
 jobs:
-  sync-demos:
+  sync-templates:
     runs-on: ubuntu-latest
 
     strategy:
@@ -132,3 +132,9 @@ jobs:
           SYNC_PUSHED: ${{ steps.sync-push.outputs.pushed }}
           SYNC_COMMIT_SHA: ${{ steps.sync-push.outputs.commit_sha }}
           COMMIT_STATUS: ${{ steps.commit-status.outputs.status || 'not checked' }}
+
+  success:
+    runs-on: ubuntu-latest
+    needs: sync-templates
+    steps:
+      - run: echo "All steps completed successfully"
