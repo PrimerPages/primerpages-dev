@@ -5,7 +5,7 @@ on:
     branches: ["main"]
   workflow_call:
     secrets:
-      PR_TOKEN:
+      CI_BOT_TOKEN:
         required: true
   workflow_dispatch:
     inputs:
@@ -45,7 +45,7 @@ jobs:
         with:
           repository: ${{ env.TARGET_REPO }}
           ref: ${{ env.TARGET_BRANCH }}
-          token: ${{ secrets.PR_TOKEN }}
+          token: ${{ secrets.CI_BOT_TOKEN }}
           path: ${{ env.TARGET_PATH }}
 
       - name: Sync site directory
@@ -84,7 +84,7 @@ jobs:
         if: ${{ env.DRY_RUN != 'true' && steps.sync-push.outputs.pushed == 'true' }}
         uses: ./.github/actions/wait-for-workflow-status
         with:
-          token: ${{ secrets.PR_TOKEN }}
+          token: ${{ secrets.CI_BOT_TOKEN }}
           repo: ${{ env.TARGET_REPO }}
           workflow: site.yml
           commit_sha: ${{ steps.sync-push.outputs.commit_sha }}
