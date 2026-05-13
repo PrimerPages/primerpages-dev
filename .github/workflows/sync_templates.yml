@@ -8,7 +8,7 @@ on:
 
   workflow_call:
     secrets:
-      PR_TOKEN:
+      CI_BOT_TOKEN:
         required: true
   workflow_dispatch:
     inputs:
@@ -61,7 +61,7 @@ jobs:
         with:
           repository: ${{ matrix.target.repo }}
           ref: ${{ matrix.target.branch }}
-          token: ${{ secrets.PR_TOKEN }}
+          token: ${{ secrets.CI_BOT_TOKEN }}
           path: ${{ matrix.target.template_name }}
 
       - name: Sync template content
@@ -102,7 +102,7 @@ jobs:
         if: ${{ env.DRY_RUN != 'true' && steps.sync-push.outputs.pushed == 'true' }}
         uses: ./.github/actions/wait-for-workflow-status
         with:
-          token: ${{ secrets.PR_TOKEN }}
+          token: ${{ secrets.CI_BOT_TOKEN }}
           repo: ${{ matrix.target.repo }}
           workflow: site.yml
           commit_sha: ${{ steps.sync-push.outputs.commit_sha }}

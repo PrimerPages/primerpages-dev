@@ -7,7 +7,7 @@ on:
       - 'theme/**'
   workflow_call:
     secrets:
-      PR_TOKEN:
+      CI_BOT_TOKEN:
         required: true
   workflow_dispatch:
     inputs:
@@ -47,7 +47,7 @@ jobs:
         with:
           repository: ${{ env.TARGET_REPO }}
           ref: ${{ env.TARGET_BRANCH }}
-          token: ${{ secrets.PR_TOKEN }}
+          token: ${{ secrets.CI_BOT_TOKEN }}
           path: ${{ env.TARGET_PATH }}
 
       - name: Sync theme content
