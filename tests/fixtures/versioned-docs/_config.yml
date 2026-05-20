@@ -1,0 +1,38 @@
+title: PrimerPages Versioned Docs Fixture
+description: PrimerPages fixture for versioned documentation
+theme: jekyll-theme-profile
+style: appbar
+
+versions:
+  enabled: true
+  config: /versions.json
+  show_warning: true
+  selector_label: Version
+  warning_title: Non-default version
+  warning_message: You are viewing a non-default version of these docs.
+  unavailable_label: Version info unavailable
+
+collections:
+  docs:
+    output: true
+    sort_by: order
+
+defaults:
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      layout: docs
+      permalink: /docs/:path/
+      default_category: Guide
+      toc: true
+
+nav:
+  - name: Documentation
+    url: /docs/
+
+exclude:
+  - build.sh
+  - Gemfile
+  - Gemfile.lock
+  - serve.sh
