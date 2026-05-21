@@ -24,12 +24,12 @@ build_version() {
     --config "${SCRIPT_DIR}/_config.yml" \
     --destination "${destination}" \
     --baseurl "/${version}"
-
-  cp "${SCRIPT_DIR}/versions.json" "${destination}/versions.json"
 }
 
 build_version "dev"
 build_version "1.2.3"
+
+cp "${SCRIPT_DIR}/versions.json" "${SITE_DIR}/versions.json"
 
 rm -f "${SITE_DIR}/latest"
 ln -s "1.2.3" "${SITE_DIR}/latest"
