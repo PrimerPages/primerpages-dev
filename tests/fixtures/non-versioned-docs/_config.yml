@@ -1,0 +1,15 @@
+title: PrimerPages Non-Versioned Docs Fixture
+description: PrimerPages fixture for docs without version controls
+theme: jekyll-theme-profile
+
+collections:
+  docs:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      layout: docs
+      permalink: /docs/:path/

@@ -15,6 +15,7 @@ SOURCE=""
 CONFIG=""
 GEMFILE=""
 DESTINATION=""
+BASEURL="${BASEURL:-}"
 EXTRA_BUILD_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -33,6 +34,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --destination)
       DESTINATION="$2"
+      shift 2
+      ;;
+    --baseurl)
+      BASEURL="$2"
       shift 2
       ;;
     --)
@@ -74,6 +79,9 @@ LOCAL_GEMFILE="$(ruby -rjson -e 'puts JSON.parse(STDIN.read).fetch("local_gemfil
 echo "Using source: ${SOURCE}"
 echo "Using config: ${LOCAL_THEME_CONFIG}"
 echo "Using Gemfile: ${LOCAL_GEMFILE}"
+if [[ -n "${BASEURL}" ]]; then
+  echo "Using baseurl: ${BASEURL}"
+fi
 
 SOURCE_ABS="$(cd "$SOURCE" && pwd)"
 
@@ -83,8 +91,17 @@ export BUNDLE_PATH="${SOURCE_ABS}/vendor/bundle"
 
 bundle install
 
-bundle exec jekyll build \
-  --source "${SOURCE}" \
-  --config "${LOCAL_THEME_CONFIG}" \
-  --destination "${DESTINATION}" \
-  "${EXTRA_BUILD_ARGS[@]}"
+BUILD_CMD=(
+  bundle exec jekyll build
+  --source "${SOURCE}"
+  --config "${LOCAL_THEME_CONFIG}"
+  --destination "${DESTINATION}"
+)
+
+if [[ -n "${BASEURL}" ]]; then
+  BUILD_CMD+=(--baseurl "${BASEURL}")
+fi
+
+BUILD_CMD+=("${EXTRA_BUILD_ARGS[@]}")
+
+"${BUILD_CMD[@]}"
