@@ -65,11 +65,33 @@ assert_versioned_docs() {
 
 assert_non_versioned_docs() {
   local page="_site/docs/get-started/index.html"
+  local nested_page="_site/docs/guides/writing-guides/index.html"
 
   run grep -FR "data-versioning-enabled=\"false\"" "$page"
   assert_success "Non-versioned docs page did not disable versioned docs mode"
   run grep -FR "data-versions-json=" "$page"
   assert_failure "Non-versioned docs page should not expose a versions JSON URL"
+  run grep -FR "href=\"/docs/guides/index/\"" "$nested_page"
+  assert_success "Nested docs breadcrumb did not include the intermediate guides index"
+  run grep -FR "href=\"/docs/guides/writing-guides/\"" "$nested_page"
+  assert_success "Nested docs breadcrumb did not include the current page"
+}
+
+assert_awesome_breadcrumb_docs() {
+  local page="_site/docs/writing-guides/index.html"
+
+  run grep -FR "href=\"/docs/guides/\"" "$page"
+  assert_success "Docs page did not render the overview page as the intermediate breadcrumb"
+  run grep -FR "<li class=\"breadcrumb-item\">" "$page"
+  assert_success "Docs page did not render breadcrumb items"
+  run grep -FR "<a href=\"/docs/guides/\">Guides</a>" "$page"
+  assert_success "Docs page did not render the linked awesome-nav section breadcrumb"
+  run grep -FR "<li class=\"breadcrumb-item breadcrumb-item-selected\" aria-current=\"page\">" "$page"
+  assert_success "Docs page did not render the selected awesome-style breadcrumb item"
+  run grep -FR "Writing Guides" "$page"
+  assert_success "Docs page did not render the awesome-style current breadcrumb title"
+  run grep -FR ">home<" "$page"
+  assert_success "Docs page did not preserve the root breadcrumb"
 }
 
 @test "jekyll-githubpages builds and reports version" {
@@ -116,6 +138,13 @@ assert_non_versioned_docs() {
   pushd "$BATS_TEST_DIRNAME/fixtures/non-versioned-docs" >/dev/null
     build_site
     assert_non_versioned_docs
+  popd >/dev/null
+}
+
+@test "docs layout keeps awesome-style overview breadcrumbs from nav tree" {
+  pushd "$BATS_TEST_DIRNAME/fixtures/awesome-breadcrumbs-docs" >/dev/null
+    build_site
+    assert_awesome_breadcrumb_docs
   popd >/dev/null
 }
 
