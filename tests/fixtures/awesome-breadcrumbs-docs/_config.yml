@@ -1,0 +1,18 @@
+title: PrimerPages Awesome Breadcrumbs Fixture
+description: PrimerPages fixture for docs pages with awesome-style breadcrumbs
+theme: jekyll-theme-profile
+
+awesome_nav:
+  enabled: true
+
+collections:
+  docs:
+    output: true
+
+defaults:
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      layout: docs
+      permalink: /docs/:path/
