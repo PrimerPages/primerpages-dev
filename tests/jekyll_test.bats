@@ -80,12 +80,14 @@ assert_non_versioned_docs() {
 assert_awesome_breadcrumb_docs() {
   local page="_site/docs/writing-guides/index.html"
 
-  run grep -FR "href=\"/docs/guides/\"" "$page"
-  assert_success "Docs page did not render the overview page as the intermediate breadcrumb"
+  run grep -FR "<a href=\"/docs/guides/\">Guides</a>" "$page"
+  assert_failure "Docs page should not link section breadcrumbs without explicit URLs"
   run grep -FR "<li class=\"breadcrumb-item\">" "$page"
   assert_success "Docs page did not render breadcrumb items"
-  run grep -FR "<a href=\"/docs/guides/\">Guides</a>" "$page"
-  assert_success "Docs page did not render the linked awesome-nav section breadcrumb"
+  run grep -FR "<li class=\"breadcrumb-item\">"$'\n'"        Guides" "$page"
+  assert_success "Docs page did not render the plain-text awesome-nav section breadcrumb"
+  run grep -FR "<li class=\"breadcrumb-item breadcrumb-item-selected\" aria-current=\"page\">"$'\n'"        Writing Guides" "$page"
+  assert_success "Docs page did not render the selected awesome-style current breadcrumb item"
   run grep -FR "<li class=\"breadcrumb-item breadcrumb-item-selected\" aria-current=\"page\">" "$page"
   assert_success "Docs page did not render the selected awesome-style breadcrumb item"
   run grep -FR "Writing Guides" "$page"
@@ -141,7 +143,7 @@ assert_awesome_breadcrumb_docs() {
   popd >/dev/null
 }
 
-@test "docs layout keeps awesome-style overview breadcrumbs from nav tree" {
+@test "docs layout renders awesome-nav section breadcrumbs without links" {
   pushd "$BATS_TEST_DIRNAME/fixtures/awesome-breadcrumbs-docs" >/dev/null
     build_site
     assert_awesome_breadcrumb_docs
