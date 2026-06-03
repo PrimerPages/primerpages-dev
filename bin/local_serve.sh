@@ -14,6 +14,7 @@ fi
 SOURCE=""
 CONFIG=""
 GEMFILE=""
+HOST="${HOST:-0.0.0.0}"
 EXTRA_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -77,6 +78,7 @@ bundle install
 bundle exec jekyll serve \
   --source "${SOURCE}" \
   --config "${LOCAL_THEME_CONFIG}" \
+  --host "${HOST}" \
   --incremental \
   --livereload \
   "${EXTRA_ARGS[@]}"

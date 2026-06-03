@@ -1,6 +1,6 @@
 # Guardfile
 
-ignore(%r{^_site/})
+ignore(%r{(^|/)_site/})
 ignore(%r{(^|/)\.jekyll-cache/})
 ignore(%r{(^|/)\.jekyll-metadata$})
 ignore(%r{(^|/)\.sass-cache/})
