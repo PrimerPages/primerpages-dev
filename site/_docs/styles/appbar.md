@@ -12,6 +12,7 @@ The **appbar** style modifies the theme's header section to provide a clean, Git
 - A fixed top navigation bar
 - Consistent spacing and typography matching GitHub's Primer style
 - Dark and light mode compatibility
+- A configurable brand icon for the site title
 
 ## Usage
 
@@ -23,6 +24,12 @@ Modify the `_config.yml` file to set `appbar` as the theme's default style
 
 ```yml
 style: appbar
+```
+
+To control the icon shown next to the site title:
+
+```yml
+appbar_icon: favicon # Use "none", "favicon", or an Octicon name like "mark-github"
 ```
 
 ### Setting the style of a page
