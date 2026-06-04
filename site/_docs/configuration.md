@@ -60,10 +60,10 @@ user_image: /assets/img/user-image.jpg
 
 #### Setting the appbar icon
 
-If you use the `appbar` style, you can control the icon shown next to the site title.
+If you use the `appbar` or `topbar` style, you can control the icon shown next to the site title.
 
 ```yaml
-appbar_icon: favicon # Use "none", "favicon", or an Octicon name like "mark-github"
+header_icon: favicon # Use "none", "favicon", or an Octicon name like "mark-github"
 ```
 
 - `none` hides the icon entirely
