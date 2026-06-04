@@ -58,6 +58,18 @@ By default, the theme uses your GitHub avatar. You can also set a custom avatar 
 user_image: /assets/img/user-image.jpg
 ```
 
+#### Setting the appbar icon
+
+If you use the `appbar` style, you can control the icon shown next to the site title.
+
+```yaml
+appbar_icon: favicon # Use "none", "favicon", or an Octicon name like "mark-github"
+```
+
+- `none` hides the icon entirely
+- `favicon` uses `site.favicon` or `site.logo`
+- Any other value is treated as an Octicon name
+
 #### Customizing light and dark themes
 
 This setting controls the light and dark color themes for your site. These theme names come from [Primer CSS](https://primer.style/css/storybook/?path=/docs/support-theming--docs).
