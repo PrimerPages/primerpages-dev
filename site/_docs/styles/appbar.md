@@ -29,7 +29,7 @@ style: appbar
 To control the icon shown next to the site title:
 
 ```yml
-appbar_icon: favicon # Use "none", "favicon", or an Octicon name like "mark-github"
+header_icon: favicon # Use "none", "favicon", or an Octicon name like "mark-github"
 ```
 
 ### Setting the style of a page
