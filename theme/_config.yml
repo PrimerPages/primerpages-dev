@@ -1,9 +1,9 @@
 # ######## Jekyll Site Settings ##########
-theme: jekyll-theme-profile
-title: Jekyll Theme Profile
-description: Theme built with jekyll-theme-profile
+theme: jekyll-theme-primerpages
+title: PrimerPages
+description: Theme built with jekyll-theme-primerpages
 # image: /assets/img/social-preview.png
-repository: PrimerPages/jekyll-theme-profile
+repository: PrimerPages/jekyll-theme-primerpages
 
 defaults:
   - scope:

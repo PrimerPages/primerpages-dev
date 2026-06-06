@@ -8,6 +8,9 @@ Usage:
 
 Examples:
   ./build.sh 1.2.3
+
+Environment:
+  GEMSPEC_FILE   Gemspec filename to build (default: jekyll-theme-primerpages.gemspec)
 EOF
 }
 
@@ -29,14 +32,26 @@ shopt -s nullglob
 gemspecs=("${SCRIPT_DIR}"/*.gemspec)
 shopt -u nullglob
 
-if [[ "${#gemspecs[@]}" -ne 1 ]]; then
-  echo "Expected exactly one gemspec in ${SCRIPT_DIR}" >&2
+if [[ "${#gemspecs[@]}" -eq 0 ]]; then
+  echo "Expected at least one gemspec in ${SCRIPT_DIR}" >&2
   exit 1
 fi
 
-GEMSPEC_BASENAME="$(basename "${gemspecs[0]}")"
+GEMSPEC_FILE="${GEMSPEC_FILE:-jekyll-theme-primerpages.gemspec}"
+TARGET_GEMSPEC="${SCRIPT_DIR}/${GEMSPEC_FILE}"
+
+if [[ -f "${TARGET_GEMSPEC}" ]]; then
+  GEMSPEC="${TARGET_GEMSPEC}"
+elif [[ "${#gemspecs[@]}" -eq 1 ]]; then
+  GEMSPEC="${gemspecs[0]}"
+else
+  echo "Found multiple gemspecs in ${SCRIPT_DIR}, but ${GEMSPEC_FILE} was not present:" >&2
+  printf ' - %s\n' "${gemspecs[@]##*/}" >&2
+  exit 1
+fi
+
+GEMSPEC_BASENAME="$(basename "${GEMSPEC}")"
 GEM_NAME="$(basename "${GEMSPEC_BASENAME}" .gemspec)"
-GEMSPEC="${SCRIPT_DIR}/${GEMSPEC_BASENAME}"
 OUTPUT_GEM="${SCRIPT_DIR}/${GEM_NAME}-${VERSION}.gem"
 
 if [[ ! -f "${GEMSPEC}" ]]; then

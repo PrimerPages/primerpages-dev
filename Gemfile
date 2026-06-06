@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
 
-gem 'jekyll-theme-profile', path: 'theme'
+gem 'jekyll-theme-primerpages', path: 'theme'
 
 gem 'jekyll', '4.4.1'
 
