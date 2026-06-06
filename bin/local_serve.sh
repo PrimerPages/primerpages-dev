@@ -79,6 +79,5 @@ bundle exec jekyll serve \
   --source "${SOURCE}" \
   --config "${LOCAL_THEME_CONFIG}" \
   --host "${HOST}" \
-  --incremental \
   --livereload \
   "${EXTRA_ARGS[@]}"
