@@ -9,16 +9,6 @@ on:
         description: "Release version to publish or test (for example, 1.13.0)"
         required: true
         type: string
-      dry-run:
-        description: "Build and validate without publishing or tagging"
-        required: false
-        default: true
-        type: boolean
-      tag-downstream:
-        description: "Tag downstream repositories after publishing"
-        required: false
-        default: false
-        type: boolean
 
 jobs:
   release-theme-repo:
@@ -28,7 +18,6 @@ jobs:
       contents: write
     steps:
       - name: Create downstream theme release
-        if: ${{ github.event_name == 'release' || !inputs.dry-run }}
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.CI_BOT_TOKEN }}
@@ -50,10 +39,11 @@ jobs:
           RELEASE_TITLE="${RELEASE_NAME:-Release ${RELEASE_TAG}}"
 
           if gh release view "$RELEASE_TAG" --repo "$TARGET_REPO" >/dev/null 2>&1; then
-            gh release edit "$RELEASE_TAG" \
+            gh workflow run release.yml \
               --repo "$TARGET_REPO" \
-              --title "$RELEASE_TITLE" \
-              --notes-file "$NOTES_FILE"
+              --ref "$TARGET_BRANCH" \
+              -f version="${RELEASE_TAG#v}" \
+              -f dry-run=false
           else
             gh release create "$RELEASE_TAG" \
               --repo "$TARGET_REPO" \
@@ -65,7 +55,6 @@ jobs:
   wait-for-gem:
     name: Wait for gem availability
     needs: [release-theme-repo]
-    if: ${{ github.event_name == 'release' || !inputs.dry-run }}
     runs-on: ubuntu-latest
     steps:
       - name: Setup Ruby
@@ -102,7 +91,6 @@ jobs:
   update-downstream-repos:
     name: Tag downstream repositories
     needs: [release-theme-repo, wait-for-gem]
-    if: ${{ always() && needs.release-theme-repo.result == 'success' && needs.wait-for-gem.result == 'success' && (github.event_name == 'release' || (inputs.tag-downstream && !inputs.dry-run)) }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
