@@ -5,6 +5,7 @@ updates:
     - "/"
     - "templates/*/.github/workflows/"
     - "site/.github/workflows/"
+    - "theme/.github/workflows/"
   schedule:
     interval: daily
   open-pull-requests-limit: 10
