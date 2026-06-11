@@ -24,7 +24,7 @@ assert_jekyll_version() {
 }
 
 assert_theme() {
-  run grep -FR "Made with <a href=\"https://primerpages.github.io/jekyll-theme-profile/\">jekyll theme profile</a>" "_site/index.html"
+  run grep -FR "Made with <a href=\"https://www.primerpages.com\">PrimerPages</a>" "_site/index.html"
   assert_success "PrimerPages theme not detected"
 }
 

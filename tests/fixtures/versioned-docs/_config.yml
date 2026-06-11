@@ -1,6 +1,6 @@
 title: PrimerPages Versioned Docs Fixture
 description: PrimerPages fixture for versioned documentation
-theme: jekyll-theme-profile
+theme: jekyll-theme-primerpages
 style: appbar
 
 versions:

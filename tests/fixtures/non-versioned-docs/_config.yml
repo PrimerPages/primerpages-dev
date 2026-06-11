@@ -1,6 +1,6 @@
 title: PrimerPages Non-Versioned Docs Fixture
 description: PrimerPages fixture for docs without version controls
-theme: jekyll-theme-profile
+theme: jekyll-theme-primerpages
 
 collections:
   docs:

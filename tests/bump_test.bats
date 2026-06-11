@@ -24,36 +24,36 @@ teardown() {
 
 @test "bump.sh updates quoted version" {
   mkdir -p theme
-  cat <<'EOF' > theme/jekyll-theme-profile.gemspec
+  cat <<'EOF' > theme/jekyll-theme-primerpages.gemspec
 Gem::Specification.new do |spec|
   spec.version       = '1.2.3'
 end
 EOF
   run ./bump.sh 2.0.0
   assert_success
-  run grep "spec.version" theme/jekyll-theme-profile.gemspec
+  run grep "spec.version" theme/jekyll-theme-primerpages.gemspec
   assert_output "  spec.version       = '2.0.0'"
 }
 
 @test "bump.sh updates unquoted version" {
   mkdir -p theme
-  echo "  spec.version       = '1.2.3'" > theme/jekyll-theme-profile.gemspec
+  echo "  spec.version       = '1.2.3'" > theme/jekyll-theme-primerpages.gemspec
   run ./bump.sh 2.0.0
   assert_success
-  run grep "spec.version" theme/jekyll-theme-profile.gemspec
+  run grep "spec.version" theme/jekyll-theme-primerpages.gemspec
   assert_output "  spec.version       = '2.0.0'"
 }
 
 @test "bump.sh updates bare version line" {
   mkdir -p theme
-  cat <<'EOF' > theme/jekyll-theme-profile.gemspec
+  cat <<'EOF' > theme/jekyll-theme-primerpages.gemspec
 Gem::Specification.new do |spec|
   spec.version       = "1.2.3"
 end
 EOF
   run ./bump.sh 2.0.0
   assert_success
-  run grep "spec.version" theme/jekyll-theme-profile.gemspec
+  run grep "spec.version" theme/jekyll-theme-primerpages.gemspec
   assert_output '  spec.version       = "2.0.0"'
 }
 
@@ -98,18 +98,18 @@ EOF
 
 @test "bump.sh uses VERSION env var when --version is omitted" {
   mkdir -p theme
-  echo "  spec.version       = '1.2.3'" > theme/jekyll-theme-profile.gemspec
+  echo "  spec.version       = '1.2.3'" > theme/jekyll-theme-primerpages.gemspec
   VERSION=2.0.0 run ./bump.sh
   assert_success
-  run grep "spec.version" theme/jekyll-theme-profile.gemspec
+  run grep "spec.version" theme/jekyll-theme-primerpages.gemspec
   assert_output "  spec.version       = '2.0.0'"
 }
 
 @test "bump.sh prefers --version over VERSION env var" {
   mkdir -p theme
-  echo "  spec.version       = '1.2.3'" > theme/jekyll-theme-profile.gemspec
+  echo "  spec.version       = '1.2.3'" > theme/jekyll-theme-primerpages.gemspec
   VERSION=2.0.0 run ./bump.sh --version 3.0.0
   assert_success
-  run grep "spec.version" theme/jekyll-theme-profile.gemspec
+  run grep "spec.version" theme/jekyll-theme-primerpages.gemspec
   assert_output "  spec.version       = '3.0.0'"
 }

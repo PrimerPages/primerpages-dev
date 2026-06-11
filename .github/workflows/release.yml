@@ -16,6 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    strategy:
+      matrix:
+        target:
+          - repo: PrimerPages/jekyll-theme-primerpages
+            branch: main
+          - repo: PrimerPages/jekyll-theme-profile
+            branch: main
     steps:
       - name: Create downstream theme release
         shell: bash
@@ -24,8 +31,8 @@ jobs:
           RELEASE_TAG: ${{ github.event.release.tag_name || inputs.version }}
           RELEASE_NAME: ${{ github.event.release.name }}
           RELEASE_BODY: ${{ github.event.release.body }}
-          TARGET_REPO: PrimerPages/jekyll-theme-profile
-          TARGET_BRANCH: main
+          TARGET_REPO: ${{ matrix.target.repo }}
+          TARGET_BRANCH: ${{ matrix.target.branch }}
         run: |
           set -euo pipefail
 
@@ -74,18 +81,18 @@ jobs:
           SLEEP_SECONDS=10
 
           for attempt in $(seq 1 "$ATTEMPTS"); do
-            rm -f "jekyll-theme-profile-${VERSION}.gem"
+            rm -f "jekyll-theme-primerpages-${VERSION}.gem"
 
-            if gem fetch jekyll-theme-profile --version "$VERSION" --clear-sources --source https://rubygems.org >/dev/null 2>&1; then
-              echo "Gem jekyll-theme-profile ${VERSION} is available from RubyGems."
+            if gem fetch jekyll-theme-primerpages --version "$VERSION" --clear-sources --source https://rubygems.org >/dev/null 2>&1; then
+              echo "Gem jekyll-theme-primerpages ${VERSION} is available from RubyGems."
               exit 0
             fi
 
-            echo "Attempt ${attempt}/${ATTEMPTS}: gem jekyll-theme-profile ${VERSION} is not available yet."
+            echo "Attempt ${attempt}/${ATTEMPTS}: gem jekyll-theme-primerpages ${VERSION} is not available yet."
             sleep "$SLEEP_SECONDS"
           done
 
-          echo "Timed out waiting for jekyll-theme-profile ${VERSION} to become available on RubyGems."
+          echo "Timed out waiting for jekyll-theme-primerpages ${VERSION} to become available on RubyGems."
           exit 1
 
   update-downstream-repos:

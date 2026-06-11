@@ -52,7 +52,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-VERSION_FILE="${VERSION_FILE:-theme/jekyll-theme-profile.gemspec}"
+VERSION_FILE="${VERSION_FILE:-theme/jekyll-theme-primerpages.gemspec}"
 
 # === Validate input ===
 if [[ -z "$VERSION" ]]; then

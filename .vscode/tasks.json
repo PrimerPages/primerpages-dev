@@ -6,7 +6,7 @@
         {
             "label": "gem: build",
             "type": "shell",
-            "command": "gem build theme/jekyll-theme-profile.gemspec",
+            "command": "gem build theme/jekyll-theme-primerpages.gemspec",
             "options": {
                 "env": {
                     "GEM_VERSION": "0.0.0"
@@ -16,7 +16,7 @@
         {
             "label": "gem: push",
             "type": "shell",
-            "command": "gem push jekyll-theme-profile-*.gem"
+            "command": "gem push jekyll-theme-primerpages*.gem"
         },
         {
             "label": "bundle: update",
@@ -173,7 +173,7 @@
         {
             "label": "release",
             "type": "shell",
-            "command": "bin/release.sh theme/jekyll-theme-profile.gemspec",
+            "command": "bin/release.sh theme/jekyll-theme-primerpages.gemspec",
             "problemMatcher": []
         },
     ]

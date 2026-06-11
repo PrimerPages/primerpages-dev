@@ -1,6 +1,6 @@
 title: PrimerPages Awesome Breadcrumbs Fixture
 description: PrimerPages fixture for docs pages with awesome-style breadcrumbs
-theme: jekyll-theme-profile
+theme: jekyll-theme-primerpages
 
 awesome_nav:
   enabled: true

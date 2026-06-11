@@ -28,6 +28,42 @@ Output:
 EOF
 }
 
+rewrite_local_theme_refs() {
+  local theme_name="$1"
+  local theme_line="gem '${theme_name}', path: '${THEME_DIR}'"
+
+  if grep -Eq "^[[:space:]]*gem[[:space:]]+['\"]${theme_name}['\"]" "${TMP_GEMFILE}"; then
+    local rewrite_file
+    rewrite_file="$(mktemp /tmp/Gemfile.local-theme.rewrite.XXXXXX)"
+    awk -v repl="${theme_line}" -v theme_name="${theme_name}" '
+      BEGIN { replaced = 0 }
+      {
+        pattern = "^[[:space:]]*gem[[:space:]]+[\"\047]" theme_name "[\"\047]"
+        if ($0 ~ pattern) {
+          if (!replaced) {
+            print repl
+            replaced = 1
+          }
+          next
+        }
+        print
+      }
+      END {
+        if (!replaced) {
+          print repl
+        }
+      }
+    ' "${TMP_GEMFILE}" > "${rewrite_file}"
+    mv "${rewrite_file}" "${TMP_GEMFILE}"
+  else
+    printf "\n%s\n" "${theme_line}" >> "${TMP_GEMFILE}"
+  fi
+
+  if grep -Eq "^[[:space:]]*remote_theme:[[:space:]]*" "${TMP_CONFIG}"; then
+    sed -E -i "s|^[[:space:]]*remote_theme:[[:space:]]*.*$|theme: ${theme_name}|" "${TMP_CONFIG}"
+  fi
+}
+
 CONFIG=""
 GEMFILE=""
 
@@ -99,35 +135,8 @@ TMP_CONFIG="$(mktemp /tmp/_config.local-theme.XXXXXX.yml)"
 cp "${GEMFILE_PATH}" "${TMP_GEMFILE}"
 cp "${CONFIG_PATH}" "${TMP_CONFIG}"
 
-THEME_LINE="gem 'jekyll-theme-profile', path: '${THEME_DIR}'"
-if grep -Eq "^[[:space:]]*gem[[:space:]]+['\"]jekyll-theme-profile['\"]" "${TMP_GEMFILE}"; then
-  REWRITE_FILE="$(mktemp /tmp/Gemfile.local-theme.rewrite.XXXXXX)"
-  awk -v repl="${THEME_LINE}" '
-    BEGIN { replaced = 0 }
-    {
-      if ($0 ~ /^[[:space:]]*gem[[:space:]]+["\047]jekyll-theme-profile["\047]/) {
-        if (!replaced) {
-          print repl
-          replaced = 1
-        }
-        next
-      }
-      print
-    }
-    END {
-      if (!replaced) {
-        print repl
-      }
-    }
-  ' "${TMP_GEMFILE}" > "${REWRITE_FILE}"
-  mv "${REWRITE_FILE}" "${TMP_GEMFILE}"
-else
-  printf "\n%s\n" "${THEME_LINE}" >> "${TMP_GEMFILE}"
-fi
-
-if grep -Eq "^[[:space:]]*remote_theme:[[:space:]]*" "${TMP_CONFIG}"; then
-  sed -E -i "s|^[[:space:]]*remote_theme:[[:space:]]*.*$|theme: jekyll-theme-profile|" "${TMP_CONFIG}"
-fi
+rewrite_local_theme_refs "jekyll-theme-profile"
+rewrite_local_theme_refs "jekyll-theme-primerpages"
 
 printf '{"local_theme_config":"%s","local_gemfile":"%s"}\n' \
   "${TMP_CONFIG}" \

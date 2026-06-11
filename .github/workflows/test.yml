@@ -134,7 +134,7 @@ jobs:
         with:
           directory: "_site/${{ matrix.template }}"
           host: https://www.primerpages.com
-          base_path: ${{ matrix.template }}/
+          base_path: /${{ matrix.template }}
           check_external_hash: false
 
   docs-smoke-test:
@@ -180,7 +180,7 @@ jobs:
         with:
           directory: "_site/primerpages-docs"
           host: https://www.primerpages.com
-          base_path: primerpages-docs/
+          base_path: /primerpages-docs
           check_external_hash: false
 
   success:
