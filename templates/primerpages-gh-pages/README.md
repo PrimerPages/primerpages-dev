@@ -16,7 +16,7 @@ This template is maintained in `primerpages-dev`.
 
 ## What This Template Is For
 
-- `remote_theme: PrimerPages/jekyll-theme-profile` in `_config.yml`
+- `remote_theme: PrimerPages/jekyll-theme-primerpages` in `_config.yml`
 - A starter site structure (`index.md`, `blog/`, `tags/`, docs, and sample posts)
 - A setup that works with GitHub Pages branch publishing
 

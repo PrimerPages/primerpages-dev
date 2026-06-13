@@ -2,19 +2,19 @@
 title: "Get started"
 order: 1
 category: Getting started
-image: "https://raw.githubusercontent.com/PrimerPages/jekyll-theme-profile/main/screenshot.png"
+image: "https://raw.githubusercontent.com/PrimerPages/jekyll-theme-primerpages/main/screenshot.png"
 ---
 
 This theme is based on GitHub's Primer style. It supports both light and dark modes, and four style options: [appbar](styles/appbar.md), [sidebar](styles/sidebar.md), [stacked](styles/stacked.md), and [topbar](styles/topbar.md).
 
-![jekyll-theme-profile](https://raw.githubusercontent.com/PrimerPages/jekyll-theme-profile/main/screenshot.png)
+![jekyll-theme-primerpages](https://raw.githubusercontent.com/PrimerPages/jekyll-theme-primerpages/main/screenshot.png)
 
 ## Installation
 
 Add this line to your Jekyll site's `Gemfile`:
 
 ```ruby
-gem "jekyll-theme-profile"
+gem "jekyll-theme-primerpages"
 ```
 
 And then execute:
@@ -26,7 +26,7 @@ bundle install
 Or install it yourself as:
 
 ```shell
-gem install jekyll-theme-profile
+gem install jekyll-theme-primerpages
 ```
 
 ## Configuration
@@ -34,7 +34,7 @@ gem install jekyll-theme-profile
 And add this line to your Jekyll site's `_config.yml`:
 
 ```yaml
-theme: jekyll-theme-profile
+theme: jekyll-theme-primerpages
 style: topbar # One of "stacked", "sidebar", "topbar", "appbar"
 repository: your-user/your-repo # optional, enables repository cards and docs edit links
 repo_info: true # Show the information for the source of this project

@@ -16,7 +16,7 @@ This template is maintained in `primerpages-dev`.
 
 ## What This Template Is For
 
-- `theme: jekyll-theme-profile` in `_config.yml`
+- `theme: jekyll-theme-primerpages` in `_config.yml`
 - A documentation-first site structure (`index.md`, `getting-started.md`, `guides/`, and `src/`)
 - Folder-based navigation driven by `.nav.yml`
 - Source extraction configured through `semiliterate.yml`
