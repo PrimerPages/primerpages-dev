@@ -11,7 +11,7 @@ This theme can be configured through `_config.yml`, and most settings can also b
 ### Setting the theme
 
 ```yaml
-theme: jekyll-theme-profile
+theme: jekyll-theme-primerpages
 ```
 
 ### Customizing the theme

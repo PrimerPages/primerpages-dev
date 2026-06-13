@@ -1,7 +1,7 @@
 # ######## Jekyll Site Settings ##########
-theme: jekyll-theme-profile
+theme: jekyll-theme-primerpages
 title: Primer Pages
-description: Theme built with jekyll-theme-profile
+description: Theme built with jekyll-theme-primerpages
 image: /assets/img/social-preview.png
 
 permalink: pretty

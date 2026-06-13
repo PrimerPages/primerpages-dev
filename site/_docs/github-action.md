@@ -2,7 +2,7 @@
 title: "Using with GitHub Actions"
 order: 100
 category: Advanced
-image: "https://raw.githubusercontent.com/PrimerPages/jekyll-theme-profile/main/screenshot.png"
+image: "https://raw.githubusercontent.com/PrimerPages/jekyll-theme-primerpages/main/screenshot.png"
 ---
 
 You can also deploy this site with GitHub Actions. Below is a typical workflow file.

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
 
-gem 'jekyll-theme-profile'
+gem 'jekyll-theme-primerpages'
 
 group :jekyll_plugins do
   gem 'jekyll-awesome-nav'

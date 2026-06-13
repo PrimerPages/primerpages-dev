@@ -37,7 +37,7 @@ links:
     octicon: list-unordered
 ---
 
-# Welcome to jekyll-theme-profile theme!
+# Welcome to jekyll-theme-primerpages theme!
 
 This theme is based on GitHub's primer style. It supports both light and dark modes, and four style options:
 
