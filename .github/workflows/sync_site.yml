@@ -30,7 +30,7 @@ jobs:
       TARGET_BRANCH: "main"
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -41,7 +41,7 @@ jobs:
           echo "commit-msg=${COMMIT_MSG//$'\n'/ }" >> "$GITHUB_OUTPUT"
 
       - name: Checkout target repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ env.TARGET_REPO }}
           ref: ${{ env.TARGET_BRANCH }}

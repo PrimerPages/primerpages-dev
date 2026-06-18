@@ -46,7 +46,7 @@ jobs:
             branch: main
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # To grab the log message
 
@@ -57,7 +57,7 @@ jobs:
           echo "commit-msg=${COMMIT_MSG//$'\n'/ }" >> "$GITHUB_OUTPUT"
 
       - name: Checkout target repo for ${{ matrix.target.template_name }}
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ matrix.target.repo }}
           ref: ${{ matrix.target.branch }}
