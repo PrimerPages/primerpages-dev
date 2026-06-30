@@ -49,4 +49,4 @@ jobs:
             --destination ./_site
 
       - name: Test site
-        uses: athackst/htmlproofer-action@v2.0.1
+        uses: athackst/htmlproofer-action@v2.1.0
