@@ -107,7 +107,7 @@ repository: "PrimerPages/primerpages-gh-pages"
 
 ##########################
 # Repositories to show on home page
-# Requires jekyll-github-metadata plugin and a github repository to be set for the site.
+# Requires jekyll-github-metadata plugin and a GitHub repository to be set for the site.
 ##########################
 repositories:
   sort_by: stars

@@ -103,6 +103,7 @@ links:
 
 ###################
 # Repositories to show on home page
+# Requires jekyll-github-metadata plugin and a GitHub repository to be set for the site.
 repository: PrimerPages/primerpages.github.io
 repositories:
   sort_by: stars #pushed or stars
@@ -121,7 +122,6 @@ related_by: "tags or categories"
 plugins:
   - jekyll-awesome-nav
   - jekyll-gfm-admonitions
-  - jekyll-github-metadata
   - jekyll-octicons
   - jekyll-relative-links
   - jekyll-seo-tag

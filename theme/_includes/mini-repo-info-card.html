@@ -1,4 +1,7 @@
+{% assign repo = nil %}
+{% if site.github %}
 {% assign repo = site.github.public_repositories | where: "full_name", site.repository | first %}
+{% endif %}
 {% assign default_repository_url = "https://www.github.com/" | append: site.repository %}
 {% assign repository_url = site.github.repository_url | default: default_repository_url | default: "" %}
 <div class="Repo-info">

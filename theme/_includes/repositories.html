@@ -5,7 +5,7 @@
     {%- assign sort_order = 'pushed_at' %}
   {%- endif %}
 
-  {%- if site.github.public_repositories.size > 0 %}
+  {%- if site.github and site.github.public_repositories.size > 0 %}
   {%- if site.repositories.exclude.archived && site.repositories.exclude.forks %}
     {%- assign filtered_repos = site.github.public_repositories | where:'archived', false | where:'fork', false | sort: sort_order | reverse %}
   {%- elsif site.repositories.exclude.archived %}
