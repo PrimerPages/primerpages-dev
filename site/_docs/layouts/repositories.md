@@ -50,8 +50,11 @@ Welcome to my open-source projects repository page. Here you can find all my lat
 ## Notes
 
 - Ensure that the `repositories` is [configured](../configuration.md#repositories-optional) in your `_config.yml` file.
-- You may need to include the `jekyll-github-metadata` plugin in your Gemfile and/or included in `_config.yml`. 
+- To populate repository cards, add the optional `jekyll-github-metadata` plugin to your Gemfile and `_config.yml`.
+    ```
+    gem "jekyll-github-metadata"
+    ```
     ```
     plugins:
-    - jekyll-github-metadata
+      - jekyll-github-metadata
     ```

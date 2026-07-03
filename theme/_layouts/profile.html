@@ -40,7 +40,7 @@ paginate_first_page_path %}
     </div>
     {%- endif %}
 
-    {%- if site.repositories and site.github.public_repositories.size > 0 %}
+    {%- if site.repositories and site.github and site.github.public_repositories.size > 0 %}
     <h2 class="mb-3">Repositories</h2>
     {%- include repositories.html %}
     {%- endif %}
