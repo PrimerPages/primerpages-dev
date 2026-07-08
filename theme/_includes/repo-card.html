@@ -29,7 +29,7 @@
       </span>
       {%- endif %}
       {%- if repository.stargazers_count %}
-      <a href="{{ repository.html_url }}/stargazers" class="mr-1 Link--muted">
+      <a href="{{ repository.html_url }}/stargazers" class="mr-1 Link--muted" data-proofer-ignore>
         <span class="octicon octicon-star-16 v-align-middle"></span> {{ repository.stargazers_count }}
       </a>
       {%- endif %}
