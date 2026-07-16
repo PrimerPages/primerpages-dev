@@ -1,20 +1,31 @@
 version: 2
 updates:
-- package-ecosystem: github-actions
-  directories: 
-    - "/"
-    - "templates/*/.github/workflows/"
-    - "site/.github/workflows/"
-    - "theme/.github/workflows/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
-- package-ecosystem: bundler
-  directories: 
-    - "/"
-    - "templates/*/"
-    - "site/"
-    - "theme/"
-  schedule:
-    interval: daily
-  open-pull-requests-limit: 10
+  - package-ecosystem: github-actions
+    directories:
+      - "/"
+      - "templates/*/.github/workflows/"
+      - "site/.github/workflows/"
+      - "theme/.github/workflows/"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    groups:
+      actions-by-dependency:
+        patterns:
+          - "*"
+        group-by: dependency-name
+
+  - package-ecosystem: bundler
+    directories:
+      - "/"
+      - "templates/*/"
+      - "site/"
+      - "theme/"
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 10
+    groups:
+      gems-by-dependency:
+        patterns:
+          - "*"
+        group-by: dependency-name
