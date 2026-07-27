@@ -100,7 +100,7 @@ jobs:
           cat _site/site/index.html
 
       - name: Htmlproofer
-        uses: athackst/htmlproofer-action@v2.1.0
+        uses: athackst/htmlproofer-action@v2.2.0
         with:
           directory: "_site/site"
           check_external_hash: false
@@ -130,7 +130,7 @@ jobs:
             --destination "_site/${{ matrix.template }}"
 
       - name: Htmlproofer
-        uses: athackst/htmlproofer-action@v2.1.0
+        uses: athackst/htmlproofer-action@v2.2.0
         with:
           directory: "_site/${{ matrix.template }}"
           host: https://www.primerpages.com
@@ -176,7 +176,7 @@ jobs:
           cat _site/primerpages-docs/index.html
 
       - name: Htmlproofer
-        uses: athackst/htmlproofer-action@v2.1.0
+        uses: athackst/htmlproofer-action@v2.2.0
         with:
           directory: "_site/primerpages-docs"
           host: https://www.primerpages.com
