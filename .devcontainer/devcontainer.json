@@ -3,11 +3,17 @@
 {
 	"name": "Jekyll",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+	"image": "mcr.microsoft.com/devcontainers/base:noble", 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers/features/ruby:1": {
-			"version": "3.3.4"
+		"ghcr.io/devcontainers/features/ruby": {
+			"version": "3.3"
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "lts"
+		},
+		"ghcr.io/devcontainers/features/python": {
+			"version": "latest"
 		}
 	},
 	// Features to add to the dev container. More info: https://containers.dev/features.
