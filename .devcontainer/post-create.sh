@@ -4,7 +4,8 @@
 # Install additional dependencies
 sudo apt-get update
 sudo apt-get install -y \
-    bats
+    bats \
+    time
 
 # Set bundle path to local directory (inside project)
 bundle config set --local path 'vendor/bundle'
