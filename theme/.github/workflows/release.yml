@@ -63,7 +63,7 @@ jobs:
           ./build.sh "${{ steps.meta.outputs.release-version }}"
 
       - name: Upload built gem artifact
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: ${{ steps.meta.outputs.gem-name }}
           path: ${{ steps.meta.outputs.gem-name }}-${{ steps.meta.outputs.release-version }}.gem
