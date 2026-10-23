@@ -54,7 +54,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [3.3.4, 3.4]
+        ruby: ['3.3', '3.4']
     name: Run bats integration tests
     steps:
       - name: Checkout
