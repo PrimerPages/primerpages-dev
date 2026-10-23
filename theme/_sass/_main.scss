@@ -215,6 +215,92 @@ body::before {
   color: var(--underlineNav-borderColor-active, var(--color-primer-border-active));
 }
 
+.primerpages-search {
+  width: min(24rem, 42vw);
+  z-index: 20;
+}
+
+.primerpages-search__control {
+  display: flex;
+  align-items: center;
+}
+
+.primerpages-search__icon {
+  position: absolute;
+  left: 0.5rem;
+  color: var(--fgColor-muted, var(--color-fg-muted));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.primerpages-search__input {
+  width: 100%;
+  min-width: 12rem;
+  padding-left: 1.75rem;
+  color: var(--fgColor-default, var(--color-fg-default));
+  background-color: var(--bgColor-default, var(--color-canvas-default));
+}
+
+.primerpages-search__dropdown {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  width: min(36rem, 90vw);
+  max-height: min(28rem, 70vh);
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.primerpages-search__result {
+  display: block;
+  padding: 0.75rem;
+  color: var(--fgColor-default, var(--color-fg-default));
+  border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));
+}
+
+.primerpages-search__result:last-child {
+  border-bottom: 0;
+}
+
+.primerpages-search__result:hover,
+.primerpages-search__result:focus,
+.primerpages-search__result[aria-selected="true"] {
+  color: var(--fgColor-default, var(--color-fg-default));
+  background-color: var(--control-transparent-bgColor-hover, var(--color-action-list-item-default-hover-bg));
+  outline: none;
+}
+
+.primerpages-search__title,
+.primerpages-search__url,
+.primerpages-search__excerpt {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.primerpages-search__title {
+  font-weight: var(--base-text-weight-semibold, 600);
+}
+
+.primerpages-search__url {
+  margin-top: 0.125rem;
+  font-size: var(--text-body-size-small, 0.75rem);
+}
+
+.primerpages-search__excerpt {
+  margin-top: 0.375rem;
+  font-size: var(--text-body-size-small, 0.75rem);
+  line-height: 1.4;
+}
+
+.primerpages-search__empty {
+  padding: 0.75rem;
+}
+
+.Header .primerpages-search__input,
+.Header .primerpages-search__dropdown {
+  color: var(--fgColor-default, var(--color-fg-default));
+}
+
 .awesome-nav-chevron {
   transition: transform 0.2s ease;
 }
@@ -260,6 +346,10 @@ summary::-webkit-details-marker {
     display: none !important;
   }
 
+  .primerpages-search {
+    display: none !important;
+  }
+
   .Related {
     display: none !important;
   }
@@ -270,5 +360,21 @@ summary::-webkit-details-marker {
 
   .markdown-body {
     font-size: 12px;
+  }
+}
+
+@media (max-width: 543px) {
+  .primerpages-search {
+    width: 100%;
+  }
+
+  .primerpages-search__input {
+    min-width: 0;
+  }
+
+  .primerpages-search__dropdown {
+    left: 0;
+    right: auto;
+    width: min(100vw - 1rem, 36rem);
   }
 }

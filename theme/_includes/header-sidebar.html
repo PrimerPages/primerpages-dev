@@ -24,6 +24,11 @@
             <div class="d-flex flex-justify-center d-lg-none">
                 {%- include nav-overlay.html %}
             </div>
+            {%- if site.search.enabled %}
+            <div class="d-flex flex-1 flex-justify-center px-2">
+                {% include search.html id="sidebar-search" %}
+            </div>
+            {%- endif %}
             <div class="d-flex flex-justify-center">
                 {% include toggle.html %}
             </div>

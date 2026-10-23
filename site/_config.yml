@@ -42,7 +42,7 @@ style: appbar # One of "stacked", "sidebar", "topbar", "appbar"
 # The user/project avatar.  If not set the avatar of the project owner will be used.
 # user_image: /assets/img/user-image.jpg
 # The header brand icon. Use "none", "favicon", or an Octicon name like "mark-github".
-header_icon: favicon
+header_icon: mark-github
 # The themes to use for dark and light
 dark_theme: dark # One of dark, dark_dimmed, dark_colorblind, dark_high_contrast, dark_tritanopia
 light_theme: light # One of light, light_colorblind, light_high_contrast, light_tritanopia
@@ -55,12 +55,12 @@ edit_url: "https://github.com/PrimerPages/primerpages-dev/edit/main/site/"
 ##########################
 # # Social media settings
 # icon_color: "#959da5" # The color of the social media icons on the site
-# social_media: # Your social media accounts
+social_media: # Your social media accounts
 #   behance: your_username
 #   dribbble: your_username
 #   docker: your_username
 #   facebook: your_username
-#   github: your_username
+  github: primerpages
 #   hackerrank: your_username
 #   instagram: your_username
 #   keybase: your_username
@@ -75,9 +75,14 @@ edit_url: "https://github.com/PrimerPages/primerpages-dev/edit/main/site/"
 #   twitter: your_username
 #   unsplash: your_username
 #   vk: your_username
-#   vscode: your_username
-#   youtube: your_username
-#   x: your_username
+  vscode: your_username
+  youtube: your_username
+  x: your_username
+
+# Header search
+search:
+  enabled: true
+  max_results: 8
 
 ####################
 # Navigation links

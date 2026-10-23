@@ -37,6 +37,12 @@ user_metadata: true # Show the metadata associated with the user
 profile_link: true # Show a link to the github profile for the user
 
 ####################
+# Header search
+# search:
+#   enabled: true
+#   max_results: 8
+
+####################
 # Versioned docs settings
 # versions:
 #   enabled: true

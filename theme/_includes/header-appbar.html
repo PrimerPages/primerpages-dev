@@ -26,6 +26,11 @@
             {% include version-selector.html %}
             </span>
         </div>
+        {%- if site.search.enabled %}
+        <div class="AppHeader-item d-flex d-none d-sm-flex">
+            {%- include search.html id="appbar-search" %}
+        </div>
+        {%- endif %}
         <div class="AppHeader-item d-flex flex-items-center">
             {% include toggle.html %}
             {%- if site.repo_info and site.repository %}
@@ -43,6 +48,11 @@
             {%- endif %}
         </div>
     </div>
+    {%- if site.search.enabled %}
+    <div class="AppHeader-item width-full px-2 pb-2 d-sm-none">
+        {%- include search.html id="appbar-search-mobile" %}
+    </div>
+    {%- endif %}
     <div class="d-flex flex-items-center">
         {%- if site.nav %}
         <div class="AppHeader-item width-full hide-sm">

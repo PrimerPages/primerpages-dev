@@ -71,6 +71,8 @@ jobs:
         env:
           JEKYLL_ENV: production
           JEKYLL_GITHUB_TOKEN: ${{ github.token }}
+      - name: Build search index
+        run: npx pagefind --site _site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
