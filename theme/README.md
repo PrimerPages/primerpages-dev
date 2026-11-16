@@ -52,7 +52,8 @@ Then open `http://localhost:4000`.
 
 ## Header Search
 
-PrimerPages can show an optional Pagefind search box in the site header.
+PrimerPages can show an optional Pagefind search button in the site header. Click it or press `/`
+to open the search dialog.
 
 ```yaml
 search:
@@ -69,7 +70,7 @@ npx pagefind --site _site
 ```
 
 The theme loads Pagefind from `/pagefind/pagefind.js` and renders results in a
-header dropdown; it does not add a standalone search page or require a Jekyll
+search dialog; it does not add a standalone search page or require a Jekyll
 plugin.
 
 See [Search with Pagefind](https://www.primerpages.com/docs/pagefind.html) for

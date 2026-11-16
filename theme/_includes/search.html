@@ -1,31 +1,16 @@
 {%- if site.search.enabled -%}
-{%- assign search_max_results = site.search.max_results | default: 8 -%}
-{%- assign search_id = include.id | default: "primerpages-search" -%}
-<div class="primerpages-search position-relative" data-pagefind-search data-pagefind-max-results="{{ search_max_results }}" data-pagefind-src="{{ '/pagefind/pagefind.js' | relative_url }}">
-  <label class="sr-only" for="{{ search_id }}-input">Search</label>
-  <div class="primerpages-search__control position-relative">
-    <span class="primerpages-search__icon octicon octicon-search-16" aria-hidden="true"></span>
-    <input id="{{ search_id }}-input"
-      class="primerpages-search__input form-control input-sm"
-      type="search"
-      role="combobox"
-      autocomplete="off"
-      spellcheck="false"
-      placeholder="Search"
-      aria-label="Search"
-      aria-autocomplete="list"
-      aria-haspopup="listbox"
-      aria-expanded="false"
-      aria-controls="{{ search_id }}-results"
-      data-pagefind-input>
-  </div>
-  <div class="primerpages-search__dropdown color-bg-overlay border rounded-2 box-shadow-large"
-    hidden
-    data-pagefind-dropdown>
-    <div id="{{ search_id }}-results" role="listbox" aria-label="Search results" data-pagefind-results></div>
-    <div class="primerpages-search__empty color-fg-muted" hidden data-pagefind-empty></div>
-  </div>
-  <div class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-pagefind-status></div>
+<div class="primerpages-search">
+  <button class="primerpages-search__launcher form-control input-sm" type="button"
+    aria-label="Search this site" aria-haspopup="dialog" aria-controls="primerpages-search-dialog"
+    aria-keyshortcuts="/" data-pagefind-launcher>
+    <span class="octicon octicon-search-16" aria-hidden="true"></span>
+    <span class="primerpages-search__launcher-label">Search…</span>
+    <kbd class="primerpages-search__shortcut" aria-hidden="true">/</kbd>
+  </button>
+  <button class="primerpages-search__icon-launcher btn-octicon mr-2" type="button"
+    aria-label="Search this site" aria-haspopup="dialog" aria-controls="primerpages-search-dialog"
+    aria-keyshortcuts="/" data-pagefind-launcher>
+    <span class="octicon octicon-search-24" aria-hidden="true"></span>
+  </button>
 </div>
-<script src="{{ '/assets/js/search.js' | relative_url }}" defer></script>
 {%- endif -%}

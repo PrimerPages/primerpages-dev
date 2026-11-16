@@ -30,17 +30,12 @@
             
             <div class="Header-item Header-link Header-item--full">
             <a class="Header-link h3" href="{{ site.baseurl }}/">{{ name }}</a>
-            {%- if site.search.enabled %}
-            <div class="d-inline-block px-3">
-                {%- include search.html id="topbar-search" %}
-            </div>
-            {%- endif %}
             <div class="d-inline-block ml-4">
             {% include version-selector.html %}
             </div>
             </div>
             <div class="Header-item">
-            {% include toggle.html %}
+            {% include header-tools.html %}
             </div>
             {%- if site.repo_info and site.repository %}
             <div class="Header-item hide-sm">

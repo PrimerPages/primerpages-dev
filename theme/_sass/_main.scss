@@ -167,6 +167,14 @@ body::before {
   color: var(--fgColor-default, var(--color-fg-default));
 }
 
+.AppHeader-item {
+  display: flex;
+  margin-right: var(--base-size-16);
+  align-self: stretch;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
 .version-selector__trigger {
   color: var(--fgColor-default, var(--color-fg-default));
   cursor: pointer;
@@ -216,8 +224,23 @@ body::before {
 }
 
 .primerpages-search {
-  width: min(24rem, 42vw);
+  width: 12rem;
   z-index: 20;
+}
+
+.primerpages-header-tools {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.5rem;
+}
+
+.primerpages-header-tools .btn-octicon {
+  margin-right: 0 !important;
+}
+
+.Toolbar.flex-lg-column .primerpages-header-tools {
+  flex-direction: column;
 }
 
 .primerpages-search__control {
@@ -235,27 +258,87 @@ body::before {
 
 .primerpages-search__input {
   width: 100%;
-  min-width: 12rem;
+  min-width: 0;
   padding-left: 1.75rem;
   color: var(--fgColor-default, var(--color-fg-default));
   background-color: var(--bgColor-default, var(--color-canvas-default));
 }
 
-.primerpages-search__dropdown {
-  position: absolute;
-  top: calc(100% + 0.25rem);
-  right: 0;
-  width: min(36rem, 90vw);
-  max-height: min(28rem, 70vh);
-  overflow-y: auto;
-  z-index: 100;
+.primerpages-search__launcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+  color: var(--fgColor-muted, var(--color-fg-muted));
+  cursor: pointer;
 }
 
-.primerpages-search__result {
-  display: block;
-  padding: 0.75rem;
+.primerpages-search__shortcut { margin-left: auto; }
+
+.primerpages-search__icon-launcher { display: none; }
+
+.primerpages-search-dialog {
+  position: fixed;
+  inset: 0;
+  width: min(56rem, calc(100vw - 2rem));
+  max-height: 80vh;
+  margin: 10vh auto auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--borderColor-muted, var(--color-border-muted));
+  border-radius: 1rem;
   color: var(--fgColor-default, var(--color-fg-default));
-  border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));
+}
+
+.primerpages-search-dialog::backdrop { background: rgba(27, 31, 36, 0.3); }
+
+.primerpages-search-dialog__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--borderColor-muted, var(--color-border-muted));
+}
+
+.primerpages-search-dialog .primerpages-search__input {
+  height: 3rem;
+  padding-left: 2.25rem;
+  border: 0;
+  border-radius: 0.375rem;
+  background: transparent;
+  box-shadow: none;
+  font-size: 1.125rem;
+}
+
+.primerpages-search-dialog .primerpages-search__input:focus-visible {
+  outline: 2px solid var(--focus-outlineColor, var(--color-accent-fg));
+  outline-offset: -2px;
+}
+
+.primerpages-search-dialog__section-label {
+  padding: 1.25rem 0 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.primerpages-search__dropdown {
+  max-height: min(65vh, calc(80dvh - 5rem));
+  padding: 0 1rem 1rem;
+  overflow-y: auto;
+}
+
+.Toolbar.flex-lg-column .primerpages-search { width: auto; }
+.Toolbar.flex-lg-column .primerpages-search__launcher { display: none; }
+.Toolbar.flex-lg-column .primerpages-search__icon-launcher { display: inline-block; }
+
+.primerpages-search__result {
+  position: relative;
+  display: block;
+  padding: 1.125rem 2.25rem 1.125rem 0.5rem;
+  color: var(--fgColor-default, var(--color-fg-default));
+  border-bottom: 1px dashed var(--borderColor-muted, var(--color-border-muted));
 }
 
 .primerpages-search__result:last-child {
@@ -278,18 +361,29 @@ body::before {
 }
 
 .primerpages-search__title {
-  font-weight: var(--base-text-weight-semibold, 600);
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .primerpages-search__url {
-  margin-top: 0.125rem;
-  font-size: var(--text-body-size-small, 0.75rem);
+  display: none;
+}
+
+.primerpages-search__result-arrow {
+  position: absolute;
+  top: 1.25rem;
+  right: 0.5rem;
+  color: var(--fgColor-muted, var(--color-fg-muted));
 }
 
 .primerpages-search__excerpt {
   margin-top: 0.375rem;
   font-size: var(--text-body-size-small, 0.75rem);
   line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .primerpages-search__empty {
@@ -346,7 +440,8 @@ summary::-webkit-details-marker {
     display: none !important;
   }
 
-  .primerpages-search {
+  .primerpages-search,
+  .primerpages-search-dialog {
     display: none !important;
   }
 
@@ -364,17 +459,7 @@ summary::-webkit-details-marker {
 }
 
 @media (max-width: 543px) {
-  .primerpages-search {
-    width: 100%;
-  }
-
-  .primerpages-search__input {
-    min-width: 0;
-  }
-
-  .primerpages-search__dropdown {
-    left: 0;
-    right: auto;
-    width: min(100vw - 1rem, 36rem);
-  }
+  .primerpages-search { width: auto; }
+  .primerpages-search__launcher { display: none; }
+  .primerpages-search__icon-launcher { display: inline-block; }
 }

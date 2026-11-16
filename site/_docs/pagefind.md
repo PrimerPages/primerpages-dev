@@ -4,10 +4,10 @@ category: Advanced
 order: 90
 ---
 
-PrimerPages uses [Pagefind](https://pagefind.app/) for optional header search.
+PrimerPages uses [Pagefind](https://pagefind.app/) for optional site search.
 Pagefind indexes the HTML produced by Jekyll and writes a search bundle alongside your built pages. Visitors search that bundle in their browser, so no search server is required.
 
-## Enable header search
+## Enable site search
 
 Add this to your site's `_config.yml`:
 
@@ -17,7 +17,13 @@ search:
   max_results: 8
 ```
 
-Search appears in the appbar, topbar, sidebar, and stacked headers. `max_results` limits the number of results displayed in the dropdown. Set `enabled: false` or remove the block to hide search.
+A compact search button appears in the appbar, topbar, sidebar, and stacked headers. Click it or press `/` to open the search dialog. `max_results` limits the number of results displayed in the dialog. Set `enabled: false` or remove the block to hide search.
+
+The `/` shortcut is ignored while typing in an input, textarea, or editable content.
+Inside the dialog, use arrow keys to select a result and Enter to open it. Press
+Escape, click the close button, or click the backdrop to dismiss search. Focus
+returns to the control that opened the dialog. On small screens and in the
+collapsed sidebar, the launcher displays only its search icon.
 
 The theme provides the search interface. Enabling it does not generate an index;
 your build must run Pagefind after Jekyll.

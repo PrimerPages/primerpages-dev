@@ -224,8 +224,8 @@ nav:
 
 ## Header search (optional)
 
-PrimerPages can show a Pagefind search input in the header and display results
-in a dropdown while visitors type.
+PrimerPages can show a Pagefind search button in the header that opens a dialog for typing
+and viewing results. Press `/` to open it from the keyboard.
 
 ```yaml
 search:

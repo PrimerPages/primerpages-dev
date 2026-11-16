@@ -116,6 +116,7 @@
           <span class="primerpages-search__title">${escapeHtml(title)}</span>
           <span class="primerpages-search__url color-fg-muted">${url}</span>
           ${excerpt ? `<span class="primerpages-search__excerpt color-fg-muted">${escapeHtml(excerpt)}</span>` : ""}
+          <span class="primerpages-search__result-arrow octicon octicon-arrow-up-right-16" aria-hidden="true"></span>
         </a>
       `;
     }).join("");
@@ -146,6 +147,7 @@
     const src = root.getAttribute("data-pagefind-src");
     const maxResults = parseInt(root.getAttribute("data-pagefind-max-results"), 10) || 8;
     let searchToken = 0;
+    let returnFocus;
 
     const runSearch = debounce(async () => {
       const query = input.value.trim();
@@ -189,7 +191,7 @@
       if (event.key === "Escape") {
         event.preventDefault();
         event.stopPropagation();
-        closeSearch(root);
+        root.close();
         return;
       }
       if (event.key === "Tab") {
@@ -202,7 +204,7 @@
       if (event.key === "Enter" && currentIndex !== -1) {
         event.preventDefault();
         results[currentIndex].click();
-        closeSearch(root);
+        root.close();
       }
       if ((event.key === "ArrowDown" || event.key === "ArrowUp") && results.length) {
         event.preventDefault();
@@ -214,17 +216,46 @@
       }
     });
 
+    function showDialog(opener = document.activeElement) {
+      if (root.open) return;
+      returnFocus = opener;
+      root.showModal();
+      input.focus();
+      input.select();
+      if (input.value.trim().length >= 2) runSearch();
+    }
+
+    document.querySelectorAll("[data-pagefind-launcher]").forEach((launcher) => {
+      launcher.addEventListener("click", () => showDialog(launcher));
+    });
+    root.querySelector("[data-pagefind-close]").addEventListener("click", () => root.close());
+    root.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      root.close();
+    });
+    root.addEventListener("close", () => {
+      closeSearch(root);
+      if (returnFocus && returnFocus.isConnected) returnFocus.focus();
+    });
+    root.addEventListener("click", (event) => {
+      if (event.target === root) {
+        const bounds = root.getBoundingClientRect();
+        if (event.clientX < bounds.left || event.clientX > bounds.right ||
+            event.clientY < bounds.top || event.clientY > bounds.bottom) root.close();
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "/" || event.defaultPrevented || event.isComposing ||
+          event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
+      const target = event.target;
+      if (target.isContentEditable || target.closest("input, textarea, select, [role='textbox']")) return;
+      event.preventDefault();
+      showDialog();
+    });
+
     // Mouse selection should not move DOM focus out of the combobox.
     root.addEventListener("mousedown", (event) => {
       if (event.target.closest("[data-pagefind-result]")) event.preventDefault();
-    });
-  });
-
-  document.addEventListener("click", (event) => {
-    roots.forEach((root) => {
-      if (!root.contains(event.target)) {
-        closeSearch(root);
-      }
     });
   });
 })();

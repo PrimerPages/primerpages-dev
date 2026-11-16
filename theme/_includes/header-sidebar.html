@@ -24,14 +24,7 @@
             <div class="d-flex flex-justify-center d-lg-none">
                 {%- include nav-overlay.html %}
             </div>
-            {%- if site.search.enabled %}
-            <div class="d-flex flex-1 flex-justify-center px-2">
-                {% include search.html id="sidebar-search" %}
-            </div>
-            {%- endif %}
-            <div class="d-flex flex-justify-center">
-                {% include toggle.html %}
-            </div>
+            {% include header-tools.html %}
             <div class="Toolbar-collapse d-flex flex-justify-center d-none d-lg-block">
                 <button id="toolbar-btn" class="btn-octicon mr-2"><span class="octicon octicon-chevron-left-16"></span></button>
             </div>
