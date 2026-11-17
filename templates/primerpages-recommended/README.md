@@ -51,6 +51,6 @@ This template is maintained in `primerpages-dev`.
 
 ## Reference
 
-- PrimerPages: [Search with Pagefind](https://www.primerpages.com/docs/pagefind.html)
+- PrimerPages Docs: [Search with Pagefind](https://www.primerpages.com/docs/)
 
 - GitHub Docs: [Configuring a publishing source for your GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)

@@ -60,7 +60,7 @@ social_media: # Your social media accounts
 #   dribbble: your_username
 #   docker: your_username
 #   facebook: your_username
-  github: primerpages
+#   github: primerpages
 #   hackerrank: your_username
 #   instagram: your_username
 #   keybase: your_username
@@ -75,9 +75,9 @@ social_media: # Your social media accounts
 #   twitter: your_username
 #   unsplash: your_username
 #   vk: your_username
-  vscode: your_username
-  youtube: your_username
-  x: your_username
+#   vscode: your_username
+#   youtube: your_username
+#   x: your_username
 
 # Header search
 search:
