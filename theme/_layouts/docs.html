@@ -38,12 +38,11 @@ Set display info
 Set edit url
 ===================================
 {% endcomment %}
-{%- assign github_edit_url = nil %}
+{%- assign default_url = nil %}
 {%- if site.repository %}
-{%- assign github_edit_url = "https://www.github.com/" | append: site.repository | append: "/edit/main" %}
+{%- assign default_url = "https://www.github.com/" | append: site.repository | append: "/edit/main" %}
 {%- endif %}
-{%- assign edit_url = page.edit_url | default: site.edit_url | default: github_edit_url %}
-{%- assign show_edit_url = page.show_edit_url | default: site.show_edit_url | default: true %}
+{%- assign edit_url = page.edit_url | default: site.edit_url | default: default_url %}
 {%- assign awesome_nav_enabled = false %}
 {%- if site.awesome_nav and site.awesome_nav.enabled and page.awesome_nav %}
   {%- assign awesome_nav_enabled = true %}
@@ -167,8 +166,8 @@ Set edit url
                 </div>
 
                 <!-- Edit link -->
-                {% if show_edit_url and edit_url %}
-                <div class="doc-footer border-top my-8 py-5">
+                {% if edit_url %}
+                <div class="doc-edit-link border-top my-8 py-5">
                     <a href="{{ edit_url }}/{{ page.path }}">
                         <span class="octicon octicon-pencil-16"></span>
                         Edit this page</a>
