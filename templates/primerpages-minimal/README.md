@@ -44,7 +44,6 @@ This template is maintained in `primerpages-dev`.
 
 - Visit `https://<owner>.github.io/<repo>/` for project pages.
 - Confirm this home page renders and nav links work.
-- Open `/debug` to inspect active Jekyll/theme info.
 
 ## Reference
 

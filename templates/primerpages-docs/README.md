@@ -49,7 +49,6 @@ This template is maintained in `primerpages-dev`.
 
 - Visit `https://<owner>.github.io/<repo>/` for project pages.
 - Confirm the docs home page, getting started page, guides, and extracted reference pages render.
-- Open `/debug` to inspect active Jekyll/theme info.
 - Click the search button or press `/`, then search for text from a docs page.
 
 ## Reference

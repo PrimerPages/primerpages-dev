@@ -47,7 +47,6 @@ This template is maintained in `primerpages-dev`.
 
 - Visit `https://<owner>.github.io/<repo>/` for project pages.
 - Confirm home, docs, blog, tag, and category pages render.
-- Open `/debug` to inspect active Jekyll/theme info.
 - Click the search button or press `/`, then search for text from a page or post.
 
 ## Reference
