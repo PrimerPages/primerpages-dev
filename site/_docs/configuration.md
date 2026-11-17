@@ -238,7 +238,7 @@ Jekyll plugin; build the site first, then generate the index from `_site`:
 
 ```sh
 bundle exec jekyll build
-npx pagefind --site _site
+npx -y pagefind --site _site
 ```
 
 When deploying with GitHub Actions, run the Pagefind command after Jekyll builds

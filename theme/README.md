@@ -55,6 +55,10 @@ Then open `http://localhost:4000`.
 PrimerPages can show an optional Pagefind search button in the site header. Click it or press `/`
 to open the search dialog.
 
+Search and color mode are grouped together. On mobile and in the collapsed
+sidebar, search uses an icon button. Use arrow keys and Enter to open a result,
+or Escape to dismiss the dialog.
+
 ```yaml
 search:
   enabled: true
@@ -66,10 +70,10 @@ generated after Jekyll builds the static site:
 
 ```sh
 bundle exec jekyll build
-npx pagefind --site _site
+npx -y pagefind --site _site
 ```
 
-The theme loads Pagefind from `/pagefind/pagefind.js` and renders results in a
+The theme loads Pagefind from `<baseurl>/pagefind/pagefind.js` and renders results in a
 search dialog; it does not add a standalone search page or require a Jekyll
 plugin.
 
