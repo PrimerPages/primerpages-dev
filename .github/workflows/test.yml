@@ -49,6 +49,9 @@ jobs:
           TERM: xterm
         run: bats tests/bump_test.bats
 
+      - name: Test search interactions
+        run: node --test tests/search_test.cjs
+
   integration-test:
     runs-on: ubuntu-latest
     strategy:

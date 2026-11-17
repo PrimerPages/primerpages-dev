@@ -14,7 +14,10 @@ fi
 SOURCE=""
 CONFIG=""
 GEMFILE=""
+DESTINATION=""
 HOST="${HOST:-0.0.0.0}"
+FORCE_POLLING="${FORCE_POLLING:-true}"
+PAGEFIND_ON_SERVE="${PAGEFIND_ON_SERVE:-true}"
 EXTRA_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -29,6 +32,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --gemfile)
       GEMFILE="$2"
+      shift 2
+      ;;
+    --destination)
+      DESTINATION="$2"
       shift 2
       ;;
     --)
@@ -56,6 +63,10 @@ if [[ -z "${CONFIG}" ]]; then
   CONFIG="${SOURCE}/_config.yml"
 fi
 
+if [[ -z "${DESTINATION}" ]]; then
+  DESTINATION="${SOURCE}/_site"
+fi
+
 THEME_ARGS=(--gemfile "${GEMFILE}" --config "${CONFIG}")
 
 THEME_JSON="$(bash "${SCRIPT_DIR}/local_theme.sh" "${THEME_ARGS[@]}")"
@@ -68,16 +79,36 @@ echo "Using config: ${LOCAL_THEME_CONFIG}"
 echo "Using Gemfile: ${LOCAL_GEMFILE}"
 
 SOURCE_ABS="$(cd "$SOURCE" && pwd)"
+SOURCE_KEY="${SOURCE//\//-}"
 
 export BUNDLE_GEMFILE="${LOCAL_GEMFILE}"
-export BUNDLE_APP_CONFIG="${SOURCE_ABS}/.bundle"
-export BUNDLE_PATH="${SOURCE_ABS}/vendor/bundle"
+export BUNDLE_APP_CONFIG="${REPO_ROOT}/.bundle/local-serve/${SOURCE_KEY}"
+export BUNDLE_PATH="${REPO_ROOT}/vendor/local-serve/${SOURCE_KEY}/bundle"
 
 bundle install
 
-bundle exec jekyll serve \
-  --source "${SOURCE}" \
-  --config "${LOCAL_THEME_CONFIG}" \
-  --host "${HOST}" \
-  --livereload \
-  "${EXTRA_ARGS[@]}"
+JEKYLL_CMD=(bundle exec jekyll)
+if [[ "${PAGEFIND_ON_SERVE}" != "false" ]]; then
+  if command -v npx >/dev/null 2>&1; then
+    JEKYLL_CMD=(bundle exec ruby "${SCRIPT_DIR}/pagefind_serve.rb")
+  else
+    echo "Warning: npx not found; continuing without a Pagefind search index." >&2
+  fi
+fi
+
+SERVE_CMD=(
+  "${JEKYLL_CMD[@]}" serve
+  --source "${SOURCE}"
+  --config "${LOCAL_THEME_CONFIG}"
+  --destination "${DESTINATION}"
+  --host "${HOST}"
+  --livereload
+)
+
+if [[ "${FORCE_POLLING}" != "false" ]]; then
+  SERVE_CMD+=(--force_polling)
+fi
+
+SERVE_CMD+=("${EXTRA_ARGS[@]}")
+
+"${SERVE_CMD[@]}"

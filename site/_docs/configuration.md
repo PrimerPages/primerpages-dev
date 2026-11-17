@@ -222,6 +222,30 @@ nav:
 - `name` The name of the link
 - `url` The url of the link
 
+## Header search (optional)
+
+PrimerPages can show a Pagefind search button in the header that opens a dialog for typing
+and viewing results. Press `/` to open it from the keyboard.
+
+```yaml
+search:
+  enabled: true
+  max_results: 8
+```
+
+Remove this block or set `enabled: false` to hide search. Pagefind is not a
+Jekyll plugin; build the site first, then generate the index from `_site`:
+
+```sh
+bundle exec jekyll build
+npx -y pagefind --site _site
+```
+
+When deploying with GitHub Actions, run the Pagefind command after Jekyll builds
+and before uploading the Pages artifact.
+
+See [Search with Pagefind](pagefind.md) for installation options, local previews, deployment setup, and troubleshooting, including how to build without Node.js.
+
 ## Links (optional)
 
 In the `links` section, you can add links to showcase various pages on the web or your website.

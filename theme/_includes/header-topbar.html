@@ -18,13 +18,16 @@
                 <a href="{{ site.baseurl }}/" class="Header-link h1 f4 d-flex flex-items-center">
                     {%- unless header_icon == "none" %}
                       {%- if header_icon == "favicon" %}
+                      <!-- Use the favicon as the header icon -->
                     <img src="{{ favicon | relative_url }}" alt="" width="24" height="24" class="mr-2" />
                       {%- else %}
+                      <!-- Use the specified Octicon as the header icon -->
                     <span class="octicon octicon-{{ header_icon }}-24"></span>
                       {%- endif %}
                     {%- endunless %}
                 </a>
             </div>
+            
             <div class="Header-item Header-link Header-item--full">
             <a class="Header-link h3" href="{{ site.baseurl }}/">{{ name }}</a>
             <div class="d-inline-block ml-4">
@@ -32,7 +35,7 @@
             </div>
             </div>
             <div class="Header-item">
-            {% include toggle.html %}
+            {% include header-tools.html %}
             </div>
             {%- if site.repo_info and site.repository %}
             <div class="Header-item hide-sm">

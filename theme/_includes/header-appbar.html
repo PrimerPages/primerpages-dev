@@ -5,13 +5,13 @@
 {%- assign header_icon = site.header_icon | default: "mark-github" %}
 
 <header class="AppHeader position-sticky top-0 z-2 border-bottom topbar">
-    <div class="AppHeader-item d-flex flex-justify-between p-2 flex-items-center mb-2">
+    <div class="d-flex flex-justify-between p-2 flex-items-center mb-2">
         {%- if site.nav %}
         <div class="d-flex d-sm-none">
             {% include nav-overlay.html %}
         </div>
         {%- endif %}
-        <div tabindex="-1" class="d-flex flex-1 ml-3" id="github-logo">
+        <div tabindex="-1" class="AppHeader-item d-flex flex-1 ml-3" id="github-logo">
             <a href="{{ site.baseurl }}/" class="AppHeader-link d-flex flex-items-center no-underline mr-3 h1">
                 {%- unless header_icon == "none" %}
                   {%- if header_icon == "favicon" %}
@@ -26,22 +26,22 @@
             {% include version-selector.html %}
             </span>
         </div>
-        <div class="AppHeader-item d-flex flex-items-center">
-            {% include toggle.html %}
-            {%- if site.repo_info and site.repository %}
-            <div class="AppHeader-item hide-sm">
-                {% include mini-repo-info-card.html class="AppHeader-link no-underline" %}
-            </div>
-            {% endif %}
-            {%- if site.profile_link and user.login %}
-            <div class="AppHeader-item mr-0">
-                <a href="https://github.com/{{ user.login }}" class="AppHeader-link d-flex flex-items-center">
-                    <img class="avatar img-cover circle" height="32" width="32" alt="{{ name }}"
-                src="{{ user_img | relative_url }}">
-                </a>
-            </div>
-            {%- endif %}
+        <div class="AppHeader-item">
+            {% include header-tools.html %}
         </div>
+        {%- if site.repo_info and site.repository %}
+        <div class="AppHeader-item hide-sm">
+            {% include mini-repo-info-card.html class="AppHeader-link no-underline" %}
+        </div>
+        {% endif %}
+        {%- if site.profile_link and user.login %}
+        <div class="AppHeader-item mr-0">
+            <a href="https://github.com/{{ user.login }}" class="AppHeader-link d-flex flex-items-center">
+                <img class="avatar img-cover circle" height="32" width="32" alt="{{ name }}"
+            src="{{ user_img | relative_url }}">
+            </a>
+        </div>
+        {%- endif %}
     </div>
     <div class="d-flex flex-items-center">
         {%- if site.nav %}

@@ -21,6 +21,7 @@ This template is maintained in `primerpages-dev`.
 - Folder-based navigation driven by `.nav.yml`
 - Source extraction configured through `semiliterate.yml`
 - A Pages deployment workflow at `.github/workflows/site.yml`
+- Pagefind site search enabled by default, with a shared search dialog
 
 ## Quick Setup
 
@@ -40,6 +41,7 @@ This template is maintained in `primerpages-dev`.
 - On pushes to `main` (or manual dispatch), the workflow:
   - builds the site with Jekyll,
   - processes the docs navigation and extracted content,
+  - generates the Pagefind index in `_site/pagefind`,
   - uploads `_site` as a Pages artifact,
   - deploys with `actions/deploy-pages`.
 
@@ -47,8 +49,10 @@ This template is maintained in `primerpages-dev`.
 
 - Visit `https://<owner>.github.io/<repo>/` for project pages.
 - Confirm the docs home page, getting started page, guides, and extracted reference pages render.
-- Open `/debug` to inspect active Jekyll/theme info.
+- Click the search button or press `/`, then search for text from a docs page.
 
 ## Reference
+
+- PrimerPages Docs: [Search with Pagefind](https://www.primerpages.com/docs/)
 
 - GitHub Docs: [Configuring a publishing source for your GitHub Pages site](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)

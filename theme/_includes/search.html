@@ -1,0 +1,16 @@
+{%- if site.search.enabled -%}
+<div class="primerpages-search">
+  <button class="primerpages-search__launcher form-control input-sm" type="button"
+    aria-label="Search this site" aria-haspopup="dialog" aria-controls="primerpages-search-dialog"
+    aria-keyshortcuts="/" data-pagefind-launcher>
+    <span class="octicon octicon-search-16" aria-hidden="true"></span>
+    <span class="primerpages-search__launcher-label">Search…</span>
+    <kbd class="primerpages-search__shortcut" aria-hidden="true">/</kbd>
+  </button>
+  <button class="primerpages-search__icon-launcher btn-octicon mr-2" type="button"
+    aria-label="Search this site" aria-haspopup="dialog" aria-controls="primerpages-search-dialog"
+    aria-keyshortcuts="/" data-pagefind-launcher>
+    <span class="octicon octicon-search-24" aria-hidden="true"></span>
+  </button>
+</div>
+{%- endif -%}

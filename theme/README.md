@@ -50,6 +50,36 @@ bundle exec jekyll serve
 
 Then open `http://localhost:4000`.
 
+## Header Search
+
+PrimerPages can show an optional Pagefind search button in the site header. Click it or press `/`
+to open the search dialog.
+
+Search and color mode are grouped together. On mobile and in the collapsed
+sidebar, search uses an icon button. Use arrow keys and Enter to open a result,
+or Escape to dismiss the dialog.
+
+```yaml
+search:
+  enabled: true
+  max_results: 8
+```
+
+Set `search.enabled` to `false` or remove the block to hide search. Pagefind is
+generated after Jekyll builds the static site:
+
+```sh
+bundle exec jekyll build
+npx -y pagefind --site _site
+```
+
+The theme loads Pagefind from `<baseurl>/pagefind/pagefind.js` and renders results in a
+search dialog; it does not add a standalone search page or require a Jekyll
+plugin.
+
+See [Search with Pagefind](https://www.primerpages.com/docs/pagefind.html) for
+installation options, previews, deployment setup, and troubleshooting.
+
 ## Documentation
 
 Full documentation is available at [primerpages.com](https://www.primerpages.com).
