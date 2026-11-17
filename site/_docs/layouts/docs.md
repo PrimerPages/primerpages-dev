@@ -1,86 +1,78 @@
 ---
-title: Docs Layout
+title: Docs layout
 category: layouts
 order: 24
 ---
 
-The **docs** layout is ideal for documentation pages and follows the document style on [GitHub Docs](https://docs.github.com).
+Use the `docs` layout for documentation pages with sidebar navigation, a table of contents, and links to the previous and next pages.
 
-## Usage
+## Set up documentation pages
 
-To use the Docs layout in your Jekyll site, create a new file in your `_docs` collection with the following front matter:
+1. In `_config.yml`, configure a `docs` collection and its page defaults. If you already have a `defaults` list, add the scoped entry to it.
 
-```yaml
----
-title: Your Documentation Title
-layout: docs
----
-```
+   ```yaml
+   collections:
+     docs:
+       output: true
+       sort_by: order
+   defaults:
+     - scope:
+         path: ""
+         type: "docs"
+       values:
+         layout: docs
+         permalink: /docs/:path
+         toc: true
+   ```
 
-## Configuration
+2. Create a Markdown file in `_docs`, such as `_docs/get-started.md`:
 
-Add the following to your `_config.yml`:
+   ```markdown
+   ---
+   title: Get started
+   description: Set up your first project.
+   order: 1
+   ---
 
-```yaml
-collections:
-  docs:
-    output: true
-    sort_by: order
-defaults:
-  - scope:
-      path: "" # an empty string here means all files in the project
-      type: "docs"
-    values:
-      layout: "docs"
-      image: /assets/img/default.png # The default image used for social and posts.
-      permalink: /docs/:path
-      show_edit_url: true
-      toc: true
-```
+   ## Before you begin
 
-By default, the theme builds the edit link from `site.repository` and points to the current document path on the `main` branch.
+   Add your documentation here.
+   ```
 
-If you need a different repository, branch, or base path, you can override it:
+Set `order` in each page's front matter to control the navigation order. To hide a page's table of contents, set `toc: false` in its front matter.
 
-```yaml
-defaults:
-  - scope:
-      path: ""
-      type: "docs"
-    values:
-      edit_url: "https://github.com/{user}/{repo}/edit/{branch}"
-```
+## Configure the edit link
 
-You can hide the edit link entirely:
+The `docs` layout can display an **Edit this page** link. By default, it uses the repository configured in `_config.yml` and targets the `main` branch:
 
 ```yaml
-defaults:
-  - scope:
-      path: ""
-      type: "docs"
-    values:
-      show_edit_url: false
+repository: OWNER/REPOSITORY
 ```
 
-## Features
+Replace `OWNER` and `REPOSITORY` with your GitHub repository owner and name. If you configure neither a repository nor an edit URL, the layout omits the link.
 
-- Automatically generates a table of contents (`toc: true`)
-- Uses a default image for social sharing
-- Sorts documentation pages by the `order` front matter
-- Adds an "Edit this page" link by default when the theme can build one from `site.repository`
-- Lets you disable the edit link with `show_edit_url: false`
-- Lets you override the generated GitHub edit link base with `edit_url` when needed
+To use a different repository, branch, or source directory, set `edit_url` in `_config.yml`:
 
-## Demo
+```yaml
+edit_url: https://github.com/OWNER/REPOSITORY/edit/BRANCH
+```
 
-[Live demo](/demo/custom-background-docs){:.btn}
+Replace `BRANCH` with the branch that contains your documentation. If your Jekyll site is in a repository subdirectory, append that directory to the URL. The layout appends the document's source path, such as `_docs/get-started.md`.
 
-[Docs section](../index.html){:.btn}
+You can also set `edit_url` in a page's front matter or in scoped front matter defaults. The layout uses the first nonempty value: the page URL, the site URL, or the URL generated from `repository`. This setting applies only to the `docs` layout.
 
-## Notes
+### Hide the edit link
 
-- Ensure your documentation files are placed in the `_docs` folder
-- Use the `order` front matter to control the sorting of your documentation pages
-- The `toc` option automatically generates a table of contents for each page
-- `show_edit_url` can be set globally or per page
-- `edit_url` is optional and only needed when the generated GitHub edit link is not the right target
+The edit link is visible when an edit URL is available. To hide it on all docs pages, add this rule to your site's `assets/css/style.scss` or `assets/css/style.css`:
+
+```css
+.doc-edit-link {
+  display: none;
+}
+```
+
+To hide it on one page, add the rule through that page's `css_style` front matter. For details, see [Custom styles](../custom-styles.md).
+
+## Example
+
+[View the docs layout demo](/demo/custom-background-docs).
